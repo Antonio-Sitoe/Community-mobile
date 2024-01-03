@@ -36,7 +36,9 @@ export default function TabOneScreen() {
 		Alert.alert(JSON.stringify(user))
 	}
 
-	function deleteUser() {}
+	function deleteUser() {
+		console.log('dsd')
+	}
 	return (
 		<View style={styles.container}>
 			<Text style={styles.title}>Tab Hello world</Text>
