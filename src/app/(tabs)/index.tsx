@@ -5,6 +5,7 @@ import { READ_USER } from '@/database/actions/user/read'
 import { UPDATE_USER } from '@/database/actions/user/update'
 import { useCounter } from '@/contexts'
 import { useTranslation } from 'react-i18next'
+import Colors from '@/constants/Colors'
 
 export default function TabOneScreen() {
 	const { counter, increaseCounter } = useCounter()
@@ -85,7 +86,7 @@ export default function TabOneScreen() {
 					<Button
 						onPress={() => i18n.changeLanguage('pt')}
 						title="Portuguese"
-						color="#FF8400"
+						color={Colors.light.lavenderBlush}
 					/>
 				</View>
 				<Text style={{ padding: 20 }}>{t('screens.intro.title')}</Text>
