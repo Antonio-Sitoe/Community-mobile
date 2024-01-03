@@ -1,2 +1,3 @@
+import { User } from './user'
 
-export const model = []
+export const model = [User]

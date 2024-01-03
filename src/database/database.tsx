@@ -1,17 +1,17 @@
-// import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite'
-// import migrations from './migrations'
+import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite'
+import migrations from './migrations'
 
-// import { Database } from '@nozbe/watermelondb'
-// import { schemas } from './schemas'
-// import { model } from './model'
+import { Database } from '@nozbe/watermelondb'
+import { schemas } from './schemas'
+import { model } from './model'
 
-// const adapter = new SQLiteAdapter({
-//   dbName: 'preachingDB',
-//   schema: schemas,
-//   migrations,
-// })
+const adapter = new SQLiteAdapter({
+	dbName: 'solarDb',
+	schema: schemas,
+	migrations,
+})
 
-// export const database = new Database({
-//   adapter,
-//   modelClasses: model,
-// })
+export const database = new Database({
+	adapter,
+	modelClasses: model,
+})

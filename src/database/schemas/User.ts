@@ -1,2 +1,10 @@
+import { tableSchema } from '@nozbe/watermelondb'
 
-export const UserSchema = { name: 'name', type: 'string' }
+export const UserSchema = tableSchema({
+	name: 'user',
+	columns: [
+		{ name: 'name', type: 'string' },
+		{ name: 'email', type: 'string' },
+		{ name: 'createdAt', type: 'string' },
+	],
+})
