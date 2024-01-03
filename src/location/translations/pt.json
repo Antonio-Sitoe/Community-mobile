@@ -1,0 +1,24 @@
+{
+	"language": "Portuguese",
+	"screens": {
+		"intro": {
+			"title": "Ola meu nome e antonio sitoe",
+			"text": {
+				"introText": "ESTOU AQUI",
+				"login": "Login",
+				"signup": "Sign Up"
+			}
+		},
+		"login": {
+			"title": "Sign in",
+			"text": {
+				"login": "login",
+				"emailAddress": "Email address",
+				"password": "password",
+				"continue": "Continue",
+				"createAccount": "Create an Account",
+				"forgotPassword": "Forgotten password?"
+			}
+		}
+	}
+}

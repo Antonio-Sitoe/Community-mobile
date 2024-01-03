@@ -1,11 +1,14 @@
-import { Alert, Button, StyleSheet, TextInput } from 'react-native'
-import EditScreenInfo from '../../components/EditScreenInfo'
+import { Alert, Button, StyleSheet } from 'react-native'
 import { Text, View } from '@/components/Themed'
 import { CREATE_USER } from '@/database/actions/user/create'
 import { READ_USER } from '@/database/actions/user/read'
 import { UPDATE_USER } from '@/database/actions/user/update'
+import { useCounter } from '@/contexts'
+import { useTranslation } from 'react-i18next'
 
 export default function TabOneScreen() {
+	const { counter, increaseCounter } = useCounter()
+	const { t, i18n } = useTranslation()
 	async function handleCreateUser() {
 		try {
 			const body = {
@@ -42,6 +45,7 @@ export default function TabOneScreen() {
 	return (
 		<View style={styles.container}>
 			<Text style={styles.title}>Tab Hello world</Text>
+			<Button onPress={increaseCounter} title={'Contagem ' + counter} />
 			<View
 				style={styles.separator}
 				lightColor="#eee"
@@ -70,12 +74,22 @@ export default function TabOneScreen() {
 				darkColor="rgba(255,255,255,0.1)"
 			/>
 			<Button onPress={deleteUser} title="apagar usuario" color="#FF8400" />
-			<View
-				style={styles.separator}
-				lightColor="#eee"
-				darkColor="rgba(255,255,255,0.1)"
-			/>
-			<EditScreenInfo path="app/(tabs)/index.tsx" />
+			<View lightColor="#eee" darkColor="rgba(255,255,255,0.1)">
+				<View style={{ flexDirection: 'row' }}>
+					<Button
+						onPress={() => i18n.changeLanguage('en')}
+						title="English"
+						color="#FF8400"
+					/>
+
+					<Button
+						onPress={() => i18n.changeLanguage('pt')}
+						title="Portuguese"
+						color="#FF8400"
+					/>
+				</View>
+				<Text style={{ padding: 20 }}>{t('screens.intro.title')}</Text>
+			</View>
 		</View>
 	)
 }

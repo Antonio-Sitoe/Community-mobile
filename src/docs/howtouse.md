@@ -5,3 +5,8 @@
 ## Configuração do VSCode
 Passo 1 - Instale a extensão "ESLint" no VSCode
 Passo 2 - instale a extensão "Prettier" no VSCode (esbenp.prettier-vscode)
+
+
+
+## Zustand - (para estados globais usamos zustand) https://github.com/pmndrs/zustand
+
