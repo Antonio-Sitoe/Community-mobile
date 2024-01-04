@@ -6,8 +6,10 @@ import { UPDATE_USER } from '@/database/actions/user/update'
 import { useCounter } from '@/contexts'
 import { useTranslation } from 'react-i18next'
 import Colors from '@/constants/Colors'
+import { useRouter } from 'expo-router'
 
 export default function TabOneScreen() {
+	const router = useRouter()
 	const { counter, increaseCounter } = useCounter()
 	const { t, i18n } = useTranslation()
 	async function handleCreateUser() {
@@ -43,9 +45,14 @@ export default function TabOneScreen() {
 	function deleteUser() {
 		console.log('dsd')
 	}
+
+	function goto() {
+		router.push('/(others)/family')
+	}
 	return (
 		<View style={styles.container}>
 			<Text style={styles.title}>Tab Hello world</Text>
+			<Button onPress={goto} title={'navegar'} />
 			<Button onPress={increaseCounter} title={'Contagem ' + counter} />
 			<View
 				style={styles.separator}
