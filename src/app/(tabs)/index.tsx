@@ -89,7 +89,9 @@ export default function TabOneScreen() {
 						color={Colors.light.lavenderBlush}
 					/>
 				</View>
-				<Text style={{ padding: 20 }}>{t('screens.intro.title')}</Text>
+				<Text style={{ padding: 2, fontFamily: 'Gilroy_bold' }}>
+					{t('screens.intro.title')}
+				</Text>
 			</View>
 		</View>
 	)
