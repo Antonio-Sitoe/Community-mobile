@@ -6,7 +6,6 @@ import { UPDATE_USER } from '@/database/actions/user/update'
 import { useCounter } from '@/contexts'
 import { useTranslation } from 'react-i18next'
 import Colors from '@/constants/Colors'
-import { fonts } from '@/constants/fonts'
 
 export default function TabOneScreen() {
 	const { counter, increaseCounter } = useCounter()
