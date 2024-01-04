@@ -10,7 +10,7 @@ const Gilroy_regular = require('../assets/fonts/Gilroy-Regular.ttf')
 const Gilroy_semibold = require('../assets/fonts/Gilroy-SemiBold.ttf')
 const Gilroy_thin = require('../assets/fonts/Gilroy-Thin.ttf')
 
-export const fontFamyle = {
+export const fontsConfig = {
 	Gilroy_black,
 	Gilroy_bold,
 	Gilroy_extraBold,
@@ -20,4 +20,27 @@ export const fontFamyle = {
 	Gilroy_regular,
 	Gilroy_thin,
 	Gilroy_semibold,
+}
+
+export const fonts = {
+	fontFamyle: {
+		Gilroy_black: 'Gilroy_black',
+		Gilroy_bold: 'Gilroy_bold',
+		Gilroy_extraBold: 'Gilroy_extraBold',
+		Gilroy_heavy: 'Gilroy_heavy',
+		Gilroy_light: 'Gilroy_light',
+		Gilroy_medium: 'Gilroy_medium',
+		Gilroy_regular: 'Gilroy_regular',
+		Gilroy_thin: 'Gilroy_thin',
+		Gilroy_semibold: 'Gilroy_semibold',
+	},
+	size: {
+		xl: 33, // extra large
+		lg: 22,
+		lgSm: 21,
+		md: 19,
+		mdSm: 18,
+		sm: 16,
+		xs: 11,
+	},
 }

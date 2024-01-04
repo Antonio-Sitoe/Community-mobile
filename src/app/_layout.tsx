@@ -1,4 +1,4 @@
-import '@/location'
+import '@/lib/location'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import {
 	DarkTheme,
@@ -9,7 +9,8 @@ import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
 import { useEffect } from 'react'
 import { useColorScheme } from 'react-native'
-import { fontFamyle } from '@/constants/fonts'
+import { fontsConfig } from '@/constants/fonts'
+import * as ScreenOrientation from 'expo-screen-orientation'
 
 export {
 	// Catch any errors thrown by the Layout component.
@@ -26,9 +27,18 @@ SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
 	const [loaded, error] = useFonts({
-		...fontFamyle,
+		...fontsConfig,
 		...FontAwesome.font,
 	})
+
+	useEffect(() => {
+		async function changeScreenOrientation() {
+			await ScreenOrientation.lockAsync(
+				ScreenOrientation.OrientationLock.LANDSCAPE,
+			)
+		}
+		changeScreenOrientation()
+	}, [])
 
 	// Expo Router uses Error Boundaries to catch errors in the navigation tree.
 	useEffect(() => {

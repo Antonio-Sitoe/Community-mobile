@@ -32,6 +32,12 @@
       "favicon": "./images/favicon.png"
     },
     "plugins": [
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "LANDSCAPE"
+        }
+      ],
       "expo-router",
       [
         "@morrowdigital/watermelondb-expo-plugin",
