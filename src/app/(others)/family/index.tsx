@@ -1,4 +1,4 @@
-import { View, Text, Button } from 'react-native'
+import { View, Text } from '@/components/Themed'
 import { useRouter } from 'expo-router'
 import {
 	Canvas,
@@ -9,6 +9,8 @@ import {
 	Text as TextSkia,
 	useFont,
 } from '@shopify/react-native-skia'
+import { Button, StyleSheet } from 'react-native'
+import Colors from '@/constants/Colors'
 
 export default function Family() {
 	const router = useRouter()
@@ -20,7 +22,11 @@ export default function Family() {
 		router.back()
 	}
 	return (
-		<View>
+		<View
+			style={styles.container}
+			darkColor={Colors.light.white}
+			lightColor={Colors.light.white}
+		>
 			<Text>Lista de Family</Text>
 			<Button onPress={goto} title={'navegar'} />
 			<Canvas style={{ width, height }}>
@@ -44,3 +50,10 @@ export default function Family() {
 		</View>
 	)
 }
+
+const styles = StyleSheet.create({
+	container: {
+		paddingHorizontal: 50,
+		flex: 1,
+	},
+})
