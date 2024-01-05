@@ -25,15 +25,6 @@ export default function RootLayout() {
 		...FontAwesome.font,
 	})
 
-	useEffect(() => {
-		async function changeScreenOrientation() {
-			await ScreenOrientation.lockAsync(
-				ScreenOrientation.OrientationLock.LANDSCAPE,
-			)
-		}
-		changeScreenOrientation()
-	}, [])
-
 	// Expo Router uses Error Boundaries to catch errors in the navigation tree.
 	useEffect(() => {
 		if (error) throw error
