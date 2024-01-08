@@ -9,7 +9,7 @@ import {
 	Text as TextSkia,
 	useFont,
 } from '@shopify/react-native-skia'
-import { Button, StyleSheet } from 'react-native'
+import { Button, StyleSheet, TouchableOpacity } from 'react-native'
 import Colors from '@/constants/Colors'
 
 export default function Family() {
@@ -29,24 +29,26 @@ export default function Family() {
 		>
 			<Text>Lista de Family</Text>
 			<Button onPress={goto} title={'navegar'} />
-			<Canvas style={{ width, height }}>
-				<RoundedRect
-					x={0}
-					y={0}
-					width={500}
-					height={256}
-					r={25}
-					color="lightblue"
-				/>
-				<TextSkia
-					x={10}
-					y={32}
-					text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur quasi harum, odit ea doloremque libero distinctio officiis tenetur laboriosam dolorem. Consequatur doloremque nostrum labore maiores, voluptatibus architecto quisquam repudiandae voluptatem."
-					color="red"
-					// Font is optional
-					font={font}
-				/>
-			</Canvas>
+			<TouchableOpacity>
+				<Canvas style={{ width, height }}>
+					<RoundedRect
+						x={0}
+						y={0}
+						width={500}
+						height={256}
+						r={25}
+						color="lightblue"
+					/>
+					<TextSkia
+						x={10}
+						y={32}
+						text="Lorem ipsum dolor sit amet consectetur adipisicing elit. "
+						color="red"
+						// Font is optional
+						font={font}
+					/>
+				</Canvas>
+			</TouchableOpacity>
 		</View>
 	)
 }

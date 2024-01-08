@@ -1,5 +1,6 @@
 import Colors from '@/constants/Colors'
 import { fonts } from '@/constants/fonts'
+import { ImageSVG, Skia } from '@shopify/react-native-skia'
 import { Text as DefaultText, View as DefaultView } from 'react-native'
 
 type ThemeProps = {
@@ -29,4 +30,13 @@ export function View(props: ViewProps) {
 	const backgroundColor = bgColor || Colors.light.background
 
 	return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />
+}
+
+export const ImageSVGSkia = ({ x, y, image_url_import, height, width }) => {
+	const svg = Skia.SVG.MakeFromString(`${image_url_import}`)!
+	return (
+		<>
+			{svg && <ImageSVG svg={svg} width={width} height={height} x={x} y={y} />}
+		</>
+	)
 }
