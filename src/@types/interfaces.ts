@@ -5,6 +5,7 @@ export interface IsectionsHome {
 	href: Route<string>
 	cardTitles: string[]
 	img: ImgProps
+	color?: string
 }
 
 export type ArraySectios = IsectionsHome[]
