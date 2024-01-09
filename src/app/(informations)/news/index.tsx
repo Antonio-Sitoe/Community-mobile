@@ -1,10 +1,11 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import { HeaderModular } from '@/components/ui/HeaderModular'
 
 export default function News() {
 	return (
-		<View>
+		<>
+			<HeaderModular isDefault={false} title="Noticias" />
 			<Text>Lista de noticias</Text>
-		</View>
+		</>
 	)
 }
