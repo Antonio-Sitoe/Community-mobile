@@ -3,7 +3,6 @@ import {
 	RoundedRect,
 	useFont,
 	Text as TextSkia,
-	Fit,
 } from '@shopify/react-native-skia'
 import { Link, Route } from 'expo-router'
 

@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 import { fonts } from '@/constants/fonts'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { SliderModular } from './Slider'
 import { Slider } from 'react-native-awesome-slider'
 import { useSharedValue } from 'react-native-reanimated'
@@ -19,7 +19,6 @@ export const FooterModular = ({
 	onAddZoom,
 	setFullScrean,
 	isFullScrean,
-	isLoading,
 }) => {
 	const { page, total, setPage } = pages
 	const { scale, setScale } = slider
@@ -31,14 +30,6 @@ export const FooterModular = ({
 	useEffect(() => {
 		progressPage.value = page
 	}, [page, progressPage])
-
-	if (!isLoading) {
-		return (
-			<View style={styles.footerLoader}>
-				<ActivityIndicator color={Colors.light.darkSlateGray} />
-			</View>
-		)
-	}
 
 	if (isFullScrean) {
 		return (
@@ -92,7 +83,13 @@ export const FooterModular = ({
 				/>
 			</View>
 			<View style={styles.footerRight}>
-				<SliderModular value={scale} setValue={setScale} min={0.5} max={4} />
+				<SliderModular
+					startFromZero
+					value={scale}
+					setValue={setScale}
+					min={0.5}
+					max={4}
+				/>
 				<TouchableOpacity style={styles.btn} onPress={onAddZoom}>
 					<Lupa />
 				</TouchableOpacity>
@@ -155,15 +152,7 @@ const styles = StyleSheet.create({
 		width: BTN_WIDTH_AND_HEIGT,
 		height: BTN_WIDTH_AND_HEIGT,
 	},
-	footerLoader: {
-		paddingHorizontal: 50,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
-		gap: 30,
-		backgroundColor: Colors.light.sunsetOrange,
-		height: 68,
-	},
+
 	footerLoaderFull: {
 		paddingHorizontal: 50,
 		flexDirection: 'row',

@@ -8,9 +8,16 @@ interface SliderProps {
 	setValue(value: number): void
 	min: number
 	max: number
+	startFromZero?: boolean
 }
 
-export const SliderModular = ({ value, setValue, min, max }: SliderProps) => {
+export const SliderModular = ({
+	value,
+	setValue,
+	min,
+	max,
+	startFromZero = false,
+}: SliderProps) => {
 	return (
 		<View style={styles.container} bgColor="transparent">
 			<Slider
@@ -20,6 +27,7 @@ export const SliderModular = ({ value, setValue, min, max }: SliderProps) => {
 				}}
 				minimumValue={min}
 				maximumValue={max}
+				startFromZero={startFromZero}
 				thumbStyle={{
 					width: 15,
 					height: 15,

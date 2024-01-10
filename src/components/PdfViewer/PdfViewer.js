@@ -149,24 +149,28 @@ export class PdfViewer extends React.Component {
 						</TouchableOpacity>
 					</View>
 				</View>
-
-				<FooterModular
-					isFullScrean={this.props.isFullScrean}
-					setFullScrean={this.props.setFullScrean}
-					isLoading={this.state.totalPages !== 0}
-					pages={{
-						page: this.state.page,
-						total: this.state.totalPages,
-						setPage: (value) => this.onSateValue(value),
-					}}
-					onAddZoom={() => this.onZoomPlus()}
-					slider={{
-						scale: this.state.scale,
-						setScale: (value) => {
-							this.setState({ ...this.state, scale: value })
-						},
-					}}
-				/>
+				{this.state.totalPages !== 0 ? (
+					<FooterModular
+						isFullScrean={this.props.isFullScrean}
+						setFullScrean={this.props.setFullScrean}
+						pages={{
+							page: this.state.page,
+							total: this.state.totalPages,
+							setPage: (value) => this.onSateValue(value),
+						}}
+						onAddZoom={() => this.onZoomPlus()}
+						slider={{
+							scale: this.state.scale,
+							setScale: (value) => {
+								this.setState({ ...this.state, scale: value })
+							},
+						}}
+					/>
+				) : (
+					<View style={styles.footerLoader}>
+						<ActivityIndicator color={Colors.light.darkSlateGray} />
+					</View>
+				)}
 			</>
 		)
 	}
@@ -199,6 +203,15 @@ const styles = StyleSheet.create({
 		flex: 1,
 		width: PDF_FULL_WIDTH,
 		height: PDF_FULL_HEIGHT,
+	},
+	footerLoader: {
+		paddingHorizontal: 50,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		gap: 30,
+		backgroundColor: Colors.light.sunsetOrange,
+		height: 68,
 	},
 	pdf: {
 		flex: 1,
