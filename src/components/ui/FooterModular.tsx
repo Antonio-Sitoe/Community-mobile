@@ -2,17 +2,25 @@ import React, { useEffect } from 'react'
 import Colors from '@/constants/Colors'
 import Lupa from '@/assets/Icons/lupa.svg'
 import Svg1273 from '@/assets/Icons/svg1273.svg'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 import { fonts } from '@/constants/fonts'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
 import { SliderModular } from './Slider'
 import { Slider } from 'react-native-awesome-slider'
 import { useSharedValue } from 'react-native-reanimated'
 
 const BTN_WIDTH_AND_HEIGT = 50
 
-export const FooterModular = ({ pages, slider, onAddZoom, setFullScrean }) => {
+export const FooterModular = ({
+	pages,
+	slider,
+	onAddZoom,
+	setFullScrean,
+	isFullScrean,
+	isLoading,
+}) => {
 	const { page, total, setPage } = pages
 	const { scale, setScale } = slider
 
@@ -23,6 +31,31 @@ export const FooterModular = ({ pages, slider, onAddZoom, setFullScrean }) => {
 	useEffect(() => {
 		progressPage.value = page
 	}, [page, progressPage])
+
+	if (!isLoading) {
+		return (
+			<View style={styles.footerLoader}>
+				<ActivityIndicator color={Colors.light.darkSlateGray} />
+			</View>
+		)
+	}
+
+	if (isFullScrean) {
+		return (
+			<View style={styles.footerLoaderFull}>
+				<TouchableOpacity
+					style={[styles.btn, styles.btnWidth]}
+					onPress={() => setFullScrean(false)}
+				>
+					<MaterialCommunityIcons
+						name="fullscreen-exit"
+						size={40}
+						color={Colors.light.white}
+					/>
+				</TouchableOpacity>
+			</View>
+		)
+	}
 
 	return (
 		<View style={styles.footer}>
@@ -121,5 +154,26 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		width: BTN_WIDTH_AND_HEIGT,
 		height: BTN_WIDTH_AND_HEIGT,
+	},
+	footerLoader: {
+		paddingHorizontal: 50,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		gap: 30,
+		backgroundColor: Colors.light.sunsetOrange,
+		height: 68,
+	},
+	footerLoaderFull: {
+		paddingHorizontal: 50,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'flex-end',
+		backgroundColor: Colors.light.darkSlateGray,
+		paddingBottom: 10,
+	},
+	btnWidth: {
+		backgroundColor: Colors.light.ebony,
+		borderRadius: 7,
 	},
 })
