@@ -1,24 +1,28 @@
+import React, { useEffect } from 'react'
 import Colors from '@/constants/Colors'
-
 import Lupa from '@/assets/Icons/lupa.svg'
 import Svg1273 from '@/assets/Icons/svg1273.svg'
 
-import { useSharedValue } from 'react-native-reanimated'
-import { Slider } from 'react-native-awesome-slider'
 import { fonts } from '@/constants/fonts'
-import { View, Text, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { View, Text, StyleSheet } from 'react-native'
+import { SliderModular } from './Slider'
+import { Slider } from 'react-native-awesome-slider'
+import { useSharedValue } from 'react-native-reanimated'
 
 const BTN_WIDTH_AND_HEIGT = 50
 
-export const FooterModular = ({ page, total, setPage }) => {
+export const FooterModular = ({ pages, slider, onAddZoom, setFullScrean }) => {
+	const { page, total, setPage } = pages
+	const { scale, setScale } = slider
+
 	const progressPage = useSharedValue(0)
 	const minPage = useSharedValue(1)
 	const maxPage = useSharedValue(total)
 
-	const progressZoom = useSharedValue(0)
-	const minZoom = useSharedValue(1)
-	const maxZoom = useSharedValue(100)
+	useEffect(() => {
+		progressPage.value = page
+	}, [page, progressPage])
 
 	return (
 		<View style={styles.footer}>
@@ -27,6 +31,7 @@ export const FooterModular = ({ page, total, setPage }) => {
 			</Text>
 			<View style={styles.footerPages}>
 				<Slider
+					panDirectionValue={page}
 					progress={progressPage}
 					minimumValue={minPage}
 					maximumValue={maxPage}
@@ -44,6 +49,9 @@ export const FooterModular = ({ page, total, setPage }) => {
 						borderRadius: 7,
 						overflow: 'hidden',
 					}}
+					markStyle={{
+						width: 40,
+					}}
 					bubble={(s: number) => Math.floor(s).toString()}
 					onValueChange={(value) => {
 						setPage(value)
@@ -51,30 +59,14 @@ export const FooterModular = ({ page, total, setPage }) => {
 				/>
 			</View>
 			<View style={styles.footerRight}>
-				<Slider
-					progress={progressZoom}
-					minimumValue={minZoom}
-					maximumValue={maxZoom}
-					theme={{
-						disableMinTrackTintColor: Colors.light.white,
-						maximumTrackTintColor: Colors.light.white,
-						minimumTrackTintColor: Colors.light.darkSlateGray,
-						cacheTrackTintColor: Colors.light.charcoal,
-						bubbleBackgroundColor: Colors.light.sunsetOrange,
-					}}
-					bubbleTranslateY={-30}
-					containerStyle={{
-						width: '100%',
-						height: 8,
-						borderRadius: 7,
-						overflow: 'hidden',
-					}}
-					bubble={(s: number) => Math.floor(s).toString()}
-				/>
-				<TouchableOpacity style={styles.btn}>
+				<SliderModular value={scale} setValue={setScale} min={0.5} max={4} />
+				<TouchableOpacity style={styles.btn} onPress={onAddZoom}>
 					<Lupa />
 				</TouchableOpacity>
-				<TouchableOpacity style={styles.btn}>
+				<TouchableOpacity
+					style={styles.btn}
+					onPress={() => setFullScrean(true)}
+				>
 					<Svg1273 />
 				</TouchableOpacity>
 			</View>

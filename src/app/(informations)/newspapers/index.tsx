@@ -1,6 +1,12 @@
 import { HeaderModular } from '@/components/ui/HeaderModular'
 import Colors from '@/constants/Colors'
-import { View, StyleSheet, Dimensions, ActivityIndicator } from 'react-native'
+import {
+	View,
+	StyleSheet,
+	Dimensions,
+	ActivityIndicator,
+	Button,
+} from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import PDF from 'react-native-pdf'
@@ -16,10 +22,14 @@ const PDF_WIDTH = width * 0.8
 const PDF_HEIGHT = height - 200
 
 export default function Newspapers() {
+	const [isFullScrean, setFullScrean] = useState(false)
+
 	return (
 		<>
-			<HeaderModular isDefault={false} title="Jornais" />
-			<PdfViewer />
+			{isFullScrean === false && (
+				<HeaderModular isDefault={false} title="Jornais" />
+			)}
+			<PdfViewer isFullScrean={isFullScrean} setFullScrean={setFullScrean} />
 		</>
 	)
 }
@@ -27,34 +37,49 @@ export default function Newspapers() {
 class PdfViewer extends Component {
 	constructor(props) {
 		super(props)
-
-		// Definindo o estado inicial
 		this.state = {
 			page: 1,
-			police: 2,
+			scale: 1,
+			police: 0,
+			minScale: 0.5,
+			maxScale: 4,
 			totalPages: 0,
+			slide: 0,
 			pdfSource: {
 				uri: 'https://jornalvisaomoz.com/wp-content/uploads/2021/07/Edicao-131-13-de-Julho-de-2021-1.pdf',
 				cache: true,
 			},
 		}
 		this.timeout = null
-
-		// Bind necessário para acessar o 'this' dentro dos métodos da classe
 		this.pdfRef = React.createRef()
 		this.onLoadComplete = this.onLoadComplete.bind(this)
 		this.onPageChanged = this.onPageChanged.bind(this)
 	}
 
 	onLoadComplete(pages: number) {
-		this.setState({ ...this.state, totalPages: pages })
+		this.setState({
+			...this.state,
+			totalPages: pages,
+		})
+	}
+
+	onZoomPlus() {
+		if (this.state.scale < this.state.maxScale) {
+			this.setState({ ...this.state, scale: this.state.scale + 0.5 })
+		} else {
+			this.setState({ ...this.state, scale: 1.5 })
+		}
 	}
 
 	onPageChanged(page: number) {
 		if (this.timeout) {
 			clearTimeout(this.timeout)
 		}
-		this.setState({ ...this.state, page })
+
+		this.setState({
+			...this.state,
+			page,
+		})
 	}
 
 	goToNextPage() {
@@ -99,12 +124,17 @@ class PdfViewer extends Component {
 						<PDF
 							ref={this.pdfRef}
 							horizontal={true}
-							minScale={0.5}
-							maxScale={4}
+							scale={this.state.scale}
+							minScale={this.state.minScale}
+							maxScale={this.state.maxScale}
 							spacing={20}
+							fitPolicy={this.state.police}
 							showsHorizontalScrollIndicator={true}
 							enablePaging={true}
 							trustAllCerts={false}
+							onScaleChanged={(sacel) => {
+								console.log('sacel', sacel)
+							}}
 							source={this.state.pdfSource}
 							style={styles.pdf}
 							onLoadComplete={(page) => this.onLoadComplete(page)}
@@ -133,15 +163,29 @@ class PdfViewer extends Component {
 						</TouchableOpacity>
 					</View>
 				</View>
-				{this.state.totalPages !== 0 ? (
+				{this.state.totalPages !== 0 || this.props.isFullScrean === true ? (
 					<FooterModular
-						page={this.state.page}
-						total={this.state.totalPages}
-						setPage={(value) => this.onSateValue(value)}
+						setFullScrean={this.props.setFullScrean}
+						pages={{
+							page: this.state.page,
+							total: this.state.totalPages,
+							setPage: (value) => this.onSateValue(value),
+						}}
+						onAddZoom={() => this.onZoomPlus()}
+						slider={{
+							scale: this.state.scale,
+							setScale: (value) => {
+								this.setState({ ...this.state, scale: value })
+							},
+						}}
 					/>
 				) : (
 					<View style={styles.footer}>
 						<ActivityIndicator color={Colors.light.darkSlateGray} />
+						<Button
+							onPress={() => this.props.setFullScrean(false)}
+							title="mudar"
+						/>
 					</View>
 				)}
 			</>
