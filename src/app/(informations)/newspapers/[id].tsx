@@ -163,7 +163,7 @@ class PdfViewer extends Component {
 						</TouchableOpacity>
 					</View>
 				</View>
-				{this.state.totalPages !== 0 || this.props.isFullScrean === true ? (
+				{this.state.totalPages !== 0 ? (
 					<FooterModular
 						setFullScrean={this.props.setFullScrean}
 						pages={{
