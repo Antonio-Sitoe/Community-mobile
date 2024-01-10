@@ -51,9 +51,11 @@ export function CardModular({
 					color={color}
 				/>
 				{cardTitles.map((title, i) => {
-					const calcule_padding_top = padding_top_text * (i + 1)
+					const calcule_padding_top = padding_top_text
 					const padding_y =
-						i + 1 === 2 ? calcule_padding_top - 6 : calcule_padding_top // coloca espacamento de um texto para o outro
+						i + 1 === 2
+							? (calcule_padding_top / height) * 230
+							: (calcule_padding_top / height) * 130 // coloca espacamento de um texto para o outro
 					return (
 						<TextSkia
 							key={i}
