@@ -1,15 +1,13 @@
-import { View, Text, ScrollView } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import { HeaderModular } from '@/components/ui/HeaderModular'
 import { CardModular } from '@/components/ui/CardModular'
-import Assets_448 from '@/assets/Thumbnails/assets_448.png'
-import Assets_479 from '@/assets/Thumbnails/assets_479.png'
-import Assets_481 from '@/assets/Thumbnails/assets_481.png'
-import Assets_483 from '@/assets/Thumbnails/assets_483.png'
-import Assets_485 from '@/assets/Thumbnails/assets_485.png'
 import Colors from '@/constants/Colors'
 import { fonts } from '@/constants/fonts'
 import { ArraySectios } from '@/@types/interfaces'
-import { Href, Route } from 'expo-router'
+import { Route } from 'expo-router'
+
+const width = 220
+const height = 257
 
 export default function MagazinesEdition() {
 	const sections: ArraySectios = [
@@ -92,9 +90,6 @@ export default function MagazinesEdition() {
 			},
 		},
 	]
-
-	const width = 220
-	const height = 257
 
 	return (
 		<>

@@ -1,11 +1,11 @@
-import { View, Text, ScrollView, StatusBar, StyleSheet } from 'react-native'
-import { HeaderModular } from '@/components/ui/HeaderModular'
+import Colors from '@/constants/Colors'
 import React from 'react'
 import { ArraySectios } from '@/@types/interfaces'
-import Colors from '@/constants/Colors'
+import { HeaderModular } from '@/components/ui/HeaderModular'
 import { CardModular } from '@/components/ui/CardModular'
 import { fonts } from '@/constants/fonts'
-import { svg1214 } from '@/assets/Icons/out'
+import { Route } from 'expo-router'
+import { View, ScrollView, StyleSheet } from 'react-native'
 
 const font_size = fonts.size.md
 const width = 220
@@ -14,7 +14,7 @@ const height = 128.5
 const sections: ArraySectios = [
 	{
 		color: Colors.light.mutedGreen,
-		href: '/(informations)/magazines/8',
+		href: '/(informations)/magazines/8' as Route<string>,
 		cardTitles: ['Xonguila'],
 		img: {
 			imgType: 'img',
@@ -28,7 +28,7 @@ const sections: ArraySectios = [
 	},
 	{
 		color: Colors.light.sunflowerYellow,
-		href: '/(informations)/magazines/8',
+		href: '/(informations)/magazines/8' as Route<string>,
 		cardTitles: ['Índico'],
 		img: {
 			imgType: 'img',
@@ -42,7 +42,7 @@ const sections: ArraySectios = [
 	},
 	{
 		color: Colors.light.alternativeBlue,
-		href: '/(informations)/magazines/8',
+		href: '/(informations)/magazines/8' as Route<string>,
 		cardTitles: ['Exame'],
 		img: {
 			imgType: 'img',

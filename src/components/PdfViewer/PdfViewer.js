@@ -121,9 +121,6 @@ export class PdfViewer extends React.Component {
 							showsHorizontalScrollIndicator={true}
 							enablePaging={true}
 							trustAllCerts={false}
-							onScaleChanged={(sacel) => {
-								console.log('sacel', sacel)
-							}}
 							source={this.state.pdfSource}
 							style={styles.pdf}
 							onLoadComplete={(page) => this.onLoadComplete(page)}

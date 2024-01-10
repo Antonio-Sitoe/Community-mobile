@@ -1,15 +1,15 @@
-import { View, Text, ScrollView } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import { HeaderModular } from '@/components/ui/HeaderModular'
 import { CardModular } from '@/components/ui/CardModular'
 import Colors from '@/constants/Colors'
 import { fonts } from '@/constants/fonts'
 import { ArraySectios } from '@/@types/interfaces'
-import { Href, Route } from 'expo-router'
+import { Route } from 'expo-router'
 
 export default function Comics() {
 	const sectionsInfo: ArraySectios = [
 		{
-			href: `/(informations)/newspapers/${8}/${1}` as Route<string>,
+			href: `/(entertainments)/comics/${8}` as Route<string>,
 			cardTitles: ['Os Informais'],
 			img: {
 				imgType: 'img',
@@ -22,7 +22,7 @@ export default function Comics() {
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}/${1}` as Route<string>,
+			href: `/(entertainments)/comics/${8}` as Route<string>,
 			cardTitles: ['Banga'],
 			img: {
 				imgType: 'img',
@@ -35,7 +35,7 @@ export default function Comics() {
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}/${1}` as Route<string>,
+			href: `/(entertainments)/comics/${8}` as Route<string>,
 			cardTitles: ['Electus'],
 			img: {
 				imgType: 'img',
