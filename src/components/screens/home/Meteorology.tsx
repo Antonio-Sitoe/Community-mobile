@@ -1,17 +1,31 @@
 import { View, Text } from '@/components/Themed'
 import Colors from '@/constants/Colors'
 import { fonts } from '@/constants/fonts'
+import { DELETE_WEATHER } from '@/database/actions/weather/delete'
+import { READ_WEATHER } from '@/database/actions/weather/read'
+import { useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 export function Meteorology() {
+	const [state, setState] = useState(null)
+	async function handle() {
+		const b = await READ_WEATHER()
+		// const b = await DELETE_WEATHER()
+		console.log(b)
+	}
+	async function deletell() {
+		const b = await DELETE_WEATHER()
+	}
 	return (
 		<>
 			<View style={styles.container}>
 				<View style={{ flex: 1 }}>
 					<Text style={styles.textTitle}>Metereologia</Text>
 					<View style={{ paddingVertical: 10, flex: 1 }}>
-						<View style={styles.cardMeteorlogia}></View>
+						<View style={styles.cardMeteorlogia}>
+							<Text>{JSON.stringify(state)}</Text>
+						</View>
 					</View>
 				</View>
 				<View>
@@ -26,8 +40,14 @@ export function Meteorology() {
 						Powered By
 					</Text>
 					<View style={styles.mainCardWhiteSmokeContainer}>
-						<TouchableOpacity style={styles.cardWhitesmoke}></TouchableOpacity>
-						<TouchableOpacity style={styles.cardWhitesmoke}></TouchableOpacity>
+						<TouchableOpacity
+							style={styles.cardWhitesmoke}
+							onPress={handle}
+						></TouchableOpacity>
+						<TouchableOpacity
+							style={styles.cardWhitesmoke}
+							onPress={deletell}
+						></TouchableOpacity>
 					</View>
 				</View>
 			</View>
