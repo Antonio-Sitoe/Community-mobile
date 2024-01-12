@@ -1,6 +1,12 @@
 {
 	"language": "Portuguese",
 	"screens": {
+		"home": {
+			"info": {
+				"title": "Informação",
+				"newsTitle": "Notícias"
+			}
+		},
 		"intro": {
 			"title": "Ola meu nome e antonio sitoe",
 			"text": {

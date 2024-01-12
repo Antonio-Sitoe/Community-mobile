@@ -13,6 +13,7 @@ export default {
 		sunsetOrange: '#FF8400',
 		lavenderBlush: '#B970BB',
 		periwinkleGray: '#8B9CC5',
+		alternativeBlue: '#7CC2C0',
 		charcoal: '#373737',
 
 		blackTransparent: '#00000029',

@@ -1,16 +1,17 @@
 import { View, ScrollView } from 'react-native'
 import { HeaderModular } from '@/components/ui/HeaderModular'
 import { CardModular } from '@/components/ui/CardModular'
+
 import Colors from '@/constants/Colors'
 import { fonts } from '@/constants/fonts'
 import { ArraySectios } from '@/@types/interfaces'
 import { Route } from 'expo-router'
 
-export default function Comics() {
+export default function NewsPappersEdition() {
 	const sectionsInfo: ArraySectios = [
 		{
-			href: `/(entertainments)/comics/${8}` as Route<string>,
-			cardTitles: ['Os Informais'],
+			href: `/(informations)/newspapers/${8}/${1}` as Route<string>,
+			cardTitles: ['Noticias', '24/10/2024'],
 			img: {
 				imgType: 'img',
 				x: -140,
@@ -18,12 +19,12 @@ export default function Comics() {
 				fit: 'contain',
 				height: 200,
 				width: 400,
-				image_url_import: require('@/assets/Thumbnails/assets_470.png'),
+				image_url_import: require('@/assets/Thumbnails/assets_448.png'),
 			},
 		},
 		{
-			href: `/(entertainments)/comics/${8}` as Route<string>,
-			cardTitles: ['Banga'],
+			href: `/(informations)/newspapers/${8}/${1}` as Route<string>,
+			cardTitles: ['Noticias', '24/10/2024'],
 			img: {
 				imgType: 'img',
 				x: -140,
@@ -31,12 +32,12 @@ export default function Comics() {
 				fit: 'contain',
 				height: 200,
 				width: 400,
-				image_url_import: require('@/assets/Thumbnails/assets_472.png'),
+				image_url_import: require('@/assets/Thumbnails/assets_479.png'),
 			},
 		},
 		{
-			href: `/(entertainments)/comics/${8}` as Route<string>,
-			cardTitles: ['Electus'],
+			href: `/(informations)/newspapers/${8}/${1}` as Route<string>,
+			cardTitles: ['Noticias', '24/10/2024'],
 			img: {
 				imgType: 'img',
 				x: -140,
@@ -44,7 +45,34 @@ export default function Comics() {
 				fit: 'contain',
 				height: 200,
 				width: 400,
-				image_url_import: require('@/assets/Thumbnails/assets_474.png'),
+				image_url_import: require('@/assets/Thumbnails/assets_481.png'),
+			},
+		},
+
+		{
+			href: `/(informations)/newspapers/${8}/${1}` as Route<string>,
+			cardTitles: ['Noticias', '24/10/2024'],
+			img: {
+				imgType: 'img',
+				x: -140,
+				y: 100,
+				fit: 'contain',
+				height: 200,
+				width: 400,
+				image_url_import: require('@/assets/Thumbnails/assets_483.png'),
+			},
+		},
+		{
+			href: `/(informations)/newspapers/${8}/${1}` as Route<string>,
+			cardTitles: ['Noticias', '24/10/2024'],
+			img: {
+				imgType: 'img',
+				x: -140,
+				y: 100,
+				fit: 'contain',
+				height: 200,
+				width: 400,
+				image_url_import: require('@/assets/Thumbnails/assets_485.png'),
 			},
 		},
 	]
@@ -54,7 +82,7 @@ export default function Comics() {
 
 	return (
 		<>
-			<HeaderModular isDefault={false} title="Banda Desenhada" />
+			<HeaderModular isDefault={false} title="Jornal Notícias" />
 			<ScrollView
 				contentContainerStyle={{
 					paddingHorizontal: 50,
@@ -72,7 +100,7 @@ export default function Comics() {
 						return (
 							<View key={index}>
 								<CardModular
-									color={Colors.light.lavenderBlush}
+									color={Colors.light.sunsetOrange}
 									font_size={fonts.size.md}
 									height={height}
 									width={width}

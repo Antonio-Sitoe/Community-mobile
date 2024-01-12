@@ -1,10 +1,10 @@
 import '@/lib/location'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { useFonts } from 'expo-font'
-import { Route, SplashScreen, Stack } from 'expo-router'
+import { SplashScreen, Stack } from 'expo-router'
 import { useEffect } from 'react'
 import { fontsConfig } from '@/constants/fonts'
-import * as ScreenOrientation from 'expo-screen-orientation'
+import { StatusBar } from 'react-native'
 
 export {
 	// Catch any errors thrown by the Layout component.
@@ -24,15 +24,6 @@ export default function RootLayout() {
 		...fontsConfig,
 		...FontAwesome.font,
 	})
-
-	useEffect(() => {
-		async function changeScreenOrientation() {
-			await ScreenOrientation.lockAsync(
-				ScreenOrientation.OrientationLock.LANDSCAPE,
-			)
-		}
-		changeScreenOrientation()
-	}, [])
 
 	// Expo Router uses Error Boundaries to catch errors in the navigation tree.
 	useEffect(() => {
@@ -54,10 +45,13 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
 	return (
-		<Stack
-			screenOptions={{
-				headerShown: false,
-			}}
-		/>
+		<>
+			<StatusBar hidden />
+			<Stack
+				screenOptions={{
+					headerShown: false,
+				}}
+			/>
+		</>
 	)
 }

@@ -1,6 +1,12 @@
 {
 	"language": "English",
 	"screens": {
+		"home": {
+			"info": {
+				"title": "Information",
+				"newsTitle": "News"
+			}
+		},
 		"intro": {
 			"title": "Hello my name is Antonio Sitoe",
 			"text": {

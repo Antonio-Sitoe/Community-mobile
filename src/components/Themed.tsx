@@ -1,51 +1,82 @@
-/**
- * Learn more about Light and Dark modes:
- * https://docs.expo.io/guides/color-schemes/
- */
-
+import Colors from '@/constants/Colors'
+import { fonts } from '@/constants/fonts'
 import {
-	Text as DefaultText,
-	useColorScheme,
-	View as DefaultView,
-} from 'react-native'
-
-import Colors from '../constants/Colors'
+	ImageSVG,
+	Skia,
+	Image,
+	useImage,
+	Fit,
+} from '@shopify/react-native-skia'
+import { Text as DefaultText, View as DefaultView } from 'react-native'
 
 type ThemeProps = {
-	lightColor?: string
-	darkColor?: string
+	color?: string
+	bgColor?: string
 }
 
 export type TextProps = ThemeProps & DefaultText['props']
 export type ViewProps = ThemeProps & DefaultView['props']
 
-export function useThemeColor(
-	props: { light?: string; dark?: string },
-	colorName: keyof typeof Colors.light & keyof typeof Colors.dark,
-) {
-	const theme = useColorScheme() ?? 'light'
-	const colorFromProps = props[theme]
-
-	if (colorFromProps) {
-		return colorFromProps
-	} else {
-		return Colors[theme][colorName]
-	}
-}
-
 export function Text(props: TextProps) {
-	const { style, lightColor, darkColor, ...otherProps } = props
-	const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text')
-
-	return <DefaultText style={[{ color }, style]} {...otherProps} />
+	const { style, color, ...otherProps } = props
+	const textColor = color || Colors.light.text
+	return (
+		<DefaultText
+			style={[
+				{ color: textColor, fontFamily: fonts.fontFamyle.Gilroy_regular },
+				style,
+			]}
+			{...otherProps}
+		/>
+	)
 }
 
 export function View(props: ViewProps) {
-	const { style, lightColor, darkColor, ...otherProps } = props
-	const backgroundColor = useThemeColor(
-		{ light: lightColor, dark: darkColor },
-		'background',
-	)
+	const { style, bgColor, ...otherProps } = props
+	const backgroundColor = bgColor || Colors.light.background
 
 	return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />
+}
+
+export const ImageSVGSkia = ({ x, y, image_url_import, height, width }) => {
+	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+	const svg = Skia.SVG.MakeFromString(`${image_url_import}`)!
+	return (
+		<>
+			{svg && <ImageSVG svg={svg} width={width} height={height} x={x} y={y} />}
+		</>
+	)
+}
+
+export interface ImageSKiaProps {
+	fit: Fit
+	x: number
+	y: number
+	width: number
+	height: number
+	image_url_import?: string
+}
+
+export const ImageSKia = ({
+	fit = 'contain',
+	x,
+	y,
+	width,
+	height,
+	image_url_import,
+}: ImageSKiaProps) => {
+	const image = useImage(image_url_import)
+	return (
+		<>
+			{/* eslint-disable-next-line jsx-a11y/alt-text */}
+			<Image
+				image={image}
+				fit={fit}
+				x={x}
+				y={y}
+				width={width}
+				height={height}
+			/>
+		</>
+	)
 }
