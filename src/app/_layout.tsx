@@ -9,6 +9,7 @@ import { fontsConfig } from '@/constants/fonts'
 import { StatusBar } from 'react-native'
 import { saveDataToLocalstorage } from '@/utils/saveLocation'
 import { getWhetherIfIsConneted } from '@/utils/meteorology'
+import { WEATHER_TASK_TO_RUN } from '@/utils/background_task'
 
 export {
 	// Catch any errors thrown by the Layout component.
@@ -22,6 +23,9 @@ export const unstable_settings = {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
+
+// background task for weather
+WEATHER_TASK_TO_RUN()
 
 export default function RootLayout() {
 	const [loaded, error] = useFonts({

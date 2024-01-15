@@ -6,11 +6,11 @@ const READ_WEATHER = async () => {
 		database.collections.get<WeatherModel>('wheather_info')
 	const userExist = await weatherCollection.query().fetch()
 
-	userExist.forEach((u) => {
-		console.log('fsfd', u._raw)
-	})
+	// userExist.forEach((u) => {
+	// 	console.log('fsfd', u._raw)
+	// })
 
-	console.log('Tamanho', userExist.length)
+	// console.log('Tamanho', userExist.length)
 
 	return userExist
 }
