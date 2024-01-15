@@ -21,4 +21,15 @@ const DELETE_WEATHER = (id: string) => {
 	})
 }
 
+export const DROP_WEATHER_TABLE = async () => {
+	return await database.write(async () => {
+		const weatherColletion =
+			database.collections.get<WeatherModel>('wheather_info')
+		await weatherColletion.query().destroyAllPermanently()
+		const tableClened = await weatherColletion.query().fetchCount()
+		console.log('Tamanho de dados apos remocao', tableClened)
+		return !tableClened
+	})
+}
+
 export { DELETE_WEATHER }
