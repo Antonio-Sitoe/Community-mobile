@@ -1,30 +1,30 @@
 import { fonts } from '@/constants/fonts'
-import { capitalizeString } from '@/utils'
-import { StyleSheet, View, Text } from 'react-native'
+import { useQuery } from '@tanstack/react-query'
+import { WeatherProps } from '@/@types/interfaces'
+import { READ_WEATHER } from '@/database/actions/weather/read'
 import { ChooseWeatherIcon } from '@/utils/meteorology'
-import { IResultProps, READ_WEATHER } from '@/database/actions/weather/read'
+import { capitalizeString } from '@/utils'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
-import React, { useEffect, useState } from 'react'
+import { StyleSheet, View, Text, ActivityIndicator } from 'react-native'
 
 import Colors from '@/constants/Colors'
 
-export function Meteorology() {
-	const [weather, setWeather] = useState<IResultProps | null>(null)
-	const WeatherIcon: any = weather && ChooseWeatherIcon(weather?.today.icon_id)
-	async function handle() {
-		try {
-			const weather = await READ_WEATHER()
-			if (weather) {
-				setWeather(weather as never)
-			}
-		} catch (error) {
-			console.log('[Falha ao buscar os dados de meteologia]', error)
-		}
-	}
+interface IResultProps {
+	today: WeatherProps
+	nextDays: WeatherProps[]
+}
+async function getWeatherInfo() {
+	const weather = await READ_WEATHER()
+	return weather as IResultProps | any
+}
 
-	useEffect(() => {
-		handle()
-	}, [])
+export function Meteorology() {
+	const { data, isLoading } = useQuery({
+		queryKey: ['weather'],
+		queryFn: getWeatherInfo,
+		refetchInterval: 7_200_000, // 2 horas
+	})
+	const WeatherIcon: any = data && ChooseWeatherIcon(data?.today.icon_id)
 
 	return (
 		<>
@@ -33,28 +33,31 @@ export function Meteorology() {
 					<Text style={styles.textTitle}>Metereologia</Text>
 					<View style={{ paddingVertical: 10, flex: 1 }}>
 						<View style={styles.cardMeteorlogia}>
-							<View style={styles.currentMet}>
-								{weather && <WeatherIcon width={100} height={100} />}
-								<View>
-									<View style={styles.currentMetView}>
-										<Text style={styles.currentMetText}>Max</Text>
-										<Text style={styles.currentMetText}>Min</Text>
+							{isLoading && <ActivityIndicator color="white" />}
+							{data && (
+								<View style={styles.currentMet}>
+									<WeatherIcon width={100} height={100} />
+									<View>
+										<View style={styles.currentMetView}>
+											<Text style={styles.currentMetText}>Max</Text>
+											<Text style={styles.currentMetText}>Min</Text>
+										</View>
+										<Text style={styles.mainTitle}>
+											{data?.today.max}º/{data?.today.min}º
+										</Text>
+										<Text style={styles.descriptionText}>
+											{data?.today.description &&
+												capitalizeString(data?.today.description)}
+										</Text>
 									</View>
-									<Text style={styles.mainTitle}>
-										{weather?.today.max}º/{weather?.today.min}º
-									</Text>
-									<Text style={styles.descriptionText}>
-										{weather?.today.description &&
-											capitalizeString(weather?.today.description)}
-									</Text>
 								</View>
-							</View>
+							)}
 							<ScrollView
 								horizontal
 								showsHorizontalScrollIndicator={false}
 								contentContainerStyle={styles.ScrollviewCards}
 							>
-								{weather?.nextDays.map((item, i) => {
+								{data?.nextDays.map((item, i) => {
 									const IconSVG = ChooseWeatherIcon(item.icon_id)
 									return (
 										<View key={i} style={{ alignItems: 'center' }}>
@@ -84,11 +87,8 @@ export function Meteorology() {
 						Powered By
 					</Text>
 					<View style={styles.mainCardWhiteSmokeContainer}>
-						<TouchableOpacity
-							style={styles.cardWhitesmoke}
-							onPress={handle}
-						></TouchableOpacity>
-						<TouchableOpacity style={styles.cardWhitesmoke}></TouchableOpacity>
+						<TouchableOpacity style={styles.cardWhitesmoke} />
+						<TouchableOpacity style={styles.cardWhitesmoke} />
 					</View>
 				</View>
 			</View>

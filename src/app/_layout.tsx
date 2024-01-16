@@ -10,6 +10,7 @@ import { StatusBar } from 'react-native'
 import { saveDataToLocalstorage } from '@/utils/saveLocation'
 import { getWhetherIfIsConneted } from '@/utils/meteorology'
 import { WEATHER_TASK_TO_RUN } from '@/utils/background_task'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export {
 	// Catch any errors thrown by the Layout component.
@@ -26,6 +27,9 @@ SplashScreen.preventAutoHideAsync()
 
 // background task for weather
 WEATHER_TASK_TO_RUN()
+
+// Create a client
+const queryClient = new QueryClient()
 
 export default function RootLayout() {
 	const [loaded, error] = useFonts({
@@ -76,13 +80,13 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
 	return (
-		<>
+		<QueryClientProvider client={queryClient}>
 			<StatusBar hidden />
 			<Stack
 				screenOptions={{
 					headerShown: false,
 				}}
 			/>
-		</>
+		</QueryClientProvider>
 	)
 }
