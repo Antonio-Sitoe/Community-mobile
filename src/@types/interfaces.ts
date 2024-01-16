@@ -12,7 +12,7 @@ export type ArraySectios = IsectionsHome[]
 
 export interface WeatherProps {
 	date: string | Date
-	createdAt: string | Date
+	createdAt?: string | Date
 	min: number
 	max: number
 	icon_id: number

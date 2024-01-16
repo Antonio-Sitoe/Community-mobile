@@ -42,11 +42,11 @@ const options = {
 	color: '#ff00ff',
 	linkingURI: 'yourSchemeHere://chat/jane', // See Deep Linking for more info
 	parameters: {
-		delay: 60_000, // 1 minutos
+		// delay: 60_000, // 1 minutos
 		// / delay: 1800000, // 30 minutos
 		// delay: 3600000, // 1 horas
 		// delay: 7200000, // 2 horas
-		// delay: 14400000, // 4horas
+		delay: 14400000, // 4horas
 	},
 }
 
