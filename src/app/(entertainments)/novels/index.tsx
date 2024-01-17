@@ -8,7 +8,12 @@ const Novelas = () => {
 		<>
 			<HeaderModular isDefault={false} title="Novelas" />
 			<Text>index</Text>
-			<Link href="/(entertainments)/novels/radionovels/">Radio</Link>
+			<Link
+				href="/(entertainments)/novels/radionovels/"
+				style={{ height: 20, borderWidth: 2 }}
+			>
+				Radio
+			</Link>
 			<Link href="/(entertainments)/novels/telenovels">Telenovelas</Link>
 		</>
 	)
