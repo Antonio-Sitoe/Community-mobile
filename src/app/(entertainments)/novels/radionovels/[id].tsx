@@ -81,7 +81,7 @@ export default function Novels() {
 		if (isPlayerReady) {
 			getCurrentTrackInfo()
 		}
-	}, [isPlayerReady])
+	}, [isPlayerReady, duration])
 
 	useEffect(() => {
 		async function setup() {
