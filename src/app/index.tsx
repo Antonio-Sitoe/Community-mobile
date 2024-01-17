@@ -9,6 +9,8 @@ import React from 'react'
 import { Others } from '@/components/screens/home/Others'
 import { useTranslateHome } from '@/hooks/useTranslateHome'
 import { useTranslation } from 'react-i18next'
+import TrackPlayer from 'react-native-track-player'
+import { playbackService } from '@/services/trackPlayerServices'
 
 export default function Home() {
 	const { t } = useTranslation()
@@ -53,3 +55,4 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 	},
 })
+TrackPlayer.registerPlaybackService(() => playbackService)

@@ -1,56 +1,57 @@
-import { View, Text, ScrollView, Image } from 'react-native'
+import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { HeaderModular } from '@/components/ui/HeaderModular'
 import Next_icon from '@/assets/Icons/next_black.svg'
 import Prev_icon from '@/assets/Icons/prev_black.svg'
 import Play from '@/assets/Icons/play_black.svg'
 import Settings from '@/assets/Icons/settings_black.svg'
-import { Slider } from 'react-native-awesome-slider'
 import { useSharedValue } from 'react-native-reanimated'
 import Colors from '@/constants/Colors'
-import { Audio } from 'expo-av'
+import TrackPlayer, {
+	useTrackPlayerEvents,
+	Event,
+	State,
+	usePlaybackState,
+	useProgress,
+} from 'react-native-track-player'
+import { setupPlayer, addTracks } from '@/services/trackPlayerServices'
+import { Foundation } from '@expo/vector-icons'
+import { SliderModular } from '@/components/ui/Slider'
 
 const icon = require('@/assets/Thumbnails/Retângulo_499.png')
-
 export default function Novels() {
+	const [isPlayerReady, setIsPlayerReady] = useState(false)
+	const { duration, position } = useProgress()
+	const playerState = usePlaybackState()
+
 	const progress = useSharedValue(30)
 	const min = useSharedValue(0)
 	const max = useSharedValue(100)
 
-	const [sound, setSound] = useState()
-
-	async function playSound() {
-		console.log('Loading Sound')
-		const { sound } = await Audio.Sound.createAsync(
-			require('@/assets/Others/Hello.mp3'),
-		)
-		setSound(sound)
-
-		console.log('Playing Sound', sound)
-		await sound.playAsync()
-	}
-
-	async function stopSound() {
-		try {
-			// const result = await sound.current.getStatusAsync()
-			// const { sound } = await Audio.Sound.createAsync(
-			// 	require('@/assets/Others/Hello.mp3'),
-			// )
-
-			sound.pauseAsync()
-		} catch (error) {
-			console.log(error)
+	async function handlePlayPress() {
+		if ((await TrackPlayer.getState()) == State.Playing) {
+			console.log('pause')
+			TrackPlayer.pause()
+		} else {
+			console.log('play')
+			TrackPlayer.play()
 		}
 	}
 
 	useEffect(() => {
-		return sound
-			? () => {
-					console.log('Unloading Sound')
-					sound.unloadAsync()
-				}
-			: undefined
-	}, [sound])
+		async function setup() {
+			const isSetup = await setupPlayer()
+
+			const queue = await TrackPlayer.getQueue()
+			if (isSetup && queue.length <= 0) {
+				await addTracks()
+			}
+
+			setIsPlayerReady(isSetup)
+		}
+
+		setup()
+	}, [])
 
 	return (
 		<>
@@ -73,7 +74,6 @@ export default function Novels() {
 				>
 					<Image source={icon} />
 				</View>
-
 				<View
 					style={{
 						flexDirection: 'row',
@@ -86,36 +86,32 @@ export default function Novels() {
 						paddingHorizontal: 40,
 					}}
 				>
-					<Play onPress={() => console.log('Play Button Was Clicked')} />
-					<Prev_icon onPress={playSound} />
-					<Next_icon onPress={stopSound} />
-
-					<Slider
-						panDirectionValue={progress}
-						progress={progress}
-						minimumValue={min}
-						maximumValue={max}
-						theme={{
-							disableMinTrackTintColor: Colors.light.tabIconDefault,
-							maximumTrackTintColor: Colors.light.tabIconDefault,
-							minimumTrackTintColor: Colors.light.sunsetOrange,
-							cacheTrackTintColor: Colors.light.charcoal,
-							bubbleBackgroundColor: Colors.light.sunsetOrange,
+					{/* <Play onPress={() => console.log('Play Button Was Clicked')} /> */}
+					{!isPlayerReady ? (
+						<Play onPress={() => console.log('Play Button Was Clicked')} />
+					) : (
+						<TouchableOpacity onPress={handlePlayPress}>
+							{playerState.state === State.Playing ? (
+								<Foundation name="pause" size={30} />
+							) : (
+								<Play />
+							)}
+						</TouchableOpacity>
+					)}
+					<TouchableOpacity onPress={() => TrackPlayer.skipToPrevious()}>
+						<Prev_icon />
+					</TouchableOpacity>
+					<TouchableOpacity onPress={() => TrackPlayer.skipToNext()}>
+						<Next_icon />
+					</TouchableOpacity>
+					<SliderModular
+						max={duration}
+						min={0}
+						value={position}
+						setValue={(value) => {
+							console.log('AA', value)
+							TrackPlayer.seekTo(value)
 						}}
-						bubbleTranslateY={-30}
-						containerStyle={{
-							width: '100%',
-							height: 4,
-							borderRadius: 7,
-							overflow: 'hidden',
-						}}
-						markStyle={{
-							width: 40,
-						}}
-						bubble={(s: number) => Math.floor(s).toString()}
-						// onValueChange={(value) => {
-						// 	setPage(value)
-						// }}
 					/>
 					<Settings />
 				</View>
