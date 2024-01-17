@@ -2,10 +2,12 @@ import Colors from '@/constants/Colors'
 import { View } from '../Themed'
 import { Slider } from '@miblanchard/react-native-slider'
 import { StyleSheet } from 'react-native'
+import { SliderOnChangeCallback } from '@miblanchard/react-native-slider/lib/types'
 
 interface SliderProps {
 	value: number
 	setValue(value: number): void
+	onSlidingComplete?: SliderOnChangeCallback | undefined
 	min: number
 	max: number
 	startFromZero?: boolean
@@ -17,6 +19,7 @@ export const SliderModular = ({
 	min,
 	max,
 	startFromZero = false,
+	onSlidingComplete,
 }: SliderProps) => {
 	return (
 		<View style={styles.container} bgColor="transparent">
@@ -28,6 +31,7 @@ export const SliderModular = ({
 				minimumValue={min}
 				maximumValue={max}
 				startFromZero={startFromZero}
+				onSlidingComplete={onSlidingComplete}
 				thumbStyle={{
 					width: 15,
 					height: 15,
