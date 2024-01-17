@@ -1,29 +1,15 @@
 import { fonts } from '@/constants/fonts'
-import { useQuery } from '@tanstack/react-query'
-import { WeatherProps } from '@/@types/interfaces'
-import { READ_WEATHER } from '@/database/actions/weather/read'
 import { ChooseWeatherIcon } from '@/utils/meteorology'
 import { capitalizeString } from '@/utils'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { StyleSheet, View, Text, ActivityIndicator } from 'react-native'
 
 import Colors from '@/constants/Colors'
-
-interface IResultProps {
-	today: WeatherProps
-	nextDays: WeatherProps[]
-}
-async function getWeatherInfo() {
-	const weather = await READ_WEATHER()
-	return weather as IResultProps | any
-}
+import { useWeather } from '@/contexts/LocationContext'
 
 export function Meteorology() {
-	const { data, isLoading } = useQuery({
-		queryKey: ['weather'],
-		queryFn: getWeatherInfo,
-		refetchInterval: 7_200_000, // 2 horas
-	})
+	const { data, isLoading } = useWeather()
+	console.log('weather', data)
 	const WeatherIcon: any = data && ChooseWeatherIcon(data?.today.icon_id)
 
 	return (

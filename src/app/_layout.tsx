@@ -1,5 +1,4 @@
 import '@/lib/location'
-import * as Location from 'expo-location'
 
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { useFonts } from 'expo-font'
@@ -7,10 +6,9 @@ import { SplashScreen, Stack } from 'expo-router'
 import { useEffect } from 'react'
 import { fontsConfig } from '@/constants/fonts'
 import { StatusBar } from 'react-native'
-import { saveDataToLocalstorage } from '@/utils/saveLocation'
-import { getWhetherIfIsConneted } from '@/utils/meteorology'
 import { WEATHER_TASK_TO_RUN } from '@/utils/background_task'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { LocationStorage } from '@/contexts/LocationContext'
 
 export {
 	// Catch any errors thrown by the Layout component.
@@ -37,29 +35,6 @@ export default function RootLayout() {
 		...FontAwesome.font,
 	})
 
-	useEffect(() => {
-		async function getLocation() {
-			const { status } = await Location.requestForegroundPermissionsAsync()
-			if (status !== 'granted') {
-				console.log('Permission to access location was denied')
-				return
-			}
-			const { coords } = await Location.getCurrentPositionAsync({})
-			saveDataToLocalstorage(
-				{
-					latitude: coords.latitude,
-					longitude: coords.longitude,
-				},
-				'@@-Location',
-			)
-			await getWhetherIfIsConneted({
-				latitude: coords.latitude,
-				longitude: coords.longitude,
-			})
-		}
-		getLocation()
-	}, [])
-
 	// Expo Router uses Error Boundaries to catch errors in the navigation tree.
 	useEffect(() => {
 		if (error) throw error
@@ -75,18 +50,22 @@ export default function RootLayout() {
 		return null
 	}
 
-	return <RootLayoutNav />
+	return (
+		<QueryClientProvider client={queryClient}>
+			<RootLayoutNav />
+		</QueryClientProvider>
+	)
 }
 
 function RootLayoutNav() {
 	return (
-		<QueryClientProvider client={queryClient}>
+		<LocationStorage>
 			<StatusBar hidden />
 			<Stack
 				screenOptions={{
 					headerShown: false,
 				}}
 			/>
-		</QueryClientProvider>
+		</LocationStorage>
 	)
 }
