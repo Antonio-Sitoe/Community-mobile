@@ -1,10 +1,16 @@
 import '@/lib/location'
+import * as Location from 'expo-location'
+
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
 import { useEffect } from 'react'
 import { fontsConfig } from '@/constants/fonts'
 import { StatusBar } from 'react-native'
+import { saveDataToLocalstorage } from '@/utils/saveLocation'
+import { getWhetherIfIsConneted } from '@/utils/meteorology'
+import { WEATHER_TASK_TO_RUN } from '@/utils/background_task'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export {
 	// Catch any errors thrown by the Layout component.
@@ -19,11 +25,40 @@ export const unstable_settings = {
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
 
+// background task for weather
+WEATHER_TASK_TO_RUN()
+
+// Create a client
+const queryClient = new QueryClient()
+
 export default function RootLayout() {
 	const [loaded, error] = useFonts({
 		...fontsConfig,
 		...FontAwesome.font,
 	})
+
+	useEffect(() => {
+		async function getLocation() {
+			const { status } = await Location.requestForegroundPermissionsAsync()
+			if (status !== 'granted') {
+				console.log('Permission to access location was denied')
+				return
+			}
+			const { coords } = await Location.getCurrentPositionAsync({})
+			saveDataToLocalstorage(
+				{
+					latitude: coords.latitude,
+					longitude: coords.longitude,
+				},
+				'@@-Location',
+			)
+			await getWhetherIfIsConneted({
+				latitude: coords.latitude,
+				longitude: coords.longitude,
+			})
+		}
+		getLocation()
+	}, [])
 
 	// Expo Router uses Error Boundaries to catch errors in the navigation tree.
 	useEffect(() => {
@@ -45,13 +80,13 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
 	return (
-		<>
+		<QueryClientProvider client={queryClient}>
 			<StatusBar hidden />
 			<Stack
 				screenOptions={{
 					headerShown: false,
 				}}
 			/>
-		</>
+		</QueryClientProvider>
 	)
 }
