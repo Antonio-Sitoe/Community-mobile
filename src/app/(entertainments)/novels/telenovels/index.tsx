@@ -1,118 +1,29 @@
-import { View, ScrollView } from 'react-native'
-import { HeaderModular } from '@/components/ui/HeaderModular'
-import { CardModular } from '@/components/ui/CardModular'
-
-import Colors from '@/constants/Colors'
-import { fonts } from '@/constants/fonts'
-import { ArraySectios } from '@/@types/interfaces'
-import { Route } from 'expo-router'
+import MediaPlayer, { PlaylistItem } from '@/components/MediaPlayer'
 
 export default function NewsPappersEdition() {
-	const sectionsInfo: ArraySectios = [
-		{
-			href: `/(informations)/newspapers/${8}/${1}` as Route<string>,
-			cardTitles: ['Noticias', '24/10/2024'],
-			img: {
-				imgType: 'img',
-				x: -140,
-				y: 100,
-				fit: 'contain',
-				height: 200,
-				width: 400,
-				image_url_import: require('@/assets/Thumbnails/assets_448.png'),
-			},
-		},
-		{
-			href: `/(informations)/newspapers/${8}/${1}` as Route<string>,
-			cardTitles: ['Noticias', '24/10/2024'],
-			img: {
-				imgType: 'img',
-				x: -140,
-				y: 100,
-				fit: 'contain',
-				height: 200,
-				width: 400,
-				image_url_import: require('@/assets/Thumbnails/assets_479.png'),
-			},
-		},
-		{
-			href: `/(informations)/newspapers/${8}/${1}` as Route<string>,
-			cardTitles: ['Noticias', '24/10/2024'],
-			img: {
-				imgType: 'img',
-				x: -140,
-				y: 100,
-				fit: 'contain',
-				height: 200,
-				width: 400,
-				image_url_import: require('@/assets/Thumbnails/assets_481.png'),
-			},
-		},
-
-		{
-			href: `/(informations)/newspapers/${8}/${1}` as Route<string>,
-			cardTitles: ['Noticias', '24/10/2024'],
-			img: {
-				imgType: 'img',
-				x: -140,
-				y: 100,
-				fit: 'contain',
-				height: 200,
-				width: 400,
-				image_url_import: require('@/assets/Thumbnails/assets_483.png'),
-			},
-		},
-		{
-			href: `/(informations)/newspapers/${8}/${1}` as Route<string>,
-			cardTitles: ['Noticias', '24/10/2024'],
-			img: {
-				imgType: 'img',
-				x: -140,
-				y: 100,
-				fit: 'contain',
-				height: 200,
-				width: 400,
-				image_url_import: require('@/assets/Thumbnails/assets_485.png'),
-			},
-		},
+	const PLAYLIST = [
+		new PlaylistItem(
+			'Comfort Fit - “Sorry”',
+			require('@/assets/Audio/Lion.mp3'),
+			false,
+			require('@/assets/Thumbnails/assets_164.png'),
+		),
+		new PlaylistItem(
+			'Big Buck Bunny',
+			require('@/assets/Audio/big_buck_bunny.mp4'),
+			true,
+		),
+		new PlaylistItem(
+			"Popeye - I don't scare",
+			'https://ia800501.us.archive.org/11/items/popeye_i_dont_scare/popeye_i_dont_scare_512kb.mp4',
+			true,
+		),
+		new PlaylistItem(
+			'Podington Bear - “Rubber Robot”',
+			'https://s3.amazonaws.com/exp-us-standard/audio/playlist-example/Podington_Bear_-_Rubber_Robot.mp3',
+			false,
+			require('@/assets/Thumbnails/assets_164.png'),
+		),
 	]
-
-	const width = 220
-	const height = 257
-
-	return (
-		<>
-			<HeaderModular isDefault={false} title="Jornal Notícias" />
-			<ScrollView
-				contentContainerStyle={{
-					paddingHorizontal: 50,
-					paddingVertical: 42,
-				}}
-			>
-				<View
-					style={{
-						flexDirection: 'row',
-						flexWrap: 'wrap',
-						gap: 20,
-					}}
-				>
-					{sectionsInfo.map((item, index) => {
-						return (
-							<View key={index}>
-								<CardModular
-									color={Colors.light.sunsetOrange}
-									font_size={fonts.size.md}
-									height={height}
-									width={width}
-									href={item.href}
-									cardTitles={item.cardTitles}
-									img={item.img}
-								/>
-							</View>
-						)
-					})}
-				</View>
-			</ScrollView>
-		</>
-	)
+	return <MediaPlayer PLAYLIST={PLAYLIST} />
 }

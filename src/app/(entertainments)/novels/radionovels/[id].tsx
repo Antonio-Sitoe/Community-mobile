@@ -1,152 +1,38 @@
-import { View, Image, StyleSheet, ActivityIndicator } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { HeaderModular } from '@/components/ui/HeaderModular'
-import Colors from '@/constants/Colors'
-import TrackPlayer, {
-	State,
-	Track,
-	usePlaybackState,
-	useProgress,
-} from 'react-native-track-player'
-import { setupPlayer, addTracks } from '@/services/trackPlayerServices'
-import { MediaControlers } from '@/components/ui/MediaControlers'
+import MediaPlayer, { PlaylistItem } from '@/components/MediaPlayer'
 
-const PLAY_LIST = [
-	{
-		id: '1',
-		url: require('@/assets/Audio/Hello.mp3'),
-		title: 'Hello',
-		artist: 'VOID',
-		artwork: require('@/assets/Thumbnails/assets_163.png'),
-		duration: 60,
-	},
-	{
-		id: '2',
-		url: require('@/assets/Audio/Lion.mp3'),
-		title: 'Lion',
-		artist: 'Florest',
-		artwork: require('@/assets/Thumbnails/assets_164.png'),
-		duration: 66,
-	},
-	{
-		id: '3',
-		url: require('@/assets/Audio/Birds.mp3'),
-		title: 'Birds',
-		artist: 'Beach',
-		artwork: require('@/assets/Thumbnails/assets_165.png'),
-		duration: 73,
-	},
-	{
-		id: '4',
-		url: require('@/assets/Audio/Dog.mp3'),
-		title: 'Dog',
-		artist: 'Home',
-		artwork: require('@/assets/Thumbnails/assets_448.png'),
-		duration: 73,
-	},
+const PLAYLIST = [
+	new PlaylistItem(
+		'Lion',
+		require('@/assets/Audio/Lion.mp3'),
+		false,
+		require('@/assets/Thumbnails/assets_164.png'),
+	),
+	new PlaylistItem(
+		'Birds',
+		require('@/assets/Audio/Birds.mp3'),
+		false,
+		require('@/assets/Thumbnails/assets_165.png'),
+	),
+	new PlaylistItem(
+		'Podington Bear - “Rubber Robot”',
+		'https://s3.amazonaws.com/exp-us-standard/audio/playlist-example/Podington_Bear_-_Rubber_Robot.mp3',
+		false,
+		require('@/assets/Thumbnails/assets_164.png'),
+	),
+	new PlaylistItem(
+		'Dogs”',
+		require('@/assets/Audio/Dog.mp3'),
+		false,
+		require('@/assets/Thumbnails/assets_448.png'),
+	),
+	new PlaylistItem(
+		'Lion',
+		require('@/assets/Audio/Lion.mp3'),
+		false,
+		require('@/assets/Thumbnails/assets_164.png'),
+	),
 ]
 
 export default function Novels() {
-	const [isPlayerReady, setIsPlayerReady] = useState(false)
-	const [currentTrack, setCurrentTrack] = useState<null | Track>(null)
-
-	const playerState = usePlaybackState()
-	const { duration, position } = useProgress()
-
-	const ontogglePlayer = async () => {
-		if ((await TrackPlayer.getState()) === State.Playing) {
-			console.log('pause')
-			TrackPlayer.pause()
-		} else {
-			console.log('play')
-			TrackPlayer.play()
-		}
-	}
-	const onSkipToPrevious = () => {
-		TrackPlayer.skipToPrevious()
-	}
-	const onSkipToNext = () => {
-		TrackPlayer.skipToNext()
-	}
-	const onSlidingComplete = async (value: number) => {
-		await TrackPlayer.seekTo(value)
-	}
-
-	useEffect(() => {
-		async function getCurrentTrackInfo() {
-			const currentActiveTrack = await TrackPlayer.getActiveTrack()
-			if (!currentActiveTrack) return
-			setCurrentTrack(currentActiveTrack)
-		}
-		if (isPlayerReady) {
-			getCurrentTrackInfo()
-		}
-	}, [isPlayerReady, duration])
-
-	useEffect(() => {
-		async function setup() {
-			const isSetup = await setupPlayer()
-			const queue = await TrackPlayer.getQueue()
-			if (isSetup && queue.length <= 0) {
-				await addTracks(PLAY_LIST)
-			}
-			setIsPlayerReady(isSetup)
-		}
-		setup()
-		return () => {
-			TrackPlayer.pause()
-		}
-	}, [])
-
-	return (
-		<>
-			<HeaderModular isDefault={false} title={currentTrack?.title} />
-			<View style={styles.container}>
-				<View style={styles.imageContainer}>
-					{isPlayerReady ? (
-						<>
-							{currentTrack?.artwork && (
-								<Image
-									source={{
-										uri: currentTrack?.artwork,
-									}}
-									style={styles.image}
-									height={232.92}
-									width={362.61}
-									alt=""
-								/>
-							)}
-						</>
-					) : (
-						<ActivityIndicator color={Colors.light.sunsetOrange} size={60} />
-					)}
-				</View>
-				<MediaControlers
-					isPlaying={playerState.state === State.Playing}
-					duration={duration}
-					position={position}
-					onSkipToNext={onSkipToNext}
-					onSkipToPrevious={onSkipToPrevious}
-					onSlidingComplete={onSlidingComplete}
-					ontogglePlayer={ontogglePlayer}
-				/>
-			</View>
-		</>
-	)
+	return <MediaPlayer PLAYLIST={PLAYLIST} />
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-	imageContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		gap: 20,
-		backgroundColor: '#F8F8F8',
-	},
-	image: {
-		borderRadius: 24,
-	},
-})
