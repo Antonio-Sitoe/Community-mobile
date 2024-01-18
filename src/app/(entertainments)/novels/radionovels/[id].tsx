@@ -14,10 +14,10 @@ import { MediaControlers } from '@/components/ui/MediaControlers'
 const PLAY_LIST = [
 	{
 		id: '1',
-		url: require('@/assets/Audio/Hello.mp3'),
-		title: 'Hello',
+		url: 'https://65381g.ha.azioncdn.net/4/0/8/6/KSOFC-a-promessa-c54de1f1.mp3',
+		title: 'Promsesas',
 		artist: 'VOID',
-		artwork: require('@/assets/Thumbnails/assets_163.png'),
+		artwork: 'https://www.palcomp3.com.br/kemillysantos/foto/2934415/',
 		duration: 60,
 	},
 	{
@@ -97,6 +97,7 @@ export default function Novels() {
 			TrackPlayer.pause()
 		}
 	}, [])
+	console.log('dsdddddddddddd')
 
 	return (
 		<>
