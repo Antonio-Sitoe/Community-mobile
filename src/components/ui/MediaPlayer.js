@@ -15,41 +15,13 @@ import {
 import { MediaController } from '@/components/ui/MediaController.tsx'
 import { HeaderModular } from '@/components/ui/HeaderModular'
 
-class PlaylistItem {
+export class PlaylistItem {
 	constructor(name, uri, isVideo) {
 		this.name = name
 		this.uri = uri
 		this.isVideo = isVideo
 	}
 }
-
-const PLAYLIST = [
-	new PlaylistItem(
-		'Comfort Fit - “Sorry”',
-		require('@/assets/Audio/Lion.mp3'),
-		true,
-	),
-	new PlaylistItem(
-		'Big Buck Bunny',
-		require('@/assets/Audio/big_buck_bunny.mp4'),
-		true,
-	),
-	new PlaylistItem(
-		'VOID-OS VOIDEROS ”',
-		require('@/assets/Audio/Video-UBI-VOID.mp4'),
-		true,
-	),
-	new PlaylistItem(
-		"Popeye - I don't scare",
-		'https://ia800501.us.archive.org/11/items/popeye_i_dont_scare/popeye_i_dont_scare_512kb.mp4',
-		true,
-	),
-	new PlaylistItem(
-		'Podington Bear - “Rubber Robot”',
-		'https://s3.amazonaws.com/exp-us-standard/audio/playlist-example/Podington_Bear_-_Rubber_Robot.mp3',
-		false,
-	),
-]
 
 const LOOPING_TYPE_ALL = 0
 const LOOPING_TYPE_ONE = 1
@@ -65,6 +37,7 @@ export default class MediaPlayer extends React.Component {
 		super(props)
 		this.index = 0
 		this.isSeeking = false
+		this.PLAYLIST = props.PLAYLIST
 		this.shouldPlayAtEndOfSeek = false
 		this.playbackInstance = null
 		this.state = {
@@ -110,7 +83,7 @@ export default class MediaPlayer extends React.Component {
 			this.playbackInstance = null
 		}
 
-		const source = { uri: PLAYLIST[this.index].uri }
+		const source = { uri: this.PLAYLIST[this.index].uri }
 		const initialStatus = {
 			shouldPlay: playing,
 			rate: this.state.rate,
@@ -122,7 +95,7 @@ export default class MediaPlayer extends React.Component {
 			// androidImplementation: 'MediaPlayer',
 		}
 
-		if (PLAYLIST[this.index].isVideo) {
+		if (this.PLAYLIST[this.index].isVideo) {
 			if (typeof source.uri === 'number') {
 				await this._video.loadAsync(source.uri, initialStatus)
 			} else {
@@ -169,8 +142,8 @@ export default class MediaPlayer extends React.Component {
 			})
 		} else {
 			this.setState({
-				playbackInstanceName: PLAYLIST[this.index].name,
-				showVideo: PLAYLIST[this.index].isVideo,
+				playbackInstanceName: this.PLAYLIST[this.index].name,
+				showVideo: this.PLAYLIST[this.index].isVideo,
 				isLoading: false,
 			})
 		}
@@ -237,7 +210,8 @@ export default class MediaPlayer extends React.Component {
 
 	_advanceIndex(forward) {
 		this.index =
-			(this.index + (forward ? 1 : PLAYLIST.length - 1)) % PLAYLIST.length
+			(this.index + (forward ? 1 : this.PLAYLIST.length - 1)) %
+			this.PLAYLIST.length
 	}
 
 	async _updatePlaybackInstanceForIndex(playing) {
