@@ -36,6 +36,7 @@ export const fonts = {
 	},
 	size: {
 		xl: 33, // extra large
+		xlsm: 31,
 		lg: 22,
 		lgSm: 21,
 		md: 19,
