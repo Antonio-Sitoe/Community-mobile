@@ -35,7 +35,7 @@ const RATE_SCALE = 3.0
 export default class MediaPlayer extends React.Component {
 	constructor(props) {
 		super(props)
-		this.index = 0
+		this.index = props.index || 0
 		this.isSeeking = false
 		this.PLAYLIST = props.PLAYLIST
 		this.shouldPlayAtEndOfSeek = false
