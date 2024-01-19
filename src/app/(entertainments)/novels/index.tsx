@@ -5,9 +5,12 @@ import { Link, Route } from 'expo-router'
 import { CardModular } from '@/components/ui/CardModular'
 import { fonts } from '@/constants/fonts'
 import Colors from '@/constants/Colors'
-import Assets_448 from '@/assets/Thumbnails/assets_448.png'
-import Assets_450 from '@/assets/Thumbnails/assets_450.png'
-import Assets_452 from '@/assets/Thumbnails/assets_452.png'
+import Ouro_negro from '@/assets/Thumbnails/assets_461.png'
+import Janete from '@/assets/Thumbnails/assets_469.png'
+
+import Aquele_papo from '@/assets/Thumbnails/assets_464.png'
+import Maida from '@/assets/Thumbnails/assets_467.png'
+
 import { ArraySectios } from '@/@types/interfaces'
 const Novelas = () => {
 	const sectionsInfoRadio: ArraySectios = [
@@ -21,11 +24,11 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_448,
+				image_url_import: Ouro_negro,
 			},
 		},
 		{
-			href: `/(entertainments)/novels/radionovels/${8}` as Route<string>,
+			href: `/(entertainments)/novels/radionovels/` as Route<string>,
 			cardTitles: ['Janete'],
 			img: {
 				imgType: 'img',
@@ -34,11 +37,11 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_450,
+				image_url_import: Janete,
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}` as Route<string>,
+			href: `/(entertainments)/novels/radionovels/` as Route<string>,
 			cardTitles: ['Ouro Negro'],
 			img: {
 				imgType: 'img',
@@ -47,11 +50,11 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_452,
+				image_url_import: Ouro_negro,
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}` as Route<string>,
+			href: `/(entertainments)/novels/radionovels/` as Route<string>,
 			cardTitles: ['Janete'],
 			img: {
 				imgType: 'img',
@@ -60,11 +63,11 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_448,
+				image_url_import: Janete,
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}` as Route<string>,
+			href: `/(entertainments)/novels/radionovels/` as Route<string>,
 			cardTitles: ['Ouro Negro'],
 			img: {
 				imgType: 'img',
@@ -73,11 +76,11 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_450,
+				image_url_import: Ouro_negro,
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}` as Route<string>,
+			href: `/(entertainments)/novels/radionovels/` as Route<string>,
 			cardTitles: ['Janete'],
 			img: {
 				imgType: 'img',
@@ -86,11 +89,11 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_452,
+				image_url_import: Janete,
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}` as Route<string>,
+			href: `/(entertainments)/novels/radionovels/` as Route<string>,
 			cardTitles: ['Ouro Negro'],
 			img: {
 				imgType: 'img',
@@ -99,11 +102,11 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_448,
+				image_url_import: Ouro_negro,
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}` as Route<string>,
+			href: `/(entertainments)/novels/radionovels/` as Route<string>,
 			cardTitles: ['Janete'],
 			img: {
 				imgType: 'img',
@@ -112,11 +115,11 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_450,
+				image_url_import: Janete,
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}` as Route<string>,
+			href: `/(entertainments)/novels/radionovels/` as Route<string>,
 			cardTitles: ['Ouro Negro'],
 			img: {
 				imgType: 'img',
@@ -125,7 +128,7 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_452,
+				image_url_import: Ouro_negro,
 			},
 		},
 	]
@@ -141,11 +144,11 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_448,
+				image_url_import: Aquele_papo,
 			},
 		},
 		{
-			href: `/(entertainments)/novels/telenovels/${3}` as Route<string>,
+			href: `/(entertainments)/novels/telenovels/` as Route<string>,
 			cardTitles: ['Maida'],
 			img: {
 				imgType: 'img',
@@ -154,11 +157,11 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_450,
+				image_url_import: Maida,
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}` as Route<string>,
+			href: `/(entertainments)/novels/telenovels/` as Route<string>,
 			cardTitles: ['Aquele Papo'],
 			img: {
 				imgType: 'img',
@@ -167,11 +170,11 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_452,
+				image_url_import: Aquele_papo,
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}` as Route<string>,
+			href: `/(entertainments)/novels/telenovels/` as Route<string>,
 			cardTitles: ['Maida'],
 			img: {
 				imgType: 'img',
@@ -180,11 +183,11 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_448,
+				image_url_import: Maida,
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}` as Route<string>,
+			href: `/(entertainments)/novels/telenovels/` as Route<string>,
 			cardTitles: ['Aquele Papo'],
 			img: {
 				imgType: 'img',
@@ -193,11 +196,11 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_450,
+				image_url_import: Aquele_papo,
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}` as Route<string>,
+			href: `/(entertainments)/novels/telenovels/` as Route<string>,
 			cardTitles: ['Maida'],
 			img: {
 				imgType: 'img',
@@ -206,11 +209,11 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_452,
+				image_url_import: Maida,
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}` as Route<string>,
+			href: `/(entertainments)/novels/telenovels/` as Route<string>,
 			cardTitles: ['Aquele Papo'],
 			img: {
 				imgType: 'img',
@@ -219,11 +222,11 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_448,
+				image_url_import: Aquele_papo,
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}` as Route<string>,
+			href: `/(entertainments)/novels/telenovels/` as Route<string>,
 			cardTitles: ['Maida'],
 			img: {
 				imgType: 'img',
@@ -232,11 +235,11 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_450,
+				image_url_import: Maida,
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}` as Route<string>,
+			href: `/(entertainments)/novels/telenovels/` as Route<string>,
 			cardTitles: ['Aquele Papo'],
 			img: {
 				imgType: 'img',
@@ -245,7 +248,7 @@ const Novelas = () => {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Assets_452,
+				image_url_import: Aquele_papo,
 			},
 		},
 	]
