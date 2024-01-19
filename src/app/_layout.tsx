@@ -64,6 +64,7 @@ function RootLayoutNav() {
 			<Stack
 				screenOptions={{
 					headerShown: false,
+					animation: 'flip',
 				}}
 			/>
 		</LocationStorage>

@@ -12,13 +12,13 @@ export default function NewsPappersEdition() {
 		),
 		new PlaylistItem(
 			"Popeye - I don't scare",
-			'https://ia800501.us.archive.org/11/items/popeye_i_dont_scare/popeye_i_dont_scare_512kb.mp4',
+			require('@/assets/Audio/pexels-marta.mp4'),
 			true,
 		),
 
 		new PlaylistItem(
 			"Demo - I don't scare",
-			'https://cdn.coverr.co/videos/coverr-stream-next-to-the-road-4482/1080p.mp4',
+			require('@/assets/Audio/1080p.mp4'),
 			true,
 		),
 	]

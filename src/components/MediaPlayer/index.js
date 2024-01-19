@@ -216,6 +216,7 @@ export default class MediaPlayer extends React.Component {
 		this.index =
 			(this.index + (forward ? 1 : this.PLAYLIST.length - 1)) %
 			this.PLAYLIST.length
+		console.log('indice', this.index)
 	}
 
 	async _updatePlaybackInstanceForIndex(playing) {
