@@ -2,10 +2,6 @@ import { WeatherProps } from '@/@types/interfaces'
 import { database } from '@/database/database'
 import { WeatherModel } from '@/database/model/weather'
 import dayjs from 'dayjs'
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
-import customParseFormat from 'dayjs/plugin/customParseFormat'
-dayjs.extend(isSameOrAfter)
-dayjs.extend(customParseFormat)
 
 export interface IResultProps {
 	today: WeatherProps
@@ -21,9 +17,13 @@ const READ_WEATHER = async () => {
 
 	const weather_current = weather
 		.filter((weather) => {
-			const dateFormated = dayjs(weather.date, 'DD/MM/YYYY').add(1, 'day')
-			const today = dayjs()
-			return dateFormated.isSameOrAfter(today)
+			const hoje = new Date()
+			const parts = weather.date.split('/')
+			const day = parseInt(parts[1], 10) + 1
+			const month = parseInt(parts[0], 10) - 1
+			const year = parseInt(parts[2], 10)
+			const dateObject = new Date(year, month, day)
+			return dateObject >= hoje
 		})
 		.reduce(
 			(accumulate, current) => {
