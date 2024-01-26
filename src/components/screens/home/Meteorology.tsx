@@ -8,8 +8,7 @@ import Colors from '@/constants/Colors'
 import { useWeather } from '@/contexts/LocationContext'
 
 export function Meteorology() {
-	const { data, isLoading } = useWeather()
-	console.log('weather', data)
+	const { data, isLoading, refetchWeather } = useWeather()
 	const WeatherIcon: any = data && ChooseWeatherIcon(data?.today.icon_id)
 
 	return (
@@ -73,7 +72,10 @@ export function Meteorology() {
 						Powered By
 					</Text>
 					<View style={styles.mainCardWhiteSmokeContainer}>
-						<TouchableOpacity style={styles.cardWhitesmoke} />
+						<TouchableOpacity
+							style={styles.cardWhitesmoke}
+							onPress={refetchWeather}
+						/>
 						<TouchableOpacity style={styles.cardWhitesmoke} />
 					</View>
 				</View>
