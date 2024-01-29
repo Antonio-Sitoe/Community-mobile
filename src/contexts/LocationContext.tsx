@@ -22,7 +22,8 @@ export function LocationStorage({ children }: { children: React.ReactNode }) {
 	const { data, isLoading, refetch } = useQuery({
 		queryKey: ['weather'],
 		queryFn: getWeatherInfo,
-		refetchInterval: 7_200_000, // 2 horas
+		refetchInterval: 7_200_000, // 2 horas,
+		networkMode: 'always',
 	})
 
 	useEffect(() => {
