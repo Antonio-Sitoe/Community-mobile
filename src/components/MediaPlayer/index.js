@@ -398,6 +398,7 @@ export default class MediaPlayer extends React.Component {
 			<>
 				<HeaderModular
 					isDefault={false}
+					hasVolume={true}
 					title={this.state.playbackInstanceName}
 				/>
 				<View style={styles.container}>

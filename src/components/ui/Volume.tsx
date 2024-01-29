@@ -13,13 +13,33 @@ import VolumeLigth from '@/assets/Icons/volume.svg'
 import VolumeDark from '@/assets/Icons/volumeDark.svg'
 
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { useSharedValue } from 'react-native-reanimated'
+import { useSharedValue, withSpring } from 'react-native-reanimated'
 import { View } from '../Themed'
 
+import { VolumeManager } from 'react-native-volume-manager'
+import { useEffect } from 'react'
+
 const Volume = ({ isDefault = true }) => {
-	const progress = useSharedValue(0)
+	const progress = useSharedValue(1)
 	const min = useSharedValue(0)
-	const max = useSharedValue(100)
+	const max = useSharedValue(1)
+
+	useEffect(() => {
+		async function getVoume() {
+			const { volume } = await VolumeManager.getVolume()
+			progress.value = withSpring(volume)
+		}
+		getVoume()
+	}, [progress])
+
+	useEffect(() => {
+		// Listen to volume changes
+		const volumeListener = VolumeManager.addVolumeListener((result) => {
+			progress.value = withSpring(result.volume)
+		})
+		return () => volumeListener.remove()
+	}, [progress])
+
 	return (
 		<View style={styles.range} bgColor="transparent">
 			{isDefault ? <VolumeDark /> : <VolumeLigth />}
@@ -48,6 +68,9 @@ const Volume = ({ isDefault = true }) => {
 						overflow: 'hidden',
 					}}
 					bubble={(s: number) => Math.floor(s).toString()}
+					onValueChange={async (valor) => {
+						await VolumeManager.setVolume(valor)
+					}}
 				/>
 			</View>
 			<TouchableOpacity>{isDefault ? <PlusDark /> : <Plus />}</TouchableOpacity>

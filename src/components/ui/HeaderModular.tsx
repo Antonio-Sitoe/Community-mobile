@@ -11,9 +11,14 @@ import { GoBackTitle } from './GoBackTitle'
 
 type HeaderModularProps = {
 	isDefault?: boolean
+	hasVolume?: boolean
 	title?: string
 }
-const HeaderModular = ({ isDefault = true, title }: HeaderModularProps) => {
+const HeaderModular = ({
+	isDefault = true,
+	title,
+	hasVolume = false,
+}: HeaderModularProps) => {
 	const [lang, setLang] = useState<'en' | 'pt'>('pt')
 	const { i18n } = useTranslation()
 
@@ -32,7 +37,8 @@ const HeaderModular = ({ isDefault = true, title }: HeaderModularProps) => {
 			{isDefault ? <Logotipo /> : <GoBackTitle title={title} />}
 
 			<View style={styles.actions} bgColor="transparent">
-				<Volume isDefault={isDefault} />
+				{hasVolume && <Volume isDefault={isDefault} />}
+
 				<TouchableOpacity
 					onPress={handleChangeLanguage}
 					style={[
