@@ -1,37 +1,35 @@
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import React from 'react'
-import { Route } from 'expo-router'
+import { Route, useLocalSearchParams } from 'expo-router'
 import { HeaderModular } from '@/components/ui/HeaderModular'
 import {
 	MediaCardModular,
 	MediaCardModularProps,
 } from '@/components/ui/MediaCardModular'
 
+import videos from '@/utils/faker/genarate_videos.json'
+
 const VideoList = () => {
-	const teleNovelasList: MediaCardModularProps[] = [
-		{
-			duration: '12 minutos',
-			href: '/(entertainments)/videos/3/0' as Route<string>,
-			imageUri: require('@/assets/Thumbnails/assets_163.png'),
-			title: 'Nutrição 101: Fundamentos de uma Dieta Saudável',
-		},
-		{
-			duration: '23 minutos',
-			href: '/(entertainments)/videos/3/1' as Route<string>,
-			imageUri: require('@/assets/Thumbnails/assets_164.png'),
-			title: '10 Alimentos Saudáveis que Deveria Comer',
-		},
-		{
-			duration: '26 minutos',
-			href: '/(entertainments)/videos/3/2' as Route<string>,
-			imageUri: require('@/assets/Thumbnails/assets_165.png'),
-			title: 'Desvendando Mitos da Nutrição: Separando Fato de Ficção',
-		},
+	const { slug } = useLocalSearchParams()
+	const videos_import = [
+		require('@/assets/Audio/big_buck_bunny.mp4'),
+		require('@/assets/Audio/pexels-marta.mp4'),
+		require('@/assets/Audio/1080p.mp4'),
 	]
+
+	const teleNovelasList: MediaCardModularProps[] = videos.data
+		.filter((item) => item.category_name === slug)
+		.map((item) => {
+			return {
+				...item,
+				href: `/(entertainments)/videos/${slug}/0` as Route<string>,
+				imageUri: videos_import[Math.floor(Math.random() * 3)],
+			}
+		})
 
 	return (
 		<>
-			<HeaderModular isDefault={false} title="Nutrição" />
+			<HeaderModular isDefault={false} title={`${slug}`} />
 			<View style={{ flex: 1 }}>
 				<ScrollView
 					contentContainerStyle={{
@@ -60,5 +58,3 @@ const VideoList = () => {
 }
 
 export default VideoList
-
-const styles = StyleSheet.create({})

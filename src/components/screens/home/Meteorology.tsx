@@ -6,11 +6,16 @@ import { StyleSheet, View, Text, ActivityIndicator } from 'react-native'
 
 import Colors from '@/constants/Colors'
 import { useWeather } from '@/contexts/LocationContext'
+import { generatePDFdata } from '@/database/actions/pdfs/create'
 
 export function Meteorology() {
 	const { data, isLoading } = useWeather()
 	console.log('weather', data)
 	const WeatherIcon: any = data && ChooseWeatherIcon(data?.today.icon_id)
+
+	async function genData() {
+		await generatePDFdata()
+	}
 
 	return (
 		<>
@@ -74,7 +79,7 @@ export function Meteorology() {
 					</Text>
 					<View style={styles.mainCardWhiteSmokeContainer}>
 						<TouchableOpacity style={styles.cardWhitesmoke} />
-						<TouchableOpacity style={styles.cardWhitesmoke} />
+						<TouchableOpacity style={styles.cardWhitesmoke} onPress={genData} />
 					</View>
 				</View>
 			</View>

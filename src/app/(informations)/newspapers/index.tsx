@@ -1,18 +1,19 @@
-import { View, Text, ScrollView } from 'react-native'
-import { HeaderModular } from '@/components/ui/HeaderModular'
+import { fonts } from '@/constants/fonts'
+import { Route } from 'expo-router'
 import { CardModular } from '@/components/ui/CardModular'
+import { ArraySectios } from '@/@types/interfaces'
+import { HeaderModular } from '@/components/ui/HeaderModular'
+import { View, ScrollView } from 'react-native'
+
+import Colors from '@/constants/Colors'
 import Assets_448 from '@/assets/Thumbnails/assets_448.png'
 import Assets_450 from '@/assets/Thumbnails/assets_450.png'
 import Assets_452 from '@/assets/Thumbnails/assets_452.png'
-import Colors from '@/constants/Colors'
-import { fonts } from '@/constants/fonts'
-import { ArraySectios } from '@/@types/interfaces'
-import { Route } from 'expo-router'
 
 export default function NewsPappers() {
 	const sectionsInfo: ArraySectios = [
 		{
-			href: `/(informations)/newspapers/${8}` as Route<string>,
+			href: `/(informations)/newspapers/Noticias` as Route<string>,
 			cardTitles: ['Noticias'],
 			img: {
 				imgType: 'img',
@@ -25,7 +26,7 @@ export default function NewsPappers() {
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}` as Route<string>,
+			href: `/(informations)/newspapers/Savana` as Route<string>,
 			cardTitles: ['Savana'],
 			img: {
 				imgType: 'img',
@@ -38,7 +39,7 @@ export default function NewsPappers() {
 			},
 		},
 		{
-			href: `/(informations)/newspapers/${8}` as Route<string>,
+			href: `/(informations)/newspapers/O Pais` as Route<string>,
 			cardTitles: ['O Pais'],
 			img: {
 				imgType: 'img',

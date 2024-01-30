@@ -1,5 +1,5 @@
-import { View, Text, ScrollView } from 'react-native'
-import React from 'react'
+import { View, ScrollView } from 'react-native'
+import React, { useState } from 'react'
 import { HeaderModular } from '@/components/ui/HeaderModular'
 import { svg1224, svg1225, svg1226, svg1227 } from '@/assets/Icons/out'
 import { ArraySectios } from '@/@types/interfaces'
@@ -7,12 +7,20 @@ import { Route } from 'expo-router'
 import { CardModular } from '@/components/ui/CardModular'
 import { fonts } from '@/constants/fonts'
 import Colors from '@/constants/Colors'
+import videos from '@/utils/faker/category.json'
+
+const width = 220
+const height = 128.5
 
 export default function Videos() {
-	const sectionsInfoRadio: ArraySectios = [
-		{
-			href: `/(entertainments)/videos/3` as Route<string>,
-			cardTitles: ['Nutrição'],
+	const [categories, setCategories] = useState(
+		videos.data.filter((item) => item.type === 'videos'),
+	)
+	const icons = [svg1224, svg1225, svg1226, svg1227]
+	const sectionsInfoRadio: ArraySectios = categories.map((category) => {
+		return {
+			href: `/(entertainments)/videos/${category.name}` as Route<string>,
+			cardTitles: [category.name],
 			img: {
 				imgType: 'svg',
 				x: -10,
@@ -20,52 +28,10 @@ export default function Videos() {
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: svg1224,
+				image_url_import: icons[category.id - 1],
 			},
-		},
-		{
-			href: `/(entertainments)/videos/3` as Route<string>,
-			cardTitles: ['Saúde'],
-			img: {
-				imgType: 'svg',
-				x: -10,
-				y: 70,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: svg1225,
-			},
-		},
-		{
-			href: `/(entertainments)/videos/3` as Route<string>,
-			cardTitles: ['Agricultura'],
-			img: {
-				imgType: 'svg',
-				x: -6,
-				y: 65,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: svg1226,
-			},
-		},
-		{
-			href: `/(entertainments)/videos/3` as Route<string>,
-			cardTitles: ['Higiene'],
-			img: {
-				imgType: 'svg',
-				x: -10,
-				y: 70,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: svg1227,
-			},
-		},
-	]
-
-	const width = 220
-	const height = 128.5
+		}
+	})
 
 	return (
 		<>
