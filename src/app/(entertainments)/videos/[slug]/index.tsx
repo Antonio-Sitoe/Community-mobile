@@ -1,29 +1,27 @@
 import { ScrollView, View } from 'react-native'
-import React from 'react'
-import { Route, useLocalSearchParams } from 'expo-router'
+import { useLocalSearchParams } from 'expo-router'
 import { HeaderModular } from '@/components/ui/HeaderModular'
 import {
 	MediaCardModular,
 	MediaCardModularProps,
 } from '@/components/ui/MediaCardModular'
 
-import videos from '@/utils/faker/genarate_videos.json'
+import { videos } from '@/utils/faker/genarate_videos'
 
 const VideoList = () => {
 	const { slug } = useLocalSearchParams()
-	const videos_import = [
-		require('@/assets/Audio/big_buck_bunny.mp4'),
-		require('@/assets/Audio/pexels-marta.mp4'),
-		require('@/assets/Audio/1080p.mp4'),
-	]
-
 	const teleNovelasList: MediaCardModularProps[] = videos.data
 		.filter((item) => item.category_name === slug)
-		.map((item) => {
+		.map((item, i, obj) => {
 			return {
 				...item,
-				href: `/(entertainments)/videos/${slug}/0` as Route<string>,
-				imageUri: videos_import[Math.floor(Math.random() * 3)],
+				href: {
+					pathname: `/(entertainments)/videos/${slug}/${i}`,
+					params: {
+						playList: JSON.stringify(obj),
+					},
+				},
+				imageUri: item.imageUri,
 			}
 		})
 

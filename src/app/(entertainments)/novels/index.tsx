@@ -1,257 +1,69 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { HeaderModular } from '@/components/ui/HeaderModular'
-import { Link, Route } from 'expo-router'
-import { CardModular } from '@/components/ui/CardModular'
-import { fonts } from '@/constants/fonts'
 import Colors from '@/constants/Colors'
-import Ouro_negro from '@/assets/Thumbnails/assets_461.png'
-import Janete from '@/assets/Thumbnails/assets_469.png'
 
-import Aquele_papo from '@/assets/Thumbnails/assets_464.png'
-import Maida from '@/assets/Thumbnails/assets_467.png'
-
+import { fonts } from '@/constants/fonts'
+import { Route } from 'expo-router'
+import { CardModular } from '@/components/ui/CardModular'
 import { ArraySectios } from '@/@types/interfaces'
-const Novelas = () => {
-	const sectionsInfoRadio: ArraySectios = [
-		{
-			href: `/(entertainments)/novels/radionovels/` as Route<string>,
-			cardTitles: ['Ouro Negro'],
-			img: {
-				imgType: 'img',
-				x: -160,
-				y: 50,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: Ouro_negro,
-			},
-		},
-		{
-			href: `/(entertainments)/novels/radionovels/` as Route<string>,
-			cardTitles: ['Janete'],
-			img: {
-				imgType: 'img',
-				x: -160,
-				y: 50,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: Janete,
-			},
-		},
-		{
-			href: `/(entertainments)/novels/radionovels/` as Route<string>,
-			cardTitles: ['Ouro Negro'],
-			img: {
-				imgType: 'img',
-				x: -160,
-				y: 50,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: Ouro_negro,
-			},
-		},
-		{
-			href: `/(entertainments)/novels/radionovels/` as Route<string>,
-			cardTitles: ['Janete'],
-			img: {
-				imgType: 'img',
-				x: -160,
-				y: 50,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: Janete,
-			},
-		},
-		{
-			href: `/(entertainments)/novels/radionovels/` as Route<string>,
-			cardTitles: ['Ouro Negro'],
-			img: {
-				imgType: 'img',
-				x: -160,
-				y: 50,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: Ouro_negro,
-			},
-		},
-		{
-			href: `/(entertainments)/novels/radionovels/` as Route<string>,
-			cardTitles: ['Janete'],
-			img: {
-				imgType: 'img',
-				x: -160,
-				y: 50,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: Janete,
-			},
-		},
-		{
-			href: `/(entertainments)/novels/radionovels/` as Route<string>,
-			cardTitles: ['Ouro Negro'],
-			img: {
-				imgType: 'img',
-				x: -160,
-				y: 50,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: Ouro_negro,
-			},
-		},
-		{
-			href: `/(entertainments)/novels/radionovels/` as Route<string>,
-			cardTitles: ['Janete'],
-			img: {
-				imgType: 'img',
-				x: -160,
-				y: 50,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: Janete,
-			},
-		},
-		{
-			href: `/(entertainments)/novels/radionovels/` as Route<string>,
-			cardTitles: ['Ouro Negro'],
-			img: {
-				imgType: 'img',
-				x: -160,
-				y: 50,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: Ouro_negro,
-			},
-		},
-	]
+import { HeaderModular } from '@/components/ui/HeaderModular'
+import { series_generate } from '@/utils/faker/generate_series'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { split_and_concat_string } from '@/utils'
 
-	const sectionsInfoVideo: ArraySectios = [
-		{
-			href: `/(entertainments)/novels/telenovels/` as Route<string>,
-			cardTitles: ['Aquele Papo'],
+export const filter = (data: any[], params: string) =>
+	data.filter((item) => item.category_type === params)
+
+const Novelas = () => {
+	const sectionsInfoRadio: ArraySectios = filter(
+		series_generate.data,
+		'Radionovelas',
+	).map((item) => {
+		return {
+			href: {
+				pathname: `/(entertainments)/novels/radionovels/`,
+				params: {
+					id: item.id,
+					name: item.name,
+				},
+			},
+
+			cardTitles: split_and_concat_string(item.name),
 			img: {
 				imgType: 'img',
-				x: -160,
-				y: 50,
+				x: -170,
+				y: 70,
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Aquele_papo,
+				image_url_import: item.icon,
 			},
-		},
-		{
-			href: `/(entertainments)/novels/telenovels/` as Route<string>,
-			cardTitles: ['Maida'],
+		}
+	})
+
+	const sectionsInfoVideo: ArraySectios = filter(
+		series_generate.data,
+		'Telenovelas',
+	).map((item) => {
+		return {
+			href: {
+				pathname: `/(entertainments)/novels/telenovels` as Route<string>,
+				params: {
+					id: item.id,
+					name: item.name,
+				},
+			},
+			cardTitles: split_and_concat_string(item.name),
 			img: {
 				imgType: 'img',
-				x: -160,
-				y: 50,
+				x: -170,
+				y: 60,
 				fit: 'contain',
 				height: 130,
 				width: 400,
-				image_url_import: Maida,
+				image_url_import: item.icon,
 			},
-		},
-		{
-			href: `/(entertainments)/novels/telenovels/` as Route<string>,
-			cardTitles: ['Aquele Papo'],
-			img: {
-				imgType: 'img',
-				x: -160,
-				y: 50,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: Aquele_papo,
-			},
-		},
-		{
-			href: `/(entertainments)/novels/telenovels/` as Route<string>,
-			cardTitles: ['Maida'],
-			img: {
-				imgType: 'img',
-				x: -160,
-				y: 50,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: Maida,
-			},
-		},
-		{
-			href: `/(entertainments)/novels/telenovels/` as Route<string>,
-			cardTitles: ['Aquele Papo'],
-			img: {
-				imgType: 'img',
-				x: -160,
-				y: 50,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: Aquele_papo,
-			},
-		},
-		{
-			href: `/(entertainments)/novels/telenovels/` as Route<string>,
-			cardTitles: ['Maida'],
-			img: {
-				imgType: 'img',
-				x: -160,
-				y: 50,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: Maida,
-			},
-		},
-		{
-			href: `/(entertainments)/novels/telenovels/` as Route<string>,
-			cardTitles: ['Aquele Papo'],
-			img: {
-				imgType: 'img',
-				x: -160,
-				y: 50,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: Aquele_papo,
-			},
-		},
-		{
-			href: `/(entertainments)/novels/telenovels/` as Route<string>,
-			cardTitles: ['Maida'],
-			img: {
-				imgType: 'img',
-				x: -160,
-				y: 50,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: Maida,
-			},
-		},
-		{
-			href: `/(entertainments)/novels/telenovels/` as Route<string>,
-			cardTitles: ['Aquele Papo'],
-			img: {
-				imgType: 'img',
-				x: -160,
-				y: 50,
-				fit: 'contain',
-				height: 130,
-				width: 400,
-				image_url_import: Aquele_papo,
-			},
-		},
-	]
+		}
+	})
 
 	const width = 220
 	const height = 128.5
@@ -259,7 +71,6 @@ const Novelas = () => {
 	return (
 		<>
 			<HeaderModular isDefault={false} title="Novelas" />
-			{/* Audio Novels */}
 			<View
 				style={{
 					paddingHorizontal: 45,
@@ -351,7 +162,5 @@ const styles = StyleSheet.create({
 		fontFamily: fonts.fontFamyle.Gilroy_extraBold,
 		fontSize: fonts.size.xlsm,
 		color: Colors.light.sunsetOrange,
-		// marginBottom: 8,
-		// paddingLeft: 10,
 	},
 })

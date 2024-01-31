@@ -6,38 +6,30 @@ import {
 	MediaCardModular,
 	MediaCardModularProps,
 } from '@/components/ui/MediaCardModular'
-import { Route } from 'expo-router'
+import { Route, useLocalSearchParams } from 'expo-router'
+import { videos } from '@/utils/faker/genarate_videos'
 
 const RadioNovelasList = () => {
-	const radioNovelasList: MediaCardModularProps[] = [
-		{
-			duration: '12 minutos',
-			href: '/(entertainments)/novels/radionovels/6' as Route<string>,
-			imageUri: require('@/assets/Thumbnails/Retângulo_499.png'),
-			title: 'Ouro Negro: Episodio 1',
-		},
-		{
-			duration: '12 minutos',
-			href: '/(entertainments)/novels/radionovels/6' as Route<string>,
-			imageUri: require('@/assets/Thumbnails/Retângulo_499.png'),
-			title: 'Ouro Negro: Episodio 2',
-		},
-		{
-			duration: '12 minutos',
-			href: '/(entertainments)/novels/radionovels/6' as Route<string>,
-			imageUri: require('@/assets/Thumbnails/Retângulo_499.png'),
-			title: 'Ouro Negro: Episodio 3',
-		},
-		{
-			duration: '12 minutos',
-			href: '/(entertainments)/novels/radionovels/6' as Route<string>,
-			imageUri: require('@/assets/Thumbnails/Retângulo_499.png'),
-			title: 'Ouro Negro: Episodio 4',
-		},
-	]
+	const { id, name } = useLocalSearchParams()
+	const radioNovelasList: MediaCardModularProps[] = videos.data
+		.filter((item) => item?.category_id === Number(id))
+		.map((item, index, playList) => {
+			return {
+				duration: item.duration,
+				href: {
+					pathname:
+						`/(entertainments)/novels/radionovels/${index}` as Route<string>,
+					params: {
+						playList: JSON.stringify(playList),
+					},
+				},
+				imageUri: item.imageUri,
+				title: item.title,
+			}
+		})
 	return (
 		<>
-			<HeaderModular isDefault={false} title="Ouro Negro" />
+			<HeaderModular isDefault={false} title={`${name}`} />
 			<View style={{ flex: 1 }}>
 				<ScrollView
 					contentContainerStyle={{
@@ -66,5 +58,3 @@ const RadioNovelasList = () => {
 }
 
 export default RadioNovelasList
-
-const styles = StyleSheet.create({})
