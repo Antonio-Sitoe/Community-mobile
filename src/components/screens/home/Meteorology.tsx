@@ -9,8 +9,7 @@ import { useWeather } from '@/contexts/LocationContext'
 import { generatePDFdata } from '@/database/actions/pdfs/create'
 
 export function Meteorology() {
-	const { data, isLoading } = useWeather()
-	console.log('weather', data)
+	const { data, isLoading, refetchWeather } = useWeather()
 	const WeatherIcon: any = data && ChooseWeatherIcon(data?.today.icon_id)
 
 	async function genData() {
@@ -80,6 +79,11 @@ export function Meteorology() {
 					<View style={styles.mainCardWhiteSmokeContainer}>
 						<TouchableOpacity style={styles.cardWhitesmoke} />
 						<TouchableOpacity style={styles.cardWhitesmoke} onPress={genData} />
+						<TouchableOpacity
+							style={styles.cardWhitesmoke}
+							onPress={refetchWeather}
+						/>
+						<TouchableOpacity style={styles.cardWhitesmoke} />
 					</View>
 				</View>
 			</View>

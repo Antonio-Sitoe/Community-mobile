@@ -1,6 +1,7 @@
 import { WeatherProps } from '@/@types/interfaces'
 import { database } from '@/database/database'
 import { WeatherModel } from '@/database/model/weather'
+import dayjs from 'dayjs'
 
 const SAVE_WEATHER_DATA = (body: any) => {
 	return database.write(async () => {
@@ -9,7 +10,7 @@ const SAVE_WEATHER_DATA = (body: any) => {
 		const data: WeatherProps[] = body.daily.map((item) => {
 			const timestamp = item.dt
 			const date = new Date(timestamp * 1000)
-			const formattedDate = date.toLocaleDateString() // Retorna a data no formato "MM/DD/AAAA"
+			const formattedDate = dayjs(date).format('DD-MM-YYYY')
 
 			return {
 				date: formattedDate,
@@ -36,7 +37,6 @@ const SAVE_WEATHER_DATA = (body: any) => {
 			)
 			dataSaved.push(NewWeather)
 		}
-
 		return dataSaved
 	})
 }

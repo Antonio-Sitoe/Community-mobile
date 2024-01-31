@@ -9,6 +9,7 @@ import { getWhetherIfIsConneted } from '@/utils/meteorology'
 interface Idata {
 	data: IResultProps
 	isLoading: boolean
+	refetchWeather(): void
 }
 export const LocationContext = createContext({} as Idata)
 
@@ -21,7 +22,8 @@ export function LocationStorage({ children }: { children: React.ReactNode }) {
 	const { data, isLoading, refetch } = useQuery({
 		queryKey: ['weather'],
 		queryFn: getWeatherInfo,
-		refetchInterval: 7_200_000, // 2 horas
+		refetchInterval: 7_200_000, // 2 horas,
+		networkMode: 'always',
 	})
 
 	useEffect(() => {
@@ -48,7 +50,7 @@ export function LocationStorage({ children }: { children: React.ReactNode }) {
 		getLocation()
 	}, [])
 
-	const value = { data, isLoading }
+	const value = { data, isLoading, refetchWeather: refetch }
 
 	return (
 		<LocationContext.Provider value={value}>
@@ -58,6 +60,6 @@ export function LocationStorage({ children }: { children: React.ReactNode }) {
 }
 
 export const useWeather = () => {
-	const { data, isLoading } = useContext<Idata>(LocationContext)
-	return { data, isLoading }
+	const data = useContext<Idata>(LocationContext)
+	return data
 }
