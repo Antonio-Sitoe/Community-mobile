@@ -15,7 +15,7 @@ export default function Newspapers() {
 	return (
 		<>
 			{isFullScrean === false && (
-				<HeaderModular isDefault={false} title={title} />
+				<HeaderModular isDefault={false} title={title as string} />
 			)}
 
 			<PdfViewer

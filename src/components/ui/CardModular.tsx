@@ -16,7 +16,7 @@ export interface ImgProps extends ImageSKiaProps {
 	y: number
 }
 interface CardModularProps {
-	href: Route<string>
+	href: Route<any>
 	font_size: number
 	width: number
 	height: number

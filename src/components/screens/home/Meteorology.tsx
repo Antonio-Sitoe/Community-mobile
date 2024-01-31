@@ -6,16 +6,19 @@ import { StyleSheet, View, Text, ActivityIndicator } from 'react-native'
 
 import Colors from '@/constants/Colors'
 import { useWeather } from '@/contexts/LocationContext'
-import { generatePDFdata } from '@/database/actions/pdfs/create'
+import { gen_categories } from '@/utils/faker/gen_categories'
+import { useState } from 'react'
 
 export function Meteorology() {
+	const [load, setLoad] = useState(false)
 	const { data, isLoading, refetchWeather } = useWeather()
 	const WeatherIcon: any = data && ChooseWeatherIcon(data?.today.icon_id)
-
 	async function genData() {
-		await generatePDFdata()
+		setLoad(true)
+		gen_categories()
+		refetchWeather()
+		setLoad(false)
 	}
-
 	return (
 		<>
 			<View style={styles.container}>
@@ -77,12 +80,11 @@ export function Meteorology() {
 						Powered By
 					</Text>
 					<View style={styles.mainCardWhiteSmokeContainer}>
-						<TouchableOpacity style={styles.cardWhitesmoke} />
-						<TouchableOpacity style={styles.cardWhitesmoke} onPress={genData} />
-						<TouchableOpacity
-							style={styles.cardWhitesmoke}
-							onPress={refetchWeather}
-						/>
+						<TouchableOpacity style={styles.cardWhitesmoke} onPress={genData}>
+							{load && (
+								<ActivityIndicator color={Colors.light.sunflowerYellow} />
+							)}
+						</TouchableOpacity>
 						<TouchableOpacity style={styles.cardWhitesmoke} />
 					</View>
 				</View>
@@ -172,5 +174,7 @@ const styles = StyleSheet.create({
 		height: 70,
 		backgroundColor: Colors.light.smokeWhite,
 		borderRadius: 12,
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 })
