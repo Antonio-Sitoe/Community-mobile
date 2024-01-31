@@ -23,6 +23,18 @@
 			"name": "Higiene",
 			"icon": "",
 			"type": "videos"
+		},
+		{
+			"id": 5,
+			"name": "Telenovelas",
+			"icon": "",
+			"type": "Novelas"
+		},
+		{
+			"id": 6,
+			"name": "Radionovelas",
+			"icon": "",
+			"type": "Novelas"
 		}
 	]
 }
