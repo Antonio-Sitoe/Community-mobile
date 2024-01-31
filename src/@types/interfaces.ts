@@ -2,7 +2,7 @@ import { ImgProps } from '@/components/ui/CardModular'
 import { Route } from 'expo-router'
 
 export interface IsectionsHome {
-	href: Route<string>
+	href: Route<any>
 	cardTitles: string[]
 	img: ImgProps
 	color?: string
@@ -17,4 +17,10 @@ export interface WeatherProps {
 	max: number
 	icon_id: number
 	description: string
+}
+
+export interface CategoriesPdfProps {
+	name: string
+	icon: string
+	type: string
 }
