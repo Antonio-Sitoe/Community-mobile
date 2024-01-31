@@ -1,43 +1,39 @@
+import { CategoriesPdfProps } from '@/@types/interfaces'
 import { database } from '@/database/database'
-import { PdfModel } from '@/database/model/pdfs'
-
-import RNFetchBlob from 'rn-fetch-blob'
-
-const generatePDFdata = async () => {
-	const pdfs = [
-		'https://www.portaldogoverno.gov.mz/por/content/download/8036/60580/version/1/file/208+J.Mo%C3%A7ambique.pdf',
-		'https://www.portaldogoverno.gov.mz/por/content/download/7985/60133/version/1/file/207+J.Mo%C3%A7ambique.pdf',
-		'https://www.portaldogoverno.gov.mz/por/content/download/7807/58553/version/1/file/200+JM.pdf',
-	]
-	const m = pdfs.map((i) => {
-		return create_helper(i)
-	})
-	return await Promise.all(m)
-}
-
-const create_helper = async (url) => {
-	try {
-		const data = await RNFetchBlob.fetch('GET', url)
-		const base = data.base64()
-		const dataNew = await CREATE_PDF({
-			type: 'jornal',
-			file: base,
-		})
-		console.log('salvoy', dataNew)
-	} catch (error) {
-		console.log(error) // Exepection error....
-	}
-}
+import { PdfCategoriesModel } from '@/database/model/pdf/pdf_categories'
+import { PdfModel } from '@/database/model/pdf/pdfs'
 
 const CREATE_PDF = (data: any) => {
 	return database.write(async () => {
+		const colletion =
+			database.collections.get<PdfCategoriesModel>('pdf_categories')
+		const category_id = await colletion.find(data.category_id)
+
 		const pdfColletion = database.collections.get<PdfModel>('pdfs')
 		const newPdf = await pdfColletion.create((pdf: any) => {
-			pdf.type = data.tyoe
+			pdf.icon = data.icon
+			pdf.type = data.type
 			pdf.file = data.file
+			pdf.edition = data.edition
+			pdf.pdf_categories.set(category_id)
 		})
 		return newPdf
 	})
 }
 
-export { CREATE_PDF, generatePDFdata }
+const CREATE_PDF_CATEGORIES = (data: CategoriesPdfProps) => {
+	return database.write(async () => {
+		const categories_collection =
+			database.collections.get<PdfCategoriesModel>('pdf_categories')
+		const news_categories = await categories_collection.create(
+			(category: PdfCategoriesModel) => {
+				category.name = data.name
+				category.icon = data.icon
+				category.type = data.type
+			},
+		)
+		return news_categories
+	})
+}
+
+export { CREATE_PDF, CREATE_PDF_CATEGORIES }

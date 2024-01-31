@@ -4,9 +4,9 @@ export const PdfSchema = tableSchema({
 	name: 'pdfs',
 	columns: [
 		{ name: 'type', type: 'string' },
-		// { name: 'img', type: 'string' },
-		// { name: 'edition', type: 'number' },
+		{ name: 'icon', type: 'string' },
+		{ name: 'edition', type: 'string' },
 		{ name: 'file', type: 'string' },
-		// { name: 'createdAt', type: 'string' },
+		{ name: 'category_id', type: 'string', isIndexed: true },
 	],
 })
