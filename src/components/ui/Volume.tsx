@@ -17,7 +17,7 @@ import { useSharedValue, withSpring } from 'react-native-reanimated'
 import { View } from '../Themed'
 
 import { VolumeManager } from 'react-native-volume-manager'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 const Volume = ({ isDefault = true }) => {
 	const progress = useSharedValue(1)
@@ -43,7 +43,16 @@ const Volume = ({ isDefault = true }) => {
 	return (
 		<View style={styles.range} bgColor="transparent">
 			{isDefault ? <VolumeDark /> : <VolumeLigth />}
-			<TouchableOpacity>
+			<TouchableOpacity
+				onPress={async () => {
+					console.log(progress.value)
+					if (progress.value <= 0) {
+					} else {
+						const current = progress.value - 0.07
+						await VolumeManager.setVolume(current)
+					}
+				}}
+			>
 				{isDefault ? <MinusDark /> : <Minus />}
 			</TouchableOpacity>
 			<View style={styles.sliderContainer} bgColor="transparent">
@@ -73,7 +82,18 @@ const Volume = ({ isDefault = true }) => {
 					}}
 				/>
 			</View>
-			<TouchableOpacity>{isDefault ? <PlusDark /> : <Plus />}</TouchableOpacity>
+			<TouchableOpacity
+				onPress={async () => {
+					console.log(progress.value)
+					if (progress.value >= 1) {
+					} else {
+						const current = progress.value + 0.07
+						await VolumeManager.setVolume(current)
+					}
+				}}
+			>
+				{isDefault ? <PlusDark /> : <Plus />}
+			</TouchableOpacity>
 		</View>
 	)
 }
