@@ -141,27 +141,27 @@ export const gen_videos = async () => {
 	]
 
 	for await (const pdf of fake_pdf_data) {
-		const [icon_data, file_pdf, obj] = await Promise.all([
+		await Promise.all([
 			RNFetchBlob.fetch('GET', pdf.icon),
 			RNFetchBlob.fetch('GET', pdf.file),
 			READ_PDF_CATEGORIES_BY_CATEGORY_NAME(pdf.type),
-		])
-
-		const category_id = obj[0]?.id
-		if (category_id) {
-			const icon = icon_data.base64()
-			const file = file_pdf.base64()
-			const data_body = {
-				icon,
-				file,
-				type: pdf.type,
-				edition: pdf.edition,
-				category_id,
+		]).then(async ([icon_data, file_pdf, obj]) => {
+			const category_id = obj[0]?.id
+			if (category_id) {
+				const icon = icon_data.base64()
+				const file = file_pdf.base64()
+				const data_body = {
+					icon,
+					file,
+					type: pdf.type,
+					edition: pdf.edition,
+					category_id,
+				}
+				const b = await CREATE_PDF(data_body)
+				console.log('criado', b?.id)
+			} else {
+				console.log('nao funcionou', pdf.type)
 			}
-			const b = await CREATE_PDF(data_body)
-			console.log('criado', b?.id)
-		} else {
-			console.log('nao funcionou', pdf.type)
-		}
+		})
 	}
 }

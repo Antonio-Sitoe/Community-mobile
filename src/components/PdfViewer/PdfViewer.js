@@ -22,7 +22,7 @@ export class PdfViewer extends React.Component {
 		super(props)
 		this.state = {
 			page: 1,
-			scale: 1,
+			scale: 0,
 			police: 0,
 			minScale: 0.5,
 			maxScale: 4,

@@ -45,7 +45,13 @@ export function Meteorology() {
 								{data?.nextDays.map((item, i) => {
 									const IconSVG = ChooseWeatherIcon(item.icon_id)
 									return (
-										<View key={i} style={{ alignItems: 'center' }}>
+										<View
+											key={i}
+											style={{
+												alignItems: 'center',
+												width: 140,
+											}}
+										>
 											<Text style={styles.mainWeatherText}>
 												{String(item?.date)}
 											</Text>
@@ -131,7 +137,6 @@ const styles = StyleSheet.create({
 	},
 	ScrollviewCards: {
 		paddingTop: 20,
-		gap: 50,
 		paddingRight: 40,
 	},
 	mainWeatherText: {
