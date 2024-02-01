@@ -58,13 +58,13 @@ export default function Agricultural() {
 			title: 'Batata Reno Nacional',
 		},
 		{
-			price: '75.00 MZN',
+			price: '100.00 MZN',
 			href: '' as Route<string>,
 			imageUri: require('@/assets/Thumbnails/p9sqmx7n.png'),
 			title: 'Amendoim Pequeno Nacional',
 		},
 		{
-			price: '65.00 MZN',
+			price: '27.96 MZN',
 			href: '' as Route<string>,
 			imageUri: require('@/assets/Thumbnails/czjupp8r.png'),
 			title: 'Batata Doce',
