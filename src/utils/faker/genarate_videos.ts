@@ -4,7 +4,7 @@ export const videos = {
 			title: 'Nutrição 101: Fundamentos de uma Dieta Saudável',
 			duration: '12 minutos',
 			imageUri: require('@/assets/Thumbnails/assets_163.png'),
-			video_source: require('@/assets/Audio/saude.mp4'),
+			video_source: require('@/assets/Audio/big_buck_bunny.mp4'),
 			category_name: 'Nutrição',
 		},
 		{

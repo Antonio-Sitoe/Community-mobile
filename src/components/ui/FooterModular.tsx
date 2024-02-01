@@ -87,7 +87,7 @@ export const FooterModular = ({
 					startFromZero
 					value={scale}
 					setValue={setScale}
-					min={0.5}
+					min={0}
 					max={4}
 				/>
 				<TouchableOpacity style={styles.btn} onPress={onAddZoom}>

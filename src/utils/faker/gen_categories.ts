@@ -45,6 +45,20 @@ export const gen_categories = async () => {
 		},
 	]
 
+	for await (const obj of fake_data) {
+		const icon_data = await RNFetchBlob.fetch('GET', obj.icon)
+		const icon = icon_data.base64()
+		const body = {
+			icon,
+			name: obj.name,
+			type: obj.type,
+		}
+
+		const i = await CREATE_PDF_CATEGORIES(body)
+		console.log('criado', i.id)
+	}
+}
+export const gen_videos = async () => {
 	const fake_pdf_data = [
 		{
 			icon: 'https://res.cloudinary.com/noblestack/image/upload/v1706729787/vbg0usaavf1nicllr3gm.png',
@@ -85,7 +99,7 @@ export const gen_categories = async () => {
 		{
 			icon: 'https://res.cloudinary.com/noblestack/image/upload/v1706729790/vordm2lfavwqjcygdbj8.png',
 			type: 'xonguila',
-			file: 'https://xonguila.co.mz/assets/download/apresentacao_Xonguila_PT_2022.pdf',
+			file: 'http://samples.leanpub.com/thereactnativebook-sample.pdf',
 			edition: 'Revista Xonguila Nº63',
 			category_id: '',
 		},
@@ -126,29 +140,17 @@ export const gen_categories = async () => {
 		},
 	]
 
-	for await (const obj of fake_data) {
-		const icon_data = await RNFetchBlob.fetch('GET', obj.icon)
-		const icon = icon_data.base64()
-		const body = {
-			icon,
-			name: obj.name,
-			type: obj.type,
-		}
-
-		const i = await CREATE_PDF_CATEGORIES(body)
-		console.log('criado', i.id)
-	}
-
 	for await (const pdf of fake_pdf_data) {
-		const icon_data = await RNFetchBlob.fetch('GET', pdf.icon)
-		const icon = icon_data.base64()
+		const [icon_data, file_pdf, obj] = await Promise.all([
+			RNFetchBlob.fetch('GET', pdf.icon),
+			RNFetchBlob.fetch('GET', pdf.file),
+			READ_PDF_CATEGORIES_BY_CATEGORY_NAME(pdf.type),
+		])
 
-		const file_pdf = await RNFetchBlob.fetch('GET', pdf.file)
-		const file = file_pdf.base64()
-
-		const obj = await READ_PDF_CATEGORIES_BY_CATEGORY_NAME(pdf.type)
 		const category_id = obj[0]?.id
 		if (category_id) {
+			const icon = icon_data.base64()
+			const file = file_pdf.base64()
 			const data_body = {
 				icon,
 				file,

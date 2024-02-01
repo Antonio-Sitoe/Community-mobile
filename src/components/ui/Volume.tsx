@@ -73,7 +73,7 @@ const Volume = ({ isDefault = true }) => {
 						borderRadius: 7,
 						overflow: 'hidden',
 					}}
-					bubble={(s: number) => Math.floor(s).toString()}
+					bubble={() => ''}
 					onValueChange={async (valor) => {
 						await VolumeManager.setVolume(valor)
 					}}

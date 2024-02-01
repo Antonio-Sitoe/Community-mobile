@@ -23,7 +23,7 @@ export class PdfViewer extends React.Component {
 		this.state = {
 			page: 1,
 			scale: 1,
-			police: 1,
+			police: 0,
 			minScale: 0.5,
 			maxScale: 4,
 			totalPages: 0,
@@ -50,7 +50,7 @@ export class PdfViewer extends React.Component {
 		if (this.state.scale < this.state.maxScale) {
 			this.setState({ ...this.state, scale: this.state.scale + 0.5 })
 		} else {
-			this.setState({ ...this.state, scale: 1.5 })
+			this.setState({ ...this.state, scale: 0.5 })
 		}
 	}
 
@@ -114,7 +114,7 @@ export class PdfViewer extends React.Component {
 							<PDF
 								ref={this.pdfRef}
 								horizontal={true}
-								scale={this.state.scale}
+								scale={this.state.scale === 0 ? 0.5 : this.state.scale}
 								minScale={this.state.minScale}
 								maxScale={this.state.maxScale}
 								spacing={20}
