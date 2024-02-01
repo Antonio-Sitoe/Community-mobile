@@ -1,20 +1,19 @@
-import { Link, Route } from 'expo-router'
+import { Link } from 'expo-router'
 import { ImageBackground, StyleSheet, Text, View } from 'react-native'
 import Colors from '@/constants/Colors'
 import { fonts } from '@/constants/fonts'
-import { MediaCardModularProps } from './MediaCardModular'
 
 export interface AgroCardModularProps {
 	imageUri: string | number
 	title: string
-	href: Route<string>
+
 	price: string
 }
 
 export function AgroCardModular({
 	imageUri,
 	title,
-	href,
+
 	price,
 }: AgroCardModularProps) {
 	const image =
@@ -24,7 +23,7 @@ export function AgroCardModular({
 					uri: imageUri,
 				}
 	return (
-		<Link href="#">
+		<Link href="/(others)/agricultural-prices/">
 			<View style={styles.container}>
 				<View style={styles.imageContainer}>
 					<ImageBackground
@@ -63,7 +62,7 @@ const styles = StyleSheet.create({
 		width: 106,
 		height: 94,
 	},
-	containerTexts: { flex: 1, width: 300 },
+	containerTexts: { flex: 1, width: 250, justifyContent: 'center' },
 	textTitle: {
 		fontFamily: fonts.fontFamyle.Gilroy_extraBold,
 		fontSize: fonts.size.lg,

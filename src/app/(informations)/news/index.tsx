@@ -11,7 +11,7 @@ export default function News() {
 	const { refetchWeather } = useWeather()
 	async function genData() {
 		setLoad(true)
-		gen_categories()
+		await gen_categories()
 		refetchWeather()
 		setLoad(false)
 	}
@@ -20,7 +20,7 @@ export default function News() {
 			<HeaderModular isDefault={false} title="Noticias" />
 			<Text>Lista de noticias</Text>
 			<TouchableOpacity style={styles.cardWhitesmoke} onPress={genData}>
-				{load && <ActivityIndicator color={Colors.light.sunflowerYellow} />}
+				{load && <ActivityIndicator color={Colors.light.sunsetOrange} />}
 			</TouchableOpacity>
 		</>
 	)
