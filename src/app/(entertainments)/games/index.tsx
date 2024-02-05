@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import React from 'react'
 import { HeaderModular } from '@/components/ui/HeaderModular'
 import { svg1223, svg1222, svg1221, svg1220 } from '@/assets/Icons/out'
@@ -24,7 +24,7 @@ export default function Games() {
 			},
 		},
 		{
-			href: `/(entertainments)/games/` as Route<string>,
+			href: `/(entertainments)/games/chickenGame` as Route<string>,
 			cardTitles: ['Jogo do Galo'],
 			img: {
 				imgType: 'svg',
