@@ -1,6 +1,6 @@
 import Colors from '@/constants/Colors'
 import { HeaderModular } from '@/components/ui/HeaderModular'
-import { CardModular } from '@/components/ui/CardModular'
+import { CardModular, ImgProps } from '@/components/ui/CardModular'
 import { fonts } from '@/constants/fonts'
 import { Route } from 'expo-router'
 import { View, ScrollView, StyleSheet, ActivityIndicator } from 'react-native'
@@ -55,7 +55,7 @@ export default function Magazines() {
 									width={width}
 									href={item.href}
 									cardTitles={item.cardTitles}
-									img={item.img as any}
+									img={item.img as ImgProps}
 								/>
 							)
 						})}

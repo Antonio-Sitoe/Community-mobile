@@ -3,7 +3,7 @@ import Colors from '@/constants/Colors'
 import { fonts } from '@/constants/fonts'
 import { Route } from 'expo-router'
 import { HeaderModular } from '@/components/ui/HeaderModular'
-import { CardModular } from '@/components/ui/CardModular'
+import { CardModular, ImgProps } from '@/components/ui/CardModular'
 import { useQuery } from '@tanstack/react-query'
 import { split_and_concat_string } from '@/utils'
 import { READ_BY_CATEGORY_NAME } from '@/database/actions/pdfs/read'
@@ -71,7 +71,7 @@ export default function Comics() {
 											width={width}
 											href={item.href}
 											cardTitles={item.cardTitles}
-											img={item.img as any}
+											img={item.img as ImgProps}
 										/>
 									</View>
 								)

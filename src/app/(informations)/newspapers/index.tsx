@@ -1,6 +1,6 @@
 import { fonts } from '@/constants/fonts'
 import { Route } from 'expo-router'
-import { CardModular } from '@/components/ui/CardModular'
+import { CardModular, ImgProps } from '@/components/ui/CardModular'
 import { HeaderModular } from '@/components/ui/HeaderModular'
 import { View, ScrollView, ActivityIndicator } from 'react-native'
 import { useQuery } from '@tanstack/react-query'
@@ -73,7 +73,7 @@ export default function NewsPappers() {
 										width={width}
 										href={item.href}
 										cardTitles={item.cardTitles}
-										img={item.img as any}
+										img={item.img as ImgProps}
 									/>
 								</View>
 							)

@@ -17,7 +17,7 @@ export default function Novels() {
 			sliceStringsChars(item.title),
 			item.video_source,
 			false,
-			item.imageUri as any,
+			item.imageUri as unknown as string,
 		)
 	})
 	return <MediaPlayer PLAYLIST={PLAYLIST} index={slug} />
