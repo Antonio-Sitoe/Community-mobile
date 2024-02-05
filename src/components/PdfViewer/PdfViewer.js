@@ -22,7 +22,7 @@ export class PdfViewer extends React.Component {
 		super(props)
 		this.state = {
 			page: 1,
-			scale: 0,
+			scale: 0.5,
 			police: 0,
 			minScale: 0.5,
 			maxScale: 4,
@@ -58,7 +58,6 @@ export class PdfViewer extends React.Component {
 		if (this.timeout) {
 			clearTimeout(this.timeout)
 		}
-
 		this.setState({
 			...this.state,
 			page,
@@ -114,14 +113,14 @@ export class PdfViewer extends React.Component {
 							<PDF
 								ref={this.pdfRef}
 								horizontal={true}
-								scale={this.state.scale === 0 ? 0.5 : this.state.scale}
+								scale={this.state.page === 1 ? 1 : this.state.scale}
 								minScale={this.state.minScale}
 								maxScale={this.state.maxScale}
 								spacing={20}
-								fitPolicy={this.state.police}
+								fitPolicy={this.state.page === 1 ? 1 : this.state.police}
 								showsHorizontalScrollIndicator={true}
-								enablePaging={true}
-								trustAllCerts={false}
+								enablePaging={this.state.page === 1}
+								trustAllCerts={true}
 								source={this.state.pdfSource}
 								style={styles.pdf}
 								onLoadComplete={(page) => this.onLoadComplete(page)}
