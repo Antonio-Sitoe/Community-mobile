@@ -59,6 +59,7 @@
 		"react-native-screens": "~3.22.0",
 		"react-native-snackbar": "^2.6.2",
 		"react-native-svg": "13.9.0",
+		"react-native-toast-message": "^2.2.0",
 		"react-native-track-player": "^4.0.1-nightly-47b2d08033563ef4d7e76a7f061c244ac3dba1ec",
 		"react-native-volume-manager": "^1.10.0",
 		"react-native-web": "~0.19.6",

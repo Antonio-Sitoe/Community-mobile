@@ -6,10 +6,38 @@ import { StyleSheet, Text, View } from 'react-native'
 import Player_X from '@/assets/Icons/Game_X.svg'
 import Player_O from '@/assets/Icons/Game_Circle.svg'
 import Colors from '@/constants/Colors'
+import Toast from 'react-native-toast-message'
 
-type Player = 'X' | 'O'
+type Player = 'X' | 'O' | 'tie'
 type Winner = Player | null | string
 type Marker = Array<number | string | null>
+type Count = {
+	x: number
+	o: number
+}
+
+const calculateWinner = (squares: Marker) => {
+	const lines = [
+		[0, 1, 2],
+		[3, 4, 5],
+		[6, 7, 8],
+		[0, 3, 6],
+		[1, 4, 7],
+		[2, 5, 8],
+		[0, 4, 8],
+		[2, 4, 6],
+	]
+	for (let i = 0; i < lines.length; i++) {
+		const [a, b, c] = lines[i]
+		if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+			return squares[a]
+		}
+	}
+	if (!squares.includes(null)) {
+		return 'tie'
+	}
+	return null
+}
 interface IusePlayGameProps {
 	active_player: Player
 	markers: Marker
@@ -17,15 +45,32 @@ interface IusePlayGameProps {
 	winner: Winner
 	setMarkers(marker: Marker): void
 	set_active_player(player: Player): void
-	set_winner(player: Player | null | string): void
+	set_winner(player: Winner): void
+	setCount(count: Count): void
 	resetPlay(): void
 	handleChangeGameType(): void
+	count: Count
+	calculeCount(winner: Winner): Count
 }
-export const usePlayGame = create<IusePlayGameProps>((set) => ({
+export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 	active_player: 'X',
 	markers: Array(9).fill(null),
 	isComputer: false,
 	winner: null,
+	count: {
+		x: 0,
+		o: 0,
+	},
+	setCount: (count: Count) => set((state) => ({ ...state, count })),
+	calculeCount: (winner: Player) => {
+		const count = get().count
+		if (winner === 'O') {
+			count.o = count.o + 1
+		} else if (winner === 'X') {
+			count.x = count.x + 1
+		}
+		return count
+	},
 	set_winner: (winner: Player | null) => set((state) => ({ ...state, winner })),
 	set_active_player: (player: Player) =>
 		set((state) => ({ ...state, active_player: player })),
@@ -33,139 +78,75 @@ export const usePlayGame = create<IusePlayGameProps>((set) => ({
 	handleChangeGameType: () =>
 		set((state) => {
 			state.resetPlay()
-			return { isComputer: !state.isComputer }
+			return {
+				isComputer: !state.isComputer,
+				count: {
+					o: 0,
+					x: 0,
+				},
+			}
 		}),
+	markPosition: (position: number) => {
+		const markers = get().markers
+		if (!markers[position]) {
+			const temp = [...markers]
+			temp[position] = get().active_player
+			set((state) => ({
+				...state,
+				markers: temp,
+				active_player: state.active_player === 'X' ? 'O' : 'X',
+			}))
+			const winner = calculateWinner(temp)
+			if (winner) {
+				const count = get().calculeCount(winner as Winner)
+				set((state) => ({
+					...state,
+					count,
+					winner: winner === 'tie' ? 'Empate' : `${winner}`,
+				}))
+			}
+		}
+	},
 	resetPlay: () =>
 		set(() => ({
 			markers: Array(9).fill(null),
 			active_player: 'X',
 			winner: null,
 		})),
+	componentAmount: () =>
+		set((state) => {
+			state.resetPlay()
+			return {
+				count: {
+					x: 0,
+					o: 0,
+				},
+			}
+		}),
+	showToast: () => {
+		Toast.show({
+			type: 'success',
+			text1: 'Hello',
+			text2: 'This is some something 👋',
+			swipeable: true,
+			position: 'bottom',
+		})
+	},
 }))
 
 export default function ChickenGame() {
 	const {
 		active_player,
 		markers,
-		setMarkers,
-		set_active_player,
 		isComputer,
 		winner,
-		set_winner,
 		handleChangeGameType,
 		resetPlay,
+		count,
+		componentAmount,
+		showToast,
+		markPosition,
 	} = usePlayGame()
-
-	function markPosition(position: number) {
-		if (!markers[position]) {
-			const temp = [...markers]
-			temp[position] = active_player
-			setMarkers(temp)
-			if (active_player === 'X') {
-				set_active_player('O')
-			} else {
-				set_active_player('X')
-			}
-		}
-	}
-
-	const calculateWinner = (squares: Marker) => {
-		const lines = [
-			[0, 1, 2],
-			[3, 4, 5],
-			[6, 7, 8],
-			[0, 3, 6],
-			[1, 4, 7],
-			[2, 5, 8],
-			[0, 4, 8],
-			[2, 4, 6],
-		]
-		for (let i = 0; i < lines.length; i++) {
-			const [a, b, c] = lines[i]
-			if (
-				squares[a] &&
-				squares[a] === squares[b] &&
-				squares[a] === squares[c]
-			) {
-				return squares[a]
-			}
-		}
-		if (!squares.includes(null)) {
-			return 'tie'
-		}
-		return null
-	}
-
-	useEffect(() => {
-		const play_with_computer = () => {
-			const position = getMinimaxMove(markers, 'O').index
-			makeMove(position)
-		}
-		const getMinimaxMove = (tab: Marker, player: Player): any => {
-			const playeres = { X: -1, O: 1 }
-			const vitoria = calculateWinner(tab)
-			if (vitoria) {
-				return { score: playeres[vitoria], index: -1 }
-			}
-
-			const movimentos: any = []
-			for (let i = 0; i < tab.length; i++) {
-				if (tab[i] === null) {
-					const novoTabuleiro = [...tab]
-					novoTabuleiro[i] = player
-					const movimento = getMinimaxMove(
-						novoTabuleiro,
-						player === 'X' ? 'O' : 'X',
-					)
-					movimento.index = i
-					movimentos.push(movimento)
-				}
-			}
-
-			if (player === 'O') {
-				const melhorMovimento = movimentos.reduce(
-					(melhor, movimento) =>
-						melhor.score > movimento.score ? melhor : movimento,
-					{ score: -Infinity },
-				)
-				return melhorMovimento
-			} else {
-				const melhorMovimento = movimentos.reduce(
-					(melhor, movimento) =>
-						melhor.score < movimento.score ? melhor : movimento,
-					{ score: Infinity },
-				)
-				return melhorMovimento
-			}
-		}
-		const makeMove = (index: number) => {
-			if (markers[index] === null && !winner) {
-				const newMarkers = [...markers]
-				newMarkers[index] = active_player
-				setMarkers(newMarkers)
-				set_active_player(active_player === 'X' ? 'O' : 'X')
-			}
-		}
-
-		const winner = calculateWinner(markers)
-		if (winner) {
-			set_winner(winner === 'tie' ? 'Empate' : `${winner}`)
-		}
-
-		if (isComputer && active_player === 'O' && !winner) {
-			const timeout = setTimeout(() => {
-				play_with_computer()
-			}, 500)
-			return () => clearTimeout(timeout)
-		}
-	}, [
-		active_player,
-		isComputer,
-		markers,
-		setMarkers,
-		set_active_player,
-		set_winner,
-	])
 
 	const displayRealTimeMessage = (winner: Winner, active_player: Player) => {
 		if (winner) {
@@ -179,6 +160,84 @@ export default function ChickenGame() {
 		}
 	}
 
+	// useEffect(() => {
+	// 	const play_with_computer = () => {
+	// 		const position = getMinimaxMove(markers, 'O').index
+	// 		makeMove(position)
+	// 	}
+	// 	const getMinimaxMove = (tab: Marker, player: Player): any => {
+	// 		const playeres = { X: -1, O: 1 }
+	// 		const vitoria = calculateWinner(tab)
+	// 		if (vitoria) {
+	// 			return { score: playeres[vitoria], index: -1 }
+	// 		}
+
+	// 		const movimentos: any = []
+	// 		for (let i = 0; i < tab.length; i++) {
+	// 			if (tab[i] === null) {
+	// 				const novoTabuleiro = [...tab]
+	// 				novoTabuleiro[i] = player
+	// 				const movimento = getMinimaxMove(
+	// 					novoTabuleiro,
+	// 					player === 'X' ? 'O' : 'X',
+	// 				)
+	// 				movimento.index = i
+	// 				movimentos.push(movimento)
+	// 			}
+	// 		}
+
+	// 		if (player === 'O') {
+	// 			const melhorMovimento = movimentos.reduce(
+	// 				(melhor, movimento) =>
+	// 					melhor.score > movimento.score ? melhor : movimento,
+	// 				{ score: -Infinity },
+	// 			)
+	// 			return melhorMovimento
+	// 		} else {
+	// 			const melhorMovimento = movimentos.reduce(
+	// 				(melhor, movimento) =>
+	// 					melhor.score < movimento.score ? melhor : movimento,
+	// 				{ score: Infinity },
+	// 			)
+	// 			return melhorMovimento
+	// 		}
+	// 	}
+	// 	const makeMove = (index: number) => {
+	// 		if (markers[index] === null && !winner) {
+	// 			const newMarkers = [...markers]
+	// 			newMarkers[index] = active_player
+	// 			setMarkers(newMarkers)
+	// 			set_active_player(active_player === 'X' ? 'O' : 'X')
+	// 		}
+	// 	}
+
+	// 	if (isComputer && active_player === 'O' && !winner) {
+	// 		const timeout = setTimeout(() => {
+	// 			play_with_computer()
+	// 		}, 500)
+	// 		return () => clearTimeout(timeout)
+	// 	}
+	// }, [
+	// 	active_player,
+	// 	isComputer,
+	// 	markers,
+	// 	setMarkers,
+	// 	set_active_player,
+	// 	set_winner,
+	// 	resetPlay,
+	// 	calculeCount,
+	// ])
+
+	useEffect(() => {
+		if (winner) {
+			showToast()
+			const timeout = setTimeout(resetPlay, 500)
+			return () => clearTimeout(timeout)
+		}
+	}, [resetPlay, showToast, winner])
+
+	useEffect(() => () => componentAmount(), [componentAmount])
+
 	return (
 		<>
 			<HeaderModular isDefault={false} title="Jogo da Galo" />
@@ -187,6 +246,8 @@ export default function ChickenGame() {
 					<Text style={styles.mensagem}>
 						{displayRealTimeMessage(winner, active_player)}
 					</Text>
+					<Text style={styles.mensagem}>Jogador X: {count?.x}</Text>
+					<Text style={styles.mensagem}>Jogador O: {count?.o}</Text>
 					<TouchableOpacity
 						onPress={handleChangeGameType}
 						style={styles.buttonChangeType}
