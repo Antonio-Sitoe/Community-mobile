@@ -15,6 +15,7 @@ export default {
 		periwinkleGray: '#8B9CC5',
 		alternativeBlue: '#7CC2C0',
 		charcoal: '#373737',
+		textAlternative: '#333',
 
 		blackTransparent: '#00000029',
 		mistyRose: '#FBFEFE',

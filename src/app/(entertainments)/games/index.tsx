@@ -24,7 +24,7 @@ export default function Games() {
 			},
 		},
 		{
-			href: `/(entertainments)/games/TicTacToe` as Route<string>,
+			href: `/(entertainments)/games/TicTacToe/` as Route<string>,
 			cardTitles: ['Jogo do Galo'],
 			img: {
 				imgType: 'svg',

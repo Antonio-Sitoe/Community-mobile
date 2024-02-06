@@ -7,7 +7,10 @@ import Player_X from '@/assets/Icons/Game_X.svg'
 import Player_O from '@/assets/Icons/Game_Circle.svg'
 import Colors from '@/constants/Colors'
 import Toast from 'react-native-toast-message'
+import { ToastType } from 'react-native-toast-message/lib/src/types'
 import { calculateWinner, getMinimaxMove } from '@/utils/games'
+import { fonts } from '@/constants/fonts'
+import { useRouter } from 'expo-router'
 
 type Player = 'X' | 'O' | 'tie'
 type Winner = Player | null | string
@@ -17,6 +20,8 @@ type Count = {
 	o: number
 }
 
+type ToastTypeProps = { text: string; type: ToastType }
+
 interface IusePlayGameProps {
 	active_player: Player
 	markers: Marker
@@ -25,7 +30,7 @@ interface IusePlayGameProps {
 	count: Count
 	timeout: null | NodeJS.Timeout
 	resetPlay(): void
-	showToast(): void
+	showToast(obj: ToastTypeProps): void
 	play_with_computer(): void
 	componentAmount(): void
 	markPosition(index: number): void
@@ -74,7 +79,6 @@ export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 
 	markPosition: (index: number) => {
 		if (get().timeout) {
-			console.log('removendo timeout')
 			clearTimeout(get().timeout as NodeJS.Timeout)
 		}
 		const markers = get().markers
@@ -121,18 +125,24 @@ export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 				},
 			}
 		}),
-	showToast: () => {
+	showToast: ({ text, type }: ToastTypeProps) => {
 		Toast.show({
-			type: 'success',
-			text1: 'Hello',
-			text2: 'This is some something 👋',
+			type,
+			text1: text,
 			swipeable: true,
 			position: 'bottom',
+			visibilityTime: 1000,
+			bottomOffset: 350,
+			text1Style: {
+				fontSize: 18,
+				fontFamily: fonts.fontFamyle.Gilroy_extraBold,
+			},
 		})
 	},
 }))
 
 export default function TicTacToe() {
+	const router = useRouter()
 	const {
 		active_player,
 		markers,
@@ -146,7 +156,12 @@ export default function TicTacToe() {
 		markPosition,
 	} = usePlayGame()
 
+	function handleOpenInstructions() {
+		router.push('/(entertainments)/games/TicTacToe/instructions')
+	}
+
 	const displayRealTimeMessage = (winner: Winner, active_player: Player) => {
+		console.log('handleOpenInstructions', winner)
 		if (winner) {
 			if (winner === 'Empate') {
 				return 'Empate!'
@@ -160,7 +175,10 @@ export default function TicTacToe() {
 
 	useEffect(() => {
 		if (winner) {
-			showToast()
+			showToast({
+				text: winner === 'tie' ? 'Empate' : `Vencedor: ${winner}`,
+				type: winner === 'tie' ? 'info' : 'success',
+			})
 			const timeout = setTimeout(resetPlay, 500)
 			return () => clearTimeout(timeout)
 		}
@@ -236,8 +254,11 @@ export default function TicTacToe() {
 					</View>
 				</View>
 				<View style={styles.rigthContainer}>
-					<TouchableOpacity style={styles.rigthContainerButton}>
-						<Text>Instruções</Text>
+					<TouchableOpacity
+						style={styles.rigthContainerButton}
+						onPress={handleOpenInstructions}
+					>
+						<Text style={styles.rigthContainerButtonText}>Instruções</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -263,18 +284,23 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end',
 	},
 	rigthContainerButton: {
-		width: 100,
-		height: 30,
-		backgroundColor: '#FFFFFF',
+		width: 120,
+		height: 40,
+		backgroundColor: Colors.light.white,
 		borderRadius: 18,
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+	rigthContainerButtonText: {
+		fontSize: fonts.size.sm,
+		color: Colors.light.sunsetOrange,
+		fontFamily: fonts.fontFamyle.Gilroy_extraBold,
 	},
 	buttonChangeType: {
 		width: 200,
 		height: 50,
 		marginTop: 10,
-		backgroundColor: '#FFFFFF',
+		backgroundColor: Colors.light.smokeWhite,
 		borderRadius: 18,
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -291,73 +317,7 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 		color: Colors.light.white,
 	},
-	cell_top_left: {
-		width: 201,
-		height: 201,
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: '#ffe8d2',
-		borderTopLeftRadius: 18,
-	},
-	cell_top_mid: {
-		width: 201,
-		height: 201,
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: '#E35136',
-	},
-	cell_top_right: {
-		width: 201,
-		height: 201,
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: '#ffe8d2',
-		borderTopRightRadius: 18,
-	},
-	cell_mid_left: {
-		width: 201,
-		height: 201,
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: '#e35136',
-	},
-	cell_mid_mid: {
-		width: 201,
-		height: 201,
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: '#ffe8d2',
-	},
-	cell_mid_right: {
-		width: 201,
-		height: 201,
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: '#e35136',
-	},
-	cell_bottom_left: {
-		width: 201,
-		height: 201,
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: '#ffe8d2',
-		borderBottomLeftRadius: 18,
-	},
-	cell_bottom_mid: {
-		width: 201,
-		height: 201,
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: '#e35136',
-	},
-	cell_bottom_right: {
-		width: 201,
-		height: 201,
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: '#ffe8d2',
-		borderBottomRightRadius: 18,
-	},
+
 	ceil: {
 		width: 201,
 		height: 201,
