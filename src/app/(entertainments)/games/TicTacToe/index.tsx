@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { create } from 'zustand'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { HeaderModular } from '@/components/ui/HeaderModular'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { StyleSheet, Text, View } from 'react-native'
@@ -11,6 +12,11 @@ import { ToastType } from 'react-native-toast-message/lib/src/types'
 import { calculateWinner, getMinimaxMove } from '@/utils/games'
 import { fonts } from '@/constants/fonts'
 import { useRouter } from 'expo-router'
+import { Audio } from 'expo-av'
+
+const win_mp3 = require('@/assets/Audio/win.mp3')
+const tap_mp3 = require('@/assets/Audio/tap.mp3')
+const tie_mp3 = require('@/assets/Audio/tie.mp3')
 
 type Player = 'X' | 'O' | 'tie'
 type Winner = Player | null | string
@@ -40,9 +46,14 @@ interface IusePlayGameProps {
 	set_winner(player: Winner): void
 	calculeCount(winner: Winner): Count
 	set_active_player(player: Player): void
+	sound: Audio.Sound | null
+	playTapSound: () => Promise<void>
+	playWinnerSound: () => Promise<void>
+	playTieSound: () => Promise<void>
 }
 export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 	active_player: 'X',
+	sound: null,
 	markers: Array(9).fill(null),
 	isComputer: false,
 	winner: null,
@@ -78,6 +89,7 @@ export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 		}),
 
 	markPosition: (index: number) => {
+		get().playTapSound()
 		if (get().timeout) {
 			clearTimeout(get().timeout as NodeJS.Timeout)
 		}
@@ -139,10 +151,27 @@ export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 			},
 		})
 	},
+
+	playTapSound: async () => {
+		const { sound } = await Audio.Sound.createAsync(tap_mp3)
+		set({ sound })
+		await sound.playAsync()
+	},
+	playWinnerSound: async () => {
+		const { sound } = await Audio.Sound.createAsync(win_mp3)
+		set({ sound })
+		await sound.playAsync()
+	},
+	playTieSound: async () => {
+		const { sound } = await Audio.Sound.createAsync(tie_mp3)
+		set({ sound })
+		await sound.playAsync()
+	},
 }))
 
 export default function TicTacToe() {
 	const router = useRouter()
+
 	const {
 		active_player,
 		markers,
@@ -154,6 +183,9 @@ export default function TicTacToe() {
 		componentAmount,
 		showToast,
 		markPosition,
+		playWinnerSound,
+		playTieSound,
+		sound,
 	} = usePlayGame()
 
 	function handleOpenInstructions() {
@@ -161,7 +193,6 @@ export default function TicTacToe() {
 	}
 
 	const displayRealTimeMessage = (winner: Winner, active_player: Player) => {
-		console.log('handleOpenInstructions', winner)
 		if (winner) {
 			if (winner === 'Empate') {
 				return 'Empate!'
@@ -176,13 +207,28 @@ export default function TicTacToe() {
 	useEffect(() => {
 		if (winner) {
 			showToast({
-				text: winner === 'tie' ? 'Empate' : `Vencedor: ${winner}`,
-				type: winner === 'tie' ? 'info' : 'success',
+				text: winner === 'Empate' ? 'Empate' : `Vencedor: ${winner}`,
+				type: winner === 'Empate' ? 'info' : 'success',
 			})
+			console.log('winner', winner)
+			if (winner !== 'Empate') {
+				playWinnerSound()
+			} else {
+				playTieSound()
+			}
 			const timeout = setTimeout(resetPlay, 500)
 			return () => clearTimeout(timeout)
 		}
-	}, [resetPlay, showToast, winner])
+	}, [playTieSound, playWinnerSound, resetPlay, showToast, winner])
+
+	useEffect(() => {
+		return sound
+			? () => {
+					console.log('Unloading Sound')
+					sound.unloadAsync()
+				}
+			: undefined
+	}, [sound])
 
 	useEffect(() => () => componentAmount(), [componentAmount])
 
@@ -202,6 +248,7 @@ export default function TicTacToe() {
 				borderRadius.borderBottomRightRadius = 18
 				break
 		}
+
 		return (
 			<TouchableOpacity
 				style={[
@@ -211,7 +258,9 @@ export default function TicTacToe() {
 						...borderRadius,
 					},
 				]}
-				onPress={() => markPosition(index)}
+				onPress={() => {
+					markPosition(index)
+				}}
 			>
 				{markers[index] === 'X' && (
 					<Player_X style={styles.icon} width={133} height={133} />
