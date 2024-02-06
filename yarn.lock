@@ -8031,6 +8031,13 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
+pdf-to-base64@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/pdf-to-base64/-/pdf-to-base64-1.0.3.tgz#58075407f5d8b0700c6bfc2143890262704e3ccb"
+  integrity sha512-hReb9RzE8/kZE9Sjq913XXg3t8tyNn4VyDFs3VfXtMEIr/IQlKih+Te8EakJTkps8HxjUlULM5007xkp/DXs/Q==
+  dependencies:
+    node-fetch "^2.2.0"
+
 picocolors@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.0.tgz#cb5bdc74ff3f51892236eaf79d68bc44564ab81c"

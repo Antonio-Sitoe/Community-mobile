@@ -179,44 +179,8 @@ export default function ChickenGame() {
 		set_active_player,
 		set_winner,
 		winner,
-		resetPlay,
 	])
-	const SquareButton = ({ index }: { index: number }) => {
-		const borderRadius: any = {}
-		switch (index) {
-			case 0:
-				borderRadius.borderTopLeftRadius = 18
-				break
-			case 2:
-				borderRadius.borderTopRightRadius = 18
-				break
-			case 6:
-				borderRadius.borderBottomLeftRadius = 18
-				break
-			case 8:
-				borderRadius.borderBottomRightRadius = 18
-				break
-		}
-		return (
-			<TouchableOpacity
-				style={[
-					styles.ceil,
-					{
-						backgroundColor: index % 2 === 0 ? '#e35136' : '#ffe8d2',
-						...borderRadius,
-					},
-				]}
-				onPress={() => markPosition(index)}
-			>
-				{markers[index] === 'X' && (
-					<Player_X style={styles.icon} width={133} height={133} />
-				)}
-				{markers[index] === 'O' && (
-					<Player_O style={styles.icon} width={133} height={133} />
-				)}
-			</TouchableOpacity>
-		)
-	}
+
 	const displayRealTimeMessage = (winner: Winner, active_player: Player) => {
 		if (winner) {
 			if (winner === 'Empate') {
@@ -250,9 +214,105 @@ export default function ChickenGame() {
 				</View>
 				<View style={styles.mainTabContainer}>
 					<View style={styles.mainContainer}>
-						{markers.map((_, index) => {
-							return <SquareButton key={index} index={index} />
-						})}
+						<TouchableOpacity
+							style={styles.cell_top_left}
+							onPress={() => markPosition(0)}
+						>
+							{markers[0] === 'X' && (
+								<Player_X style={styles.icon} width={133} height={133} />
+							)}
+							{markers[0] === 'O' && (
+								<Player_O style={styles.icon} width={133} height={133} />
+							)}
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.cell_top_mid}
+							onPress={() => markPosition(1)}
+						>
+							{markers[1] === 'X' && (
+								<Player_X style={styles.icon} width={133} height={133} />
+							)}
+							{markers[1] === 'O' && (
+								<Player_O style={styles.icon} width={133} height={133} />
+							)}
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.cell_top_right}
+							onPress={() => markPosition(2)}
+						>
+							{markers[2] === 'X' && (
+								<Player_X style={styles.icon} width={133} height={133} />
+							)}
+							{markers[2] === 'O' && (
+								<Player_O style={styles.icon} width={133} height={133} />
+							)}
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.cell_mid_left}
+							onPress={() => markPosition(3)}
+						>
+							{markers[3] === 'X' && (
+								<Player_X style={styles.icon} width={133} height={133} />
+							)}
+							{markers[3] === 'O' && (
+								<Player_O style={styles.icon} width={133} height={133} />
+							)}
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.cell_mid_mid}
+							onPress={() => markPosition(4)}
+						>
+							{markers[4] === 'X' && (
+								<Player_X style={styles.icon} width={133} height={133} />
+							)}
+							{markers[4] === 'O' && (
+								<Player_O style={styles.icon} width={133} height={133} />
+							)}
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.cell_mid_right}
+							onPress={() => markPosition(5)}
+						>
+							{markers[5] === 'X' && (
+								<Player_X style={styles.icon} width={133} height={133} />
+							)}
+							{markers[5] === 'O' && (
+								<Player_O style={styles.icon} width={133} height={133} />
+							)}
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.cell_bottom_left}
+							onPress={() => markPosition(6)}
+						>
+							{markers[6] === 'X' && (
+								<Player_X style={styles.icon} width={133} height={133} />
+							)}
+							{markers[6] === 'O' && (
+								<Player_O style={styles.icon} width={133} height={133} />
+							)}
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.cell_bottom_mid}
+							onPress={() => markPosition(7)}
+						>
+							{markers[7] === 'X' && (
+								<Player_X style={styles.icon} width={133} height={133} />
+							)}
+							{markers[7] === 'O' && (
+								<Player_O style={styles.icon} width={133} height={133} />
+							)}
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.cell_bottom_right}
+							onPress={() => markPosition(8)}
+						>
+							{markers[8] === 'X' && (
+								<Player_X style={styles.icon} width={133} height={133} />
+							)}
+							{markers[8] === 'O' && (
+								<Player_O style={styles.icon} width={133} height={133} />
+							)}
+						</TouchableOpacity>
 					</View>
 				</View>
 				<View style={styles.rigthContainer}>
@@ -310,9 +370,77 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 		color: Colors.light.white,
 	},
+	cell_top_left: {
+		width: 201,
+		height: 201,
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: '#ffe8d2',
+		borderTopLeftRadius: 18,
+	},
+	cell_top_mid: {
+		width: 201,
+		height: 201,
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: '#E35136',
+	},
+	cell_top_right: {
+		width: 201,
+		height: 201,
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: '#ffe8d2',
+		borderTopRightRadius: 18,
+	},
+	cell_mid_left: {
+		width: 201,
+		height: 201,
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: '#e35136',
+	},
+	cell_mid_mid: {
+		width: 201,
+		height: 201,
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: '#ffe8d2',
+	},
+	cell_mid_right: {
+		width: 201,
+		height: 201,
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: '#e35136',
+	},
+	cell_bottom_left: {
+		width: 201,
+		height: 201,
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: '#ffe8d2',
+		borderBottomLeftRadius: 18,
+	},
+	cell_bottom_mid: {
+		width: 201,
+		height: 201,
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: '#e35136',
+	},
+	cell_bottom_right: {
+		width: 201,
+		height: 201,
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: '#ffe8d2',
+		borderBottomRightRadius: 18,
+	},
 	ceil: {
 		width: 201,
 		height: 201,
+		borderWidth: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
