@@ -7,6 +7,7 @@ import Player_X from '@/assets/Icons/Game_X.svg'
 import Player_O from '@/assets/Icons/Game_Circle.svg'
 import Colors from '@/constants/Colors'
 import Toast from 'react-native-toast-message'
+import { calculateWinner, getMinimaxMove } from '@/utils/games'
 
 type Player = 'X' | 'O' | 'tie'
 type Winner = Player | null | string
@@ -16,47 +17,31 @@ type Count = {
 	o: number
 }
 
-const calculateWinner = (squares: Marker) => {
-	const lines = [
-		[0, 1, 2],
-		[3, 4, 5],
-		[6, 7, 8],
-		[0, 3, 6],
-		[1, 4, 7],
-		[2, 5, 8],
-		[0, 4, 8],
-		[2, 4, 6],
-	]
-	for (let i = 0; i < lines.length; i++) {
-		const [a, b, c] = lines[i]
-		if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-			return squares[a]
-		}
-	}
-	if (!squares.includes(null)) {
-		return 'tie'
-	}
-	return null
-}
 interface IusePlayGameProps {
 	active_player: Player
 	markers: Marker
 	isComputer: boolean
 	winner: Winner
-	setMarkers(marker: Marker): void
-	set_active_player(player: Player): void
-	set_winner(player: Winner): void
-	setCount(count: Count): void
-	resetPlay(): void
-	handleChangeGameType(): void
 	count: Count
+	timeout: null | NodeJS.Timeout
+	resetPlay(): void
+	showToast(): void
+	play_with_computer(): void
+	componentAmount(): void
+	markPosition(index: number): void
+	setCount(count: Count): void
+	handleChangeGameType(): void
+	setMarkers(marker: Marker): void
+	set_winner(player: Winner): void
 	calculeCount(winner: Winner): Count
+	set_active_player(player: Player): void
 }
 export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 	active_player: 'X',
 	markers: Array(9).fill(null),
 	isComputer: false,
 	winner: null,
+	timeout: null,
 	count: {
 		x: 0,
 		o: 0,
@@ -86,18 +71,27 @@ export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 				},
 			}
 		}),
-	markPosition: (position: number) => {
+
+	markPosition: (index: number) => {
+		if (get().timeout) {
+			console.log('removendo timeout')
+			clearTimeout(get().timeout as NodeJS.Timeout)
+		}
 		const markers = get().markers
-		if (!markers[position]) {
-			const temp = [...markers]
-			temp[position] = get().active_player
+		if (markers[index] === null) {
+			const newMarkers = [...markers]
+			newMarkers[index] = get().active_player
 			set((state) => ({
 				...state,
-				markers: temp,
+				markers: newMarkers,
 				active_player: state.active_player === 'X' ? 'O' : 'X',
 			}))
-			const winner = calculateWinner(temp)
-			if (winner) {
+			const winner = calculateWinner(newMarkers)
+			if (get().isComputer && get().active_player === 'O' && !winner) {
+				get().timeout = setTimeout(() => {
+					get().play_with_computer()
+				}, 500)
+			} else if (winner) {
 				const count = get().calculeCount(winner as Winner)
 				set((state) => ({
 					...state,
@@ -106,6 +100,10 @@ export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 				}))
 			}
 		}
+	},
+	play_with_computer: () => {
+		const position = getMinimaxMove(get().markers, 'O').index
+		get().markPosition(position)
 	},
 	resetPlay: () =>
 		set(() => ({
@@ -134,7 +132,7 @@ export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 	},
 }))
 
-export default function ChickenGame() {
+export default function TicTacToe() {
 	const {
 		active_player,
 		markers,
@@ -160,74 +158,6 @@ export default function ChickenGame() {
 		}
 	}
 
-	// useEffect(() => {
-	// 	const play_with_computer = () => {
-	// 		const position = getMinimaxMove(markers, 'O').index
-	// 		makeMove(position)
-	// 	}
-	// 	const getMinimaxMove = (tab: Marker, player: Player): any => {
-	// 		const playeres = { X: -1, O: 1 }
-	// 		const vitoria = calculateWinner(tab)
-	// 		if (vitoria) {
-	// 			return { score: playeres[vitoria], index: -1 }
-	// 		}
-
-	// 		const movimentos: any = []
-	// 		for (let i = 0; i < tab.length; i++) {
-	// 			if (tab[i] === null) {
-	// 				const novoTabuleiro = [...tab]
-	// 				novoTabuleiro[i] = player
-	// 				const movimento = getMinimaxMove(
-	// 					novoTabuleiro,
-	// 					player === 'X' ? 'O' : 'X',
-	// 				)
-	// 				movimento.index = i
-	// 				movimentos.push(movimento)
-	// 			}
-	// 		}
-
-	// 		if (player === 'O') {
-	// 			const melhorMovimento = movimentos.reduce(
-	// 				(melhor, movimento) =>
-	// 					melhor.score > movimento.score ? melhor : movimento,
-	// 				{ score: -Infinity },
-	// 			)
-	// 			return melhorMovimento
-	// 		} else {
-	// 			const melhorMovimento = movimentos.reduce(
-	// 				(melhor, movimento) =>
-	// 					melhor.score < movimento.score ? melhor : movimento,
-	// 				{ score: Infinity },
-	// 			)
-	// 			return melhorMovimento
-	// 		}
-	// 	}
-	// 	const makeMove = (index: number) => {
-	// 		if (markers[index] === null && !winner) {
-	// 			const newMarkers = [...markers]
-	// 			newMarkers[index] = active_player
-	// 			setMarkers(newMarkers)
-	// 			set_active_player(active_player === 'X' ? 'O' : 'X')
-	// 		}
-	// 	}
-
-	// 	if (isComputer && active_player === 'O' && !winner) {
-	// 		const timeout = setTimeout(() => {
-	// 			play_with_computer()
-	// 		}, 500)
-	// 		return () => clearTimeout(timeout)
-	// 	}
-	// }, [
-	// 	active_player,
-	// 	isComputer,
-	// 	markers,
-	// 	setMarkers,
-	// 	set_active_player,
-	// 	set_winner,
-	// 	resetPlay,
-	// 	calculeCount,
-	// ])
-
 	useEffect(() => {
 		if (winner) {
 			showToast()
@@ -237,6 +167,43 @@ export default function ChickenGame() {
 	}, [resetPlay, showToast, winner])
 
 	useEffect(() => () => componentAmount(), [componentAmount])
+
+	const SquareButton = ({ index }: { index: number }) => {
+		const borderRadius: any = {}
+		switch (index) {
+			case 0:
+				borderRadius.borderTopLeftRadius = 18
+				break
+			case 2:
+				borderRadius.borderTopRightRadius = 18
+				break
+			case 6:
+				borderRadius.borderBottomLeftRadius = 18
+				break
+			case 8:
+				borderRadius.borderBottomRightRadius = 18
+				break
+		}
+		return (
+			<TouchableOpacity
+				style={[
+					styles.ceil,
+					{
+						backgroundColor: index % 2 === 0 ? '#e35136' : '#ffe8d2',
+						...borderRadius,
+					},
+				]}
+				onPress={() => markPosition(index)}
+			>
+				{markers[index] === 'X' && (
+					<Player_X style={styles.icon} width={133} height={133} />
+				)}
+				{markers[index] === 'O' && (
+					<Player_O style={styles.icon} width={133} height={133} />
+				)}
+			</TouchableOpacity>
+		)
+	}
 
 	return (
 		<>
@@ -263,105 +230,9 @@ export default function ChickenGame() {
 				</View>
 				<View style={styles.mainTabContainer}>
 					<View style={styles.mainContainer}>
-						<TouchableOpacity
-							style={styles.cell_top_left}
-							onPress={() => markPosition(0)}
-						>
-							{markers[0] === 'X' && (
-								<Player_X style={styles.icon} width={133} height={133} />
-							)}
-							{markers[0] === 'O' && (
-								<Player_O style={styles.icon} width={133} height={133} />
-							)}
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.cell_top_mid}
-							onPress={() => markPosition(1)}
-						>
-							{markers[1] === 'X' && (
-								<Player_X style={styles.icon} width={133} height={133} />
-							)}
-							{markers[1] === 'O' && (
-								<Player_O style={styles.icon} width={133} height={133} />
-							)}
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.cell_top_right}
-							onPress={() => markPosition(2)}
-						>
-							{markers[2] === 'X' && (
-								<Player_X style={styles.icon} width={133} height={133} />
-							)}
-							{markers[2] === 'O' && (
-								<Player_O style={styles.icon} width={133} height={133} />
-							)}
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.cell_mid_left}
-							onPress={() => markPosition(3)}
-						>
-							{markers[3] === 'X' && (
-								<Player_X style={styles.icon} width={133} height={133} />
-							)}
-							{markers[3] === 'O' && (
-								<Player_O style={styles.icon} width={133} height={133} />
-							)}
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.cell_mid_mid}
-							onPress={() => markPosition(4)}
-						>
-							{markers[4] === 'X' && (
-								<Player_X style={styles.icon} width={133} height={133} />
-							)}
-							{markers[4] === 'O' && (
-								<Player_O style={styles.icon} width={133} height={133} />
-							)}
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.cell_mid_right}
-							onPress={() => markPosition(5)}
-						>
-							{markers[5] === 'X' && (
-								<Player_X style={styles.icon} width={133} height={133} />
-							)}
-							{markers[5] === 'O' && (
-								<Player_O style={styles.icon} width={133} height={133} />
-							)}
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.cell_bottom_left}
-							onPress={() => markPosition(6)}
-						>
-							{markers[6] === 'X' && (
-								<Player_X style={styles.icon} width={133} height={133} />
-							)}
-							{markers[6] === 'O' && (
-								<Player_O style={styles.icon} width={133} height={133} />
-							)}
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.cell_bottom_mid}
-							onPress={() => markPosition(7)}
-						>
-							{markers[7] === 'X' && (
-								<Player_X style={styles.icon} width={133} height={133} />
-							)}
-							{markers[7] === 'O' && (
-								<Player_O style={styles.icon} width={133} height={133} />
-							)}
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.cell_bottom_right}
-							onPress={() => markPosition(8)}
-						>
-							{markers[8] === 'X' && (
-								<Player_X style={styles.icon} width={133} height={133} />
-							)}
-							{markers[8] === 'O' && (
-								<Player_O style={styles.icon} width={133} height={133} />
-							)}
-						</TouchableOpacity>
+						{markers.map((_, index) => {
+							return <SquareButton key={index} index={index} />
+						})}
 					</View>
 				</View>
 				<View style={styles.rigthContainer}>
