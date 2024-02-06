@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { create } from 'zustand'
+import { useEffect } from 'react'
 import { HeaderModular } from '@/components/ui/HeaderModular'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { create } from 'zustand'
+import { StyleSheet, Text, View } from 'react-native'
 import Player_X from '@/assets/Icons/Game_X.svg'
 import Player_O from '@/assets/Icons/Game_Circle.svg'
 import Colors from '@/constants/Colors'
-import React, { useCallback, useEffect, useRef } from 'react'
 
 type Player = 'X' | 'O'
 type Winner = Player | null | string
@@ -96,50 +96,48 @@ export default function ChickenGame() {
 		return null
 	}
 
-	const getMinimaxMove = useCallback((tab: Marker, player: Player) => {
-		const playeres = { X: -1, O: 1 }
-		const vitoria = calculateWinner(tab)
-		if (vitoria) {
-			return { score: playeres[vitoria], index: -1 }
-		}
-
-		const movimentos = []
-		for (let i = 0; i < tab.length; i++) {
-			if (tab[i] === null) {
-				const novoTabuleiro = [...tab]
-				novoTabuleiro[i] = player
-				const movimento = getMinimaxMove(
-					novoTabuleiro,
-					player === 'X' ? 'O' : 'X',
-				)
-				movimento.index = i
-				movimentos.push(movimento)
-			}
-		}
-
-		if (player === 'O') {
-			const melhorMovimento = movimentos.reduce(
-				(melhor, movimento) =>
-					melhor.score > movimento.score ? melhor : movimento,
-				{ score: -Infinity },
-			)
-			return melhorMovimento
-		} else {
-			const melhorMovimento = movimentos.reduce(
-				(melhor, movimento) =>
-					melhor.score < movimento.score ? melhor : movimento,
-				{ score: Infinity },
-			)
-			return melhorMovimento
-		}
-	}, [])
-
 	useEffect(() => {
 		const play_with_computer = () => {
 			const position = getMinimaxMove(markers, 'O').index
 			makeMove(position)
 		}
+		const getMinimaxMove = (tab: Marker, player: Player): any => {
+			const playeres = { X: -1, O: 1 }
+			const vitoria = calculateWinner(tab)
+			if (vitoria) {
+				return { score: playeres[vitoria], index: -1 }
+			}
 
+			const movimentos: any = []
+			for (let i = 0; i < tab.length; i++) {
+				if (tab[i] === null) {
+					const novoTabuleiro = [...tab]
+					novoTabuleiro[i] = player
+					const movimento = getMinimaxMove(
+						novoTabuleiro,
+						player === 'X' ? 'O' : 'X',
+					)
+					movimento.index = i
+					movimentos.push(movimento)
+				}
+			}
+
+			if (player === 'O') {
+				const melhorMovimento = movimentos.reduce(
+					(melhor, movimento) =>
+						melhor.score > movimento.score ? melhor : movimento,
+					{ score: -Infinity },
+				)
+				return melhorMovimento
+			} else {
+				const melhorMovimento = movimentos.reduce(
+					(melhor, movimento) =>
+						melhor.score < movimento.score ? melhor : movimento,
+					{ score: Infinity },
+				)
+				return melhorMovimento
+			}
+		}
 		const makeMove = (index: number) => {
 			if (markers[index] === null && !winner) {
 				const newMarkers = [...markers]
@@ -150,35 +148,23 @@ export default function ChickenGame() {
 		}
 
 		const winner = calculateWinner(markers)
-
-		if (winner === 'X') {
-			alert('Player X Won!')
-			resetPlay()
-		} else if (winner === 'O') {
-			alert('Player O Won!')
-			resetPlay()
-		} else if (winner === 'tie') {
-			alert('Empate')
-			resetPlay()
+		if (winner) {
+			set_winner(winner === 'tie' ? 'Empate' : `${winner}`)
 		}
 
-		if (isComputer) {
-			if (active_player === 'O' && !winner) {
-				const timeout = setTimeout(() => {
-					play_with_computer()
-				}, 500)
-				return () => clearTimeout(timeout)
-			}
+		if (isComputer && active_player === 'O' && !winner) {
+			const timeout = setTimeout(() => {
+				play_with_computer()
+			}, 500)
+			return () => clearTimeout(timeout)
 		}
 	}, [
 		active_player,
 		isComputer,
 		markers,
-		getMinimaxMove,
 		setMarkers,
 		set_active_player,
 		set_winner,
-		winner,
 	])
 
 	const displayRealTimeMessage = (winner: Winner, active_player: Player) => {
@@ -192,8 +178,6 @@ export default function ChickenGame() {
 			return `Jogador atual: ${active_player}`
 		}
 	}
-
-	console.log('isComputer', isComputer)
 
 	return (
 		<>
@@ -210,6 +194,10 @@ export default function ChickenGame() {
 						<Text>
 							{isComputer ? 'Jogar com Amigo' : 'Jogar com Computador'}
 						</Text>
+					</TouchableOpacity>
+
+					<TouchableOpacity onPress={resetPlay} style={styles.buttonChangeType}>
+						<Text>Reiniciar jogo</Text>
 					</TouchableOpacity>
 				</View>
 				<View style={styles.mainTabContainer}>
@@ -353,6 +341,7 @@ const styles = StyleSheet.create({
 	buttonChangeType: {
 		width: 200,
 		height: 50,
+		marginTop: 10,
 		backgroundColor: '#FFFFFF',
 		borderRadius: 18,
 		alignItems: 'center',
