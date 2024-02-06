@@ -4,9 +4,10 @@ import Colors from '@/constants/Colors'
 import { fonts } from '@/constants/fonts'
 
 export interface MediaCardModularProps {
+	id?: string
 	imageUri: string | number
 	title: string
-	href: Route<string>
+	href: Route<any>
 	duration: string
 }
 

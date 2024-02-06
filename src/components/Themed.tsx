@@ -65,7 +65,11 @@ export const ImageSKia = ({
 	height,
 	image_url_import,
 }: ImageSKiaProps) => {
-	const image = useImage(image_url_import)
+	let image = useImage(image_url_import)
+	if (typeof image_url_import !== 'number') {
+		const data = Skia.Data.fromBase64(image_url_import as string)
+		image = Skia.Image.MakeImageFromEncoded(data)
+	}
 	return (
 		<>
 			{/* eslint-disable-next-line jsx-a11y/alt-text */}

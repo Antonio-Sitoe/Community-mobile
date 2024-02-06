@@ -9,7 +9,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { View, Text, StyleSheet } from 'react-native'
 import { SliderModular } from './Slider'
 import { Slider } from 'react-native-awesome-slider'
-import { useSharedValue } from 'react-native-reanimated'
+import { useSharedValue, withSpring } from 'react-native-reanimated'
 
 const BTN_WIDTH_AND_HEIGT = 50
 
@@ -87,7 +87,7 @@ export const FooterModular = ({
 					startFromZero
 					value={scale}
 					setValue={setScale}
-					min={0.5}
+					min={0}
 					max={4}
 				/>
 				<TouchableOpacity style={styles.btn} onPress={onAddZoom}>
@@ -160,6 +160,9 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end',
 		backgroundColor: Colors.light.darkSlateGray,
 		paddingBottom: 10,
+		position: 'absolute',
+		bottom: 0,
+		right: 0,
 	},
 	btnWidth: {
 		backgroundColor: Colors.light.ebony,

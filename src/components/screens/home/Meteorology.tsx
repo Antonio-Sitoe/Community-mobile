@@ -8,7 +8,7 @@ import Colors from '@/constants/Colors'
 import { useWeather } from '@/contexts/LocationContext'
 
 export function Meteorology() {
-	const { data, isLoading, refetchWeather } = useWeather()
+	const { data, isLoading } = useWeather()
 	const WeatherIcon: any = data && ChooseWeatherIcon(data?.today.icon_id)
 
 	return (
@@ -45,7 +45,13 @@ export function Meteorology() {
 								{data?.nextDays.map((item, i) => {
 									const IconSVG = ChooseWeatherIcon(item.icon_id)
 									return (
-										<View key={i} style={{ alignItems: 'center' }}>
+										<View
+											key={i}
+											style={{
+												alignItems: 'center',
+												width: 140,
+											}}
+										>
 											<Text style={styles.mainWeatherText}>
 												{String(item?.date)}
 											</Text>
@@ -72,10 +78,7 @@ export function Meteorology() {
 						Powered By
 					</Text>
 					<View style={styles.mainCardWhiteSmokeContainer}>
-						<TouchableOpacity
-							style={styles.cardWhitesmoke}
-							onPress={refetchWeather}
-						/>
+						<TouchableOpacity style={styles.cardWhitesmoke} />
 						<TouchableOpacity style={styles.cardWhitesmoke} />
 					</View>
 				</View>
@@ -134,7 +137,6 @@ const styles = StyleSheet.create({
 	},
 	ScrollviewCards: {
 		paddingTop: 20,
-		gap: 50,
 		paddingRight: 40,
 	},
 	mainWeatherText: {
@@ -165,5 +167,7 @@ const styles = StyleSheet.create({
 		height: 70,
 		backgroundColor: Colors.light.smokeWhite,
 		borderRadius: 12,
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 })

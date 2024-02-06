@@ -1,17 +1,23 @@
 import MediaPlayer, { PlaylistItem } from '@/components/MediaPlayer'
+import { sliceStringsChars } from '@/utils'
+import { useLocalSearchParams } from 'expo-router'
+
+interface Video {
+	title: string
+	duration: string
+	imageUri: number
+	video_source: number
+	category_name: string
+}
 
 export default function NewsPappersEdition() {
-	const PLAYLIST = [
-		new PlaylistItem(
-			'Big Buck Bunny',
-			require('@/assets/Audio/big_buck_bunny.mp4'),
+	const { playList, slug } = useLocalSearchParams()
+	const PLAYLIST = JSON.parse(playList as string)?.map((item: Video) => {
+		return new PlaylistItem(
+			sliceStringsChars(item.title),
+			item.video_source,
 			true,
-		),
-		new PlaylistItem(
-			"Popeye - I don't scare",
-			'https://ia800501.us.archive.org/11/items/popeye_i_dont_scare/popeye_i_dont_scare_512kb.mp4',
-			true,
-		),
-	]
-	return <MediaPlayer PLAYLIST={PLAYLIST} />
+		)
+	})
+	return <MediaPlayer PLAYLIST={PLAYLIST} index={slug} />
 }

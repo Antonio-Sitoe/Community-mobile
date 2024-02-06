@@ -17,7 +17,7 @@ import { useSharedValue, withSpring } from 'react-native-reanimated'
 import { View } from '../Themed'
 
 import { VolumeManager } from 'react-native-volume-manager'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 const Volume = ({ isDefault = true }) => {
 	const progress = useSharedValue(1)
@@ -45,12 +45,9 @@ const Volume = ({ isDefault = true }) => {
 			{isDefault ? <VolumeDark /> : <VolumeLigth />}
 			<TouchableOpacity
 				onPress={async () => {
-					console.log(progress.value)
-					if (progress.value <= 0) {
-					} else {
-						const current = progress.value - 0.07
-						await VolumeManager.setVolume(current)
-					}
+					if (progress.value <= 0) return
+					const current = progress.value - 0.07
+					await VolumeManager.setVolume(current)
 				}}
 			>
 				{isDefault ? <MinusDark /> : <Minus />}
@@ -76,7 +73,7 @@ const Volume = ({ isDefault = true }) => {
 						borderRadius: 7,
 						overflow: 'hidden',
 					}}
-					bubble={(s: number) => Math.floor(s).toString()}
+					bubble={() => ''}
 					onValueChange={async (valor) => {
 						await VolumeManager.setVolume(valor)
 					}}
@@ -84,12 +81,9 @@ const Volume = ({ isDefault = true }) => {
 			</View>
 			<TouchableOpacity
 				onPress={async () => {
-					console.log(progress.value)
-					if (progress.value >= 1) {
-					} else {
-						const current = progress.value + 0.07
-						await VolumeManager.setVolume(current)
-					}
+					if (progress.value >= 1) return
+					const current = progress.value + 0.07
+					await VolumeManager.setVolume(current)
 				}}
 			>
 				{isDefault ? <PlusDark /> : <Plus />}

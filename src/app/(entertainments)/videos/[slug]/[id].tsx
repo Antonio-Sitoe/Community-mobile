@@ -1,26 +1,24 @@
 import MediaPlayer, { PlaylistItem } from '@/components/MediaPlayer'
+import { sliceStringsChars } from '@/utils'
 import { useLocalSearchParams } from 'expo-router'
 
-export default function NewsPappersEdition() {
-	const { id } = useLocalSearchParams()
-	console.log(id)
-	const PLAYLIST = [
-		new PlaylistItem(
-			'Big Buck Bunny',
-			require('@/assets/Audio/big_buck_bunny.mp4'),
-			true,
-		),
-		new PlaylistItem(
-			"Popeye - I don't scare",
-			require('@/assets/Audio/pexels-marta.mp4'),
-			true,
-		),
+interface Video {
+	title: string
+	duration: string
+	imageUri: number
+	video_source: number
+	category_name: string
+}
 
-		new PlaylistItem(
-			"Demo - I don't scare",
-			require('@/assets/Audio/1080p.mp4'),
+export default function NewsPappersEdition() {
+	const { playList, id } = useLocalSearchParams()
+
+	const PLAYLIST = JSON.parse(playList as string)?.map((item: Video) => {
+		return new PlaylistItem(
+			sliceStringsChars(item.title),
+			item.video_source,
 			true,
-		),
-	]
+		)
+	})
 	return <MediaPlayer PLAYLIST={PLAYLIST} index={id} />
 }

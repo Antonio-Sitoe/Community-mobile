@@ -1,0 +1,40 @@
+{
+	"data": [
+		{
+			"id": 1,
+			"name": "Nutrição",
+			"icon": "",
+			"type": "videos"
+		},
+		{
+			"id": 2,
+			"name": "Saude",
+			"icon": "",
+			"type": "videos"
+		},
+		{
+			"id": 3,
+			"name": "Agricultura",
+			"icon": "",
+			"type": "videos"
+		},
+		{
+			"id": 4,
+			"name": "Higiene",
+			"icon": "",
+			"type": "videos"
+		},
+		{
+			"id": 5,
+			"name": "Telenovelas",
+			"icon": "",
+			"type": "Novelas"
+		},
+		{
+			"id": 6,
+			"name": "Radionovelas",
+			"icon": "",
+			"type": "Novelas"
+		}
+	]
+}

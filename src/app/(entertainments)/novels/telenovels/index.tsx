@@ -1,43 +1,36 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import React from 'react'
-import { Link, Route } from 'expo-router'
+import { Route, useLocalSearchParams } from 'expo-router'
 import { HeaderModular } from '@/components/ui/HeaderModular'
 import {
 	MediaCardModular,
 	MediaCardModularProps,
 } from '@/components/ui/MediaCardModular'
 
+import { videos } from '@/utils/faker/genarate_videos'
+
 const VideoNovelasList = () => {
-	const teleNovelasList: MediaCardModularProps[] = [
-		{
-			duration: '12 minutos',
-			href: '/(entertainments)/novels/telenovels/6' as Route<string>,
-			imageUri: require('@/assets/Thumbnails/Retângulo_502.png'),
-			title: 'Aquele Papo: Episódio 1',
-		},
-		{
-			duration: '23 minutos',
-			href: '/(entertainments)/novels/telenovels/6' as Route<string>,
-			imageUri: require('@/assets/Thumbnails/Retângulo_502.png'),
-			title: 'Aquele Papo: Episódio 2',
-		},
-		{
-			duration: '26 minutos',
-			href: '/(entertainments)/novels/telenovels/6' as Route<string>,
-			imageUri: require('@/assets/Thumbnails/Retângulo_502.png'),
-			title: 'Aquele Papo: Episódio 3',
-		},
-		{
-			duration: '60 minutos',
-			href: '/(entertainments)/novels/telenovels/6' as Route<string>,
-			imageUri: require('@/assets/Thumbnails/Retângulo_502.png'),
-			title: 'Aquele Papo: Episódio 4',
-		},
-	]
+	const { id, name } = useLocalSearchParams()
+	const teleNovelasList: MediaCardModularProps[] = videos.data
+		.filter((item) => item?.category_id === Number(id))
+		.map((item, index, playList) => {
+			return {
+				duration: item.duration,
+				href: {
+					pathname:
+						`/(entertainments)/novels/telenovels/${index}` as Route<string>,
+					params: {
+						playList: JSON.stringify(playList),
+					},
+				},
+				imageUri: item.imageUri,
+				title: item.title,
+			}
+		})
 
 	return (
 		<>
-			<HeaderModular isDefault={false} title="Aquele Papo" />
+			<HeaderModular isDefault={false} title={`${name}`} />
 			<View style={{ flex: 1 }}>
 				<ScrollView
 					contentContainerStyle={{
@@ -66,5 +59,3 @@ const VideoNovelasList = () => {
 }
 
 export default VideoNovelasList
-
-const styles = StyleSheet.create({})

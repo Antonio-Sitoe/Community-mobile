@@ -1,21 +1,29 @@
 import { PdfViewer } from '@/components/PdfViewer/PdfViewer'
 import { HeaderModular } from '@/components/ui/HeaderModular'
 import { useLocalSearchParams } from 'expo-router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function MagazideReader() {
-	const { id } = useLocalSearchParams()
+	const { title, file } = useLocalSearchParams()
 	const [isFullScrean, setFullScrean] = useState(false)
+	const [show, setShow] = useState(false)
+
+	console.log(file, 'dsd0')
+
+	useEffect(() => {
+		setShow(true)
+	}, [])
 
 	return (
 		<>
 			{isFullScrean === false && (
-				<HeaderModular isDefault={false} title="Xonguila N32" />
+				<HeaderModular isDefault={false} title={title as string} />
 			)}
 			<PdfViewer
-				url="http://samples.leanpub.com/thereactnativebook-sample.pdf"
+				url={`data:application/pdf;base64,${file}`}
 				isFullScrean={isFullScrean}
 				setFullScrean={setFullScrean}
+				show={show}
 			/>
 		</>
 	)

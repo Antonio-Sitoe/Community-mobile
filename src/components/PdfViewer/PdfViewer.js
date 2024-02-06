@@ -22,7 +22,7 @@ export class PdfViewer extends React.Component {
 		super(props)
 		this.state = {
 			page: 1,
-			scale: 1,
+			scale: 0.5,
 			police: 0,
 			minScale: 0.5,
 			maxScale: 4,
@@ -50,7 +50,7 @@ export class PdfViewer extends React.Component {
 		if (this.state.scale < this.state.maxScale) {
 			this.setState({ ...this.state, scale: this.state.scale + 0.5 })
 		} else {
-			this.setState({ ...this.state, scale: 1.5 })
+			this.setState({ ...this.state, scale: 0.5 })
 		}
 	}
 
@@ -58,7 +58,6 @@ export class PdfViewer extends React.Component {
 		if (this.timeout) {
 			clearTimeout(this.timeout)
 		}
-
 		this.setState({
 			...this.state,
 			page,
@@ -110,28 +109,43 @@ export class PdfViewer extends React.Component {
 								: styles.pdContainer,
 						]}
 					>
-						<PDF
-							ref={this.pdfRef}
-							horizontal={true}
-							scale={this.state.scale}
-							minScale={this.state.minScale}
-							maxScale={this.state.maxScale}
-							spacing={20}
-							fitPolicy={this.state.police}
-							showsHorizontalScrollIndicator={true}
-							enablePaging={true}
-							trustAllCerts={false}
-							source={this.state.pdfSource}
-							style={styles.pdf}
-							onLoadComplete={(page) => this.onLoadComplete(page)}
-							onPageChanged={(page) => this.onPageChanged(page)}
-							renderActivityIndicator={() => (
+						{this.props.show ? (
+							<PDF
+								ref={this.pdfRef}
+								horizontal={true}
+								scale={this.state.page === 1 ? 1 : this.state.scale}
+								minScale={this.state.minScale}
+								maxScale={this.state.maxScale}
+								spacing={20}
+								fitPolicy={this.state.page === 1 ? 1 : this.state.police}
+								showsHorizontalScrollIndicator={true}
+								enablePaging={this.state.page === 1}
+								trustAllCerts={true}
+								source={this.state.pdfSource}
+								style={styles.pdf}
+								onLoadComplete={(page) => this.onLoadComplete(page)}
+								onPageChanged={(page) => this.onPageChanged(page)}
+								renderActivityIndicator={() => (
+									<ActivityIndicator
+										size={60}
+										color={Colors.light.sunsetOrange}
+									/>
+								)}
+							/>
+						) : (
+							<View
+								style={{
+									flex: 1,
+									justifyContent: 'center',
+									alignItems: 'center',
+								}}
+							>
 								<ActivityIndicator
 									size={60}
 									color={Colors.light.sunsetOrange}
 								/>
-							)}
-						/>
+							</View>
+						)}
 					</View>
 					<View
 						style={[
