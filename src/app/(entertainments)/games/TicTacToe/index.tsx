@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { create } from 'zustand'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { HeaderModular } from '@/components/ui/HeaderModular'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { StyleSheet, Text, View } from 'react-native'
+import { ToastType } from 'react-native-toast-message/lib/src/types'
+import { alphaBetaAi, calculateWinner } from '@/utils/games'
+import { fonts } from '@/constants/fonts'
+import { useRouter } from 'expo-router'
+import { Audio } from 'expo-av'
+
 import Player_X from '@/assets/Icons/Game_X.svg'
 import Player_O from '@/assets/Icons/Game_Circle.svg'
 import Colors from '@/constants/Colors'
 import Toast from 'react-native-toast-message'
-import { ToastType } from 'react-native-toast-message/lib/src/types'
-import { calculateWinner, getMinimaxMove } from '@/utils/games'
-import { fonts } from '@/constants/fonts'
-import { useRouter } from 'expo-router'
-import { Audio } from 'expo-av'
 
 const win_mp3 = require('@/assets/Audio/win.mp3')
 const tap_mp3 = require('@/assets/Audio/tap.mp3')
@@ -118,7 +119,7 @@ export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 		}
 	},
 	play_with_computer: () => {
-		const position = getMinimaxMove(get().markers, 'O').index
+		const position = alphaBetaAi(get().markers, 'O')
 		get().markPosition(position)
 	},
 	resetPlay: () =>
