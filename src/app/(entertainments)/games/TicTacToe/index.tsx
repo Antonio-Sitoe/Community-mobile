@@ -2,18 +2,16 @@
 import { create } from 'zustand'
 import { useEffect } from 'react'
 import { HeaderModular } from '@/components/ui/HeaderModular'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { StyleSheet, Text, View } from 'react-native'
-import { ToastType } from 'react-native-toast-message/lib/src/types'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { alphaBetaAi, calculateWinner } from '@/utils/games'
 import { fonts } from '@/constants/fonts'
 import { Href, useRouter } from 'expo-router'
 import { Audio } from 'expo-av'
 
+import Modal from 'react-native-modal'
 import Player_X from '@/assets/Icons/Game_X.svg'
 import Player_O from '@/assets/Icons/Game_Circle.svg'
 import Colors from '@/constants/Colors'
-import Toast from 'react-native-toast-message'
 
 const win_mp3 = require('@/assets/Audio/win.mp3')
 const tap_mp3 = require('@/assets/Audio/tap.mp3')
@@ -27,26 +25,22 @@ type Count = {
 	o: number
 }
 
-type ToastTypeProps = { text: string; type: ToastType }
-
 interface IusePlayGameProps {
 	active_player: Player
 	markers: Marker
 	isComputer: boolean
 	winner: Winner
+	lastWinner: Winner
 	count: Count
+	isModalVisible: boolean
 	timeout: null | NodeJS.Timeout
 	resetPlay(): void
-	showToast(obj: ToastTypeProps): void
+	showToast(obj?: boolean): void
 	play_with_computer(): void
 	componentAmount(): void
 	markPosition(index: number): void
-	setCount(count: Count): void
 	handleChangeGameType(): void
-	setMarkers(marker: Marker): void
-	set_winner(player: Winner): void
 	calculeCount(winner: Winner): Count
-	set_active_player(player: Player): void
 	sound: Audio.Sound | null
 	playTapSound: () => Promise<void>
 	playWinnerSound: () => Promise<void>
@@ -54,16 +48,17 @@ interface IusePlayGameProps {
 }
 export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 	active_player: 'X',
+	isModalVisible: false,
 	sound: null,
 	markers: Array(9).fill(null),
 	isComputer: false,
 	winner: null,
 	timeout: null,
+	lastWinner: '',
 	count: {
 		x: 0,
 		o: 0,
 	},
-	setCount: (count: Count) => set((state) => ({ ...state, count })),
 	calculeCount: (winner: Player) => {
 		const count = get().count
 		if (winner === 'O') {
@@ -73,10 +68,7 @@ export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 		}
 		return count
 	},
-	set_winner: (winner: Player | null) => set((state) => ({ ...state, winner })),
-	set_active_player: (player: Player) =>
-		set((state) => ({ ...state, active_player: player })),
-	setMarkers: (markers) => set((state) => ({ ...state, markers })),
+	showToast: (isModalVisible = true) => set(() => ({ isModalVisible })),
 	handleChangeGameType: () =>
 		set((state) => {
 			state.resetPlay()
@@ -88,7 +80,6 @@ export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 				},
 			}
 		}),
-
 	markPosition: (index: number) => {
 		get().playTapSound()
 		if (get().timeout) {
@@ -114,7 +105,16 @@ export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 					...state,
 					count,
 					winner: winner === 'tie' ? 'Empate' : `${winner}`,
+					lastWinner: winner === 'tie' ? 'Empate' : `${winner}`,
 				}))
+
+				if (winner === 'O' && get().isComputer) {
+					get().playTieSound()
+				} else if (winner === 'tie') {
+					get().playTieSound()
+				} else {
+					get().playWinnerSound()
+				}
 			}
 		}
 	},
@@ -138,20 +138,6 @@ export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 				},
 			}
 		}),
-	showToast: ({ text, type }: ToastTypeProps) => {
-		Toast.show({
-			type,
-			text1: text,
-			swipeable: true,
-			position: 'bottom',
-			visibilityTime: 1000,
-			bottomOffset: 350,
-			text1Style: {
-				fontSize: 18,
-				fontFamily: fonts.fontFamyle.Gilroy_extraBold,
-			},
-		})
-	},
 
 	playTapSound: async () => {
 		const { sound } = await Audio.Sound.createAsync(tap_mp3)
@@ -186,7 +172,9 @@ export default function TicTacToe() {
 		markPosition,
 		playWinnerSound,
 		playTieSound,
+		isModalVisible,
 		sound,
+		lastWinner,
 	} = usePlayGame()
 
 	function handleOpenInstructions() {
@@ -211,22 +199,13 @@ export default function TicTacToe() {
 				return `Vencedor: ${winner}`
 			}
 		} else {
-			return `Jogador atual: ${active_player}`
+			return `Agora Joga: ${active_player}`
 		}
 	}
 
 	useEffect(() => {
 		if (winner) {
-			showToast({
-				text: winner === 'Empate' ? 'Empate' : `Vencedor: ${winner}`,
-				type: winner === 'Empate' ? 'info' : 'success',
-			})
-			console.log('winner', winner)
-			if (winner !== 'Empate') {
-				playWinnerSound()
-			} else {
-				playTieSound()
-			}
+			showToast(true)
 			const timeout = setTimeout(resetPlay, 500)
 			return () => clearTimeout(timeout)
 		}
@@ -287,59 +266,199 @@ export default function TicTacToe() {
 		<>
 			<HeaderModular isDefault={false} title="Jogo da Galo" />
 			<View style={styles.container}>
-				<View>
-					<Text style={styles.mensagem}>
+				<View style={styles.mainText}>
+					<Text style={styles.textTitle}>
 						{displayRealTimeMessage(winner, active_player)}
 					</Text>
-					<Text style={styles.mensagem}>Jogador X: {count?.x}</Text>
-					<Text style={styles.mensagem}>Jogador O: {count?.o}</Text>
-					<TouchableOpacity
-						onPress={handleChangeGameType}
-						style={styles.buttonChangeType}
-					>
-						<Text>
-							{isComputer ? 'Jogar com Amigo' : 'Jogar com Computador'}
-						</Text>
-					</TouchableOpacity>
-
-					<TouchableOpacity onPress={resetPlay} style={styles.buttonChangeType}>
-						<Text>Reiniciar jogo</Text>
-					</TouchableOpacity>
 				</View>
-				<View style={styles.mainTabContainer}>
-					<View style={styles.mainContainer}>
-						{markers.map((_, index) => {
-							return <SquareButton key={index} index={index} />
-						})}
+
+				<View style={styles.Main}>
+					<View style={styles.MainInfo}>
+						<View style={styles.MainCard}>
+							<Text style={styles.MainCardTitle}>Resultado</Text>
+							<View style={styles.MainView}>
+								<Text style={styles.player}>Jogador X</Text>
+								<Text style={styles.player}>
+									{count?.x} | {count?.o}
+								</Text>
+								<Text style={styles.player}>Jogador O</Text>
+							</View>
+						</View>
+
+						<TouchableOpacity
+							onPress={handleChangeGameType}
+							style={[
+								styles.buttonChangeType,
+								{
+									backgroundColor: Colors.light.sunsetOrange,
+								},
+							]}
+						>
+							<Text
+								style={{
+									fontFamily: fonts.fontFamyle.Gilroy_extraBold,
+									color: Colors.light.white,
+								}}
+							>
+								{isComputer
+									? 'Jogar com outro Jogador'
+									: 'Jogar com Computador'}
+							</Text>
+						</TouchableOpacity>
+
+						<TouchableOpacity
+							onPress={resetPlay}
+							style={styles.buttonChangeType}
+						>
+							<Text
+								style={{
+									fontFamily: fonts.fontFamyle.Gilroy_extraBold,
+									color: Colors.light.sunsetOrange,
+								}}
+							>
+								Reiniciar jogo
+							</Text>
+						</TouchableOpacity>
+					</View>
+					<View style={styles.mainTabContainer}>
+						<View style={styles.mainContainer}>
+							{markers.map((_, index) => {
+								return <SquareButton key={index} index={index} />
+							})}
+						</View>
+					</View>
+					<View style={styles.rigthContainer}>
+						<TouchableOpacity
+							style={styles.rigthContainerButton}
+							onPress={handleOpenInstructions}
+						>
+							<Text style={styles.rigthContainerButtonText}>Instruções</Text>
+						</TouchableOpacity>
 					</View>
 				</View>
-				<View style={styles.rigthContainer}>
-					<TouchableOpacity
-						style={styles.rigthContainerButton}
-						onPress={handleOpenInstructions}
-					>
-						<Text style={styles.rigthContainerButtonText}>Instruções</Text>
-					</TouchableOpacity>
-				</View>
 			</View>
+			<Modal
+				isVisible={isModalVisible}
+				backdropColor={Colors.light.sunsetOrange}
+				backdropOpacity={0.9}
+				animationIn="zoomInDown"
+				animationOut="zoomOutUp"
+				animationInTiming={600}
+				animationOutTiming={600}
+				backdropTransitionInTiming={600}
+				backdropTransitionOutTiming={600}
+				onBackdropPress={() => showToast(false)}
+			>
+				<View style={styles.modalContainer}>
+					<View style={styles.modalContent}>
+						<Text style={styles.modalTitle}>
+							{lastWinner === 'Empate'
+								? 'Empate!'
+								: `Jogador ${lastWinner} Venceu!`}
+						</Text>
+						<TouchableOpacity
+							style={[styles.buttonChangeType, styles.modalButton]}
+							onPress={() => showToast(false)}
+						>
+							<Text
+								style={{
+									fontFamily: fonts.fontFamyle.Gilroy_extraBold,
+									color: Colors.light.sunsetOrange,
+								}}
+							>
+								Continuar
+							</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
+			</Modal>
 		</>
 	)
 }
 
 const styles = StyleSheet.create({
+	modalContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: '100%',
+	},
+
+	modalContent: {
+		flex: 1,
+		width: '100%',
+		height: '100%',
+		justifyContent: 'center',
+		padding: 20,
+		borderRadius: 10,
+		alignItems: 'center',
+	},
+	modalButton: {
+		width: 384,
+		backgroundColor: Colors.light.white,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	modalTitle: {
+		fontFamily: fonts.fontFamyle.Gilroy_extraBold,
+		color: Colors.light.white,
+		fontSize: fonts.size.xl + 30,
+		marginBottom: 30,
+	},
 	container: {
 		flex: 1,
+		backgroundColor: Colors.light.darkSlateGray,
+		paddingHorizontal: 50,
+	},
+	MainInfo: {
+		flexBasis: 260,
+	},
+	MainView: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		marginTop: 25,
+	},
+	player: {
+		fontSize: 13,
+		fontFamily: fonts.fontFamyle.Gilroy_extraBold,
+		color: Colors.light.white,
+	},
+	MainCard: {
+		backgroundColor: '#E35136',
+		borderRadius: 15,
+		paddingHorizontal: 14,
+		paddingVertical: 18,
+	},
+	MainCardTitle: {
+		fontSize: fonts.size.sm,
+		fontFamily: fonts.fontFamyle.Gilroy_extraBold,
+		color: Colors.light.white,
+	},
+	Main: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		backgroundColor: Colors.light.darkSlateGray,
-		paddingVertical: 50,
-		paddingHorizontal: 50,
+		gap: 60,
 	},
 	mainTabContainer: {
 		flex: 1,
-		width: 500,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	mainText: {
+		marginTop: 25,
+		marginBottom: 15,
+		alignItems: 'center',
+	},
+	textTitle: {
+		width: 150,
+		marginLeft: 60,
+		color: Colors.light.white,
+		fontSize: fonts.size.md,
+		fontFamily: fonts.fontFamyle.Gilroy_extraBold,
 	},
 	rigthContainer: {
+		width: 'auto',
 		flexDirection: 'column',
 		justifyContent: 'flex-end',
 	},
@@ -357,17 +476,17 @@ const styles = StyleSheet.create({
 		fontFamily: fonts.fontFamyle.Gilroy_extraBold,
 	},
 	buttonChangeType: {
-		width: 200,
 		height: 50,
-		marginTop: 10,
+		marginTop: 20,
 		backgroundColor: Colors.light.smokeWhite,
-		borderRadius: 18,
+		borderRadius: 33,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 	mainContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
+		marginRight: 90,
 		flexWrap: 'wrap',
 		width: 800,
 		borderRadius: 18,
@@ -377,7 +496,6 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 		color: Colors.light.white,
 	},
-
 	ceil: {
 		width: 201,
 		height: 201,

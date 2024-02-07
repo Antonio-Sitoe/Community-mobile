@@ -1,7 +1,6 @@
 import '@/lib/location'
 
 import FontAwesome from '@expo/vector-icons/FontAwesome'
-import Toast from 'react-native-toast-message'
 
 import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
@@ -69,7 +68,6 @@ function RootLayoutNav() {
 					animation: 'flip',
 				}}
 			/>
-			<Toast />
 		</LocationStorage>
 	)
 }
