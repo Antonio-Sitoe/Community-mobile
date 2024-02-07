@@ -7,7 +7,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import { ToastType } from 'react-native-toast-message/lib/src/types'
 import { alphaBetaAi, calculateWinner } from '@/utils/games'
 import { fonts } from '@/constants/fonts'
-import { useRouter } from 'expo-router'
+import { Href, useRouter } from 'expo-router'
 import { Audio } from 'expo-av'
 
 import Player_X from '@/assets/Icons/Game_X.svg'
@@ -190,7 +190,17 @@ export default function TicTacToe() {
 	} = usePlayGame()
 
 	function handleOpenInstructions() {
-		router.push('/(entertainments)/games/TicTacToe/instructions')
+		router.push({
+			pathname: '/(entertainments)/games/TicTacToe/instructions',
+			params: {
+				text: 'Continuar a jogar',
+			},
+		} as Href<{
+			pathname: string
+			params: {
+				text: string
+			}
+		}>)
 	}
 
 	const displayRealTimeMessage = (winner: Winner, active_player: Player) => {

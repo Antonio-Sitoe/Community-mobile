@@ -1,8 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
 import { HeaderModular } from '@/components/ui/HeaderModular'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { useRouter } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import Colors from '@/constants/Colors'
 import { fonts } from '@/constants/fonts'
 import First from '@/assets/Icons/Game_1197.svg'
@@ -18,7 +17,12 @@ const Icon = ({ index }) => {
 }
 
 export default function Instructions() {
-	const { back } = useRouter()
+	const router = useRouter()
+	const { text } = useLocalSearchParams()
+
+	function gotoGAme() {
+		router.push('/(entertainments)/games/TicTacToe/')
+	}
 	return (
 		<>
 			<HeaderModular isDefault={false} title="Jogo da Galo" />
@@ -33,13 +37,13 @@ export default function Instructions() {
 							</View>
 							<View style={styles.wrapperChildTexts}>
 								<Text style={styles.wrapperChildText}>
-									CustomAlert é um componente de modal customizado que aceita
-									propr
+									No jogo do galo, jogadores escolhem entre {`"X"`} e {`"O"`}{' '}
+									para formar filas no tabuleiro.
 								</Text>
 								<Text style={styles.wrapperChildText}>
-									CustomAlert é um componente de modal customizado que aceita
-									propr ustomAlert é um componente de modal customizado que
-									aceita propr
+									Estrategicamente, começar com {`"X"`} na casa do meio otimiza
+									as chances de vitória, com quatro possíveis combinações para
+									formar uma fila de três {`"X"`} ou {`"O"`}.
 								</Text>
 							</View>
 						</View>
@@ -50,12 +54,13 @@ export default function Instructions() {
 							</View>
 							<View style={styles.wrapperChildTexts}>
 								<Text style={styles.wrapperChildText}>
-									CustomAlert é um componente de modal customizado que aceita
-									propr omAlert é um componente de modal
+									Os jogadores alternam suas jogadas, desenhando seus
+									respectivos símbolos no tabuleiro.
 								</Text>
 								<Text style={styles.wrapperChildText}>
-									CustomAlert é um componente de modal customizado que aceita
-									propr ustomAlert é um
+									O objetivo é evitar que o oponente forme uma fila e ao mesmo
+									tempo concentrar-se em sua própria estratégia para alcançar a
+									vitória.
 								</Text>
 							</View>
 						</View>
@@ -68,21 +73,26 @@ export default function Instructions() {
 							</View>
 							<View style={styles.wrapperChildTexts}>
 								<Text style={styles.wrapperChildText}>
-									CustomAlert é um componente de modal customizado que aceita
-									propr
+									Os jogadores alternam suas jogadas até que um deles vença ao
+									formar uma linha de três símbolos consecutivos, seja
+									horizontal, vertical ou diagonal.
 								</Text>
 								<Text style={styles.wrapperChildText}>
-									CustomAlert é um componente de modal customizado que aceita
-									propr ustomAlert é um componente de modal customizado que
-									aceita propr
+									Em caso de habilidade semelhante entre os jogadores, as
+									chances de empate são significativas.
 								</Text>
 							</View>
 						</View>
 					</View>
 				</View>
 				<View style={styles.rigthContainer}>
-					<TouchableOpacity style={styles.rigthContainerButton} onPress={back}>
-						<Text style={styles.rigthContainerButtonText}>Iniciar Jogo</Text>
+					<TouchableOpacity
+						style={styles.rigthContainerButton}
+						onPress={gotoGAme}
+					>
+						<Text style={styles.rigthContainerButtonText}>
+							{text || 'Iniciar Jogo'}
+						</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -95,7 +105,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingHorizontal: 50,
 		position: 'relative',
-		paddingVertical: 80,
+		paddingVertical: 50,
 		backgroundColor: '#F5F5F5',
 	},
 	wrapperContainer: { flex: 1, gap: 80 },
@@ -123,7 +133,7 @@ const styles = StyleSheet.create({
 	wrapperChild: {
 		flexDirection: 'row',
 		alignItems: 'flex-start',
-		gap: 20,
+		gap: 23,
 	},
 	wrapperChildFlex: {
 		flexDirection: 'row',
@@ -147,7 +157,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end',
 	},
 	rigthContainerButton: {
-		width: 200,
+		width: 250,
 		height: 60,
 		backgroundColor: Colors.light.sunsetOrange,
 		borderRadius: 30,
