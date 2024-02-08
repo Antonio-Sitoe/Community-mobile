@@ -33,6 +33,7 @@ interface IusePlayGameProps {
 	lastWinner: Winner
 	count: Count
 	isModalVisible: boolean
+	isBlocking: boolean
 	timeout: null | NodeJS.Timeout
 	resetPlay(): void
 	showToast(obj?: boolean): void
@@ -48,6 +49,7 @@ interface IusePlayGameProps {
 }
 export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 	active_player: 'X',
+	isBlocking: false,
 	isModalVisible: false,
 	sound: null,
 	markers: Array(9).fill(null),
@@ -81,6 +83,10 @@ export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 			}
 		}),
 	markPosition: (index: number) => {
+		set((state) => ({
+			...state,
+			isBlocking: true,
+		}))
 		get().playTapSound()
 		if (get().timeout) {
 			clearTimeout(get().timeout as NodeJS.Timeout)
@@ -117,6 +123,10 @@ export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
 				}
 			}
 		}
+		set((state) => ({
+			...state,
+			isBlocking: false,
+		}))
 	},
 	play_with_computer: () => {
 		const position = alphaBetaAi(get().markers, 'O')
@@ -175,6 +185,7 @@ export default function TicTacToe() {
 		isModalVisible,
 		sound,
 		lastWinner,
+		isBlocking,
 	} = usePlayGame()
 
 	function handleOpenInstructions() {
@@ -241,6 +252,7 @@ export default function TicTacToe() {
 
 		return (
 			<TouchableOpacity
+				disabled={isBlocking}
 				style={[
 					styles.ceil,
 					{
