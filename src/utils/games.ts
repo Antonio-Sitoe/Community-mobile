@@ -1,4 +1,6 @@
-export const calculateWinner = (squares) => {
+import { Marker, Player } from '@/hooks/useTicTacToeGame'
+
+export const calculateWinner = (squares: Marker) => {
 	const lines = [
 		[0, 1, 2],
 		[3, 4, 5],
@@ -21,7 +23,7 @@ export const calculateWinner = (squares) => {
 	return null
 }
 
-export function alphaBetaAi(markers, player) {
+export function alphaBetaAi(markers: Marker, player: Player) {
 	const PLAYER_X = 'X'
 	const PLAYER_O = 'O'
 	const WINNING_COMBINATIONS = [
@@ -34,16 +36,16 @@ export function alphaBetaAi(markers, player) {
 		[0, 4, 8],
 		[2, 4, 6],
 	]
-	function isBoardFull(board) {
+	function isBoardFull(board: Marker) {
 		return !board.includes(null)
 	}
-	const getEmptyPositions = (currentBoard) => {
+	const getEmptyPositions = (currentBoard: Marker): number[] => {
 		return currentBoard.reduce((empty, cell, index) => {
-			if (!cell) empty.push(index)
+			if (!cell) empty.push(index as never)
 			return empty
 		}, [])
 	}
-	function checkWinner(board) {
+	function checkWinner(board: Marker) {
 		for (const [a, b, c] of WINNING_COMBINATIONS) {
 			if (board[a] && board[a] === board[b] && board[a] === board[c]) {
 				return board[a]
@@ -51,7 +53,7 @@ export function alphaBetaAi(markers, player) {
 		}
 		return null
 	}
-	const evaluateBoard = (currentBoard, player) => {
+	const evaluateBoard = (currentBoard: Marker, player: Player) => {
 		const winner = checkWinner(currentBoard)
 
 		if (winner === player) {
@@ -63,13 +65,13 @@ export function alphaBetaAi(markers, player) {
 		return 0
 	}
 	const alphaBetaPruning = (
-		currentBoard,
-		player,
+		currentBoard: Marker,
+		player: Player,
 		depth = 3,
 		alpha = -Infinity,
 		beta = Infinity,
 		maximizingPlayer = true,
-	) => {
+	): number => {
 		if (depth === 0 || checkWinner(currentBoard) || isBoardFull(currentBoard)) {
 			return evaluateBoard(currentBoard, player)
 		}
@@ -78,7 +80,7 @@ export function alphaBetaAi(markers, player) {
 
 		if (maximizingPlayer) {
 			let maxEval = -Infinity
-			let bestMove = null
+			let bestMove: null | number = null
 
 			for (const position of emptyPositions) {
 				const newBoard = currentBoard.slice()
@@ -105,7 +107,7 @@ export function alphaBetaAi(markers, player) {
 			}
 
 			if (depth === 3) {
-				return bestMove
+				return bestMove as number
 			}
 
 			return maxEval

@@ -1,174 +1,17 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-import { create } from 'zustand'
 import { useEffect } from 'react'
 import { HeaderModular } from '@/components/ui/HeaderModular'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import { alphaBetaAi, calculateWinner } from '@/utils/games'
 import { fonts } from '@/constants/fonts'
 import { Href, useRouter } from 'expo-router'
-import { Audio } from 'expo-av'
 
 import Modal from 'react-native-modal'
 import Player_X from '@/assets/Icons/Game_X.svg'
 import Player_O from '@/assets/Icons/Game_Circle.svg'
 import Colors from '@/constants/Colors'
-
-const win_mp3 = require('@/assets/Audio/win.mp3')
-const tap_mp3 = require('@/assets/Audio/tap.mp3')
-const tie_mp3 = require('@/assets/Audio/tie.mp3')
-
-type Player = 'X' | 'O' | 'tie'
-type Winner = Player | null | string
-type Marker = Array<number | string | null>
-type Count = {
-	x: number
-	o: number
-}
-
-interface IusePlayGameProps {
-	active_player: Player
-	markers: Marker
-	isComputer: boolean
-	winner: Winner
-	lastWinner: Winner
-	count: Count
-	isModalVisible: boolean
-	isBlocking: boolean
-	timeout: null | NodeJS.Timeout
-	resetPlay(): void
-	showToast(obj?: boolean): void
-	play_with_computer(): void
-	componentAmount(): void
-	markPosition(index: number): void
-	handleChangeGameType(): void
-	calculeCount(winner: Winner): Count
-	sound: Audio.Sound | null
-	playTapSound: () => Promise<void>
-	playWinnerSound: () => Promise<void>
-	playTieSound: () => Promise<void>
-}
-export const usePlayGame = create<IusePlayGameProps>((set, get) => ({
-	active_player: 'X',
-	isBlocking: false,
-	isModalVisible: false,
-	sound: null,
-	markers: Array(9).fill(null),
-	isComputer: false,
-	winner: null,
-	timeout: null,
-	lastWinner: '',
-	count: {
-		x: 0,
-		o: 0,
-	},
-	calculeCount: (winner: Player) => {
-		const count = get().count
-		if (winner === 'O') {
-			count.o = count.o + 1
-		} else if (winner === 'X') {
-			count.x = count.x + 1
-		}
-		return count
-	},
-	showToast: (isModalVisible = true) => set(() => ({ isModalVisible })),
-	handleChangeGameType: () =>
-		set((state) => {
-			state.resetPlay()
-			return {
-				isComputer: !state.isComputer,
-				count: {
-					o: 0,
-					x: 0,
-				},
-			}
-		}),
-	markPosition: (index: number) => {
-		set((state) => ({
-			...state,
-			isBlocking: true,
-		}))
-		get().playTapSound()
-		if (get().timeout) {
-			clearTimeout(get().timeout as NodeJS.Timeout)
-		}
-		const markers = get().markers
-		if (markers[index] === null) {
-			const newMarkers = [...markers]
-			newMarkers[index] = get().active_player
-			set((state) => ({
-				...state,
-				markers: newMarkers,
-				active_player: state.active_player === 'X' ? 'O' : 'X',
-			}))
-			const winner = calculateWinner(newMarkers)
-			if (get().isComputer && get().active_player === 'O' && !winner) {
-				get().timeout = setTimeout(() => {
-					get().play_with_computer()
-				}, 500)
-			} else if (winner) {
-				const count = get().calculeCount(winner as Winner)
-				set((state) => ({
-					...state,
-					count,
-					winner: winner === 'tie' ? 'Empate' : `${winner}`,
-					lastWinner: winner === 'tie' ? 'Empate' : `${winner}`,
-				}))
-
-				if (winner === 'O' && get().isComputer) {
-					get().playTieSound()
-				} else if (winner === 'tie') {
-					get().playTieSound()
-				} else {
-					get().playWinnerSound()
-				}
-			}
-		}
-		set((state) => ({
-			...state,
-			isBlocking: false,
-		}))
-	},
-	play_with_computer: () => {
-		const position = alphaBetaAi(get().markers, 'O')
-		get().markPosition(position)
-	},
-	resetPlay: () =>
-		set(() => ({
-			markers: Array(9).fill(null),
-			active_player: 'X',
-			winner: null,
-		})),
-	componentAmount: () =>
-		set((state) => {
-			state.resetPlay()
-			return {
-				count: {
-					x: 0,
-					o: 0,
-				},
-			}
-		}),
-
-	playTapSound: async () => {
-		const { sound } = await Audio.Sound.createAsync(tap_mp3)
-		set({ sound })
-		await sound.playAsync()
-	},
-	playWinnerSound: async () => {
-		const { sound } = await Audio.Sound.createAsync(win_mp3)
-		set({ sound })
-		await sound.playAsync()
-	},
-	playTieSound: async () => {
-		const { sound } = await Audio.Sound.createAsync(tie_mp3)
-		set({ sound })
-		await sound.playAsync()
-	},
-}))
+import { Player, Winner, useTicTacToeGame } from '@/hooks/useTicTacToeGame'
 
 export default function TicTacToe() {
 	const router = useRouter()
-
 	const {
 		active_player,
 		markers,
@@ -186,7 +29,7 @@ export default function TicTacToe() {
 		sound,
 		lastWinner,
 		isBlocking,
-	} = usePlayGame()
+	} = useTicTacToeGame()
 
 	function handleOpenInstructions() {
 		router.push({
