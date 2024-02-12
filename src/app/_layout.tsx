@@ -1,6 +1,7 @@
 import '@/lib/location'
 
 import FontAwesome from '@expo/vector-icons/FontAwesome'
+
 import { useFonts } from 'expo-font'
 import { SplashScreen, Stack } from 'expo-router'
 import { useEffect } from 'react'
