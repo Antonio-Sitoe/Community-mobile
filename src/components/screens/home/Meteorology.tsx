@@ -1,13 +1,15 @@
 import { fonts } from '@/constants/fonts'
 import { ChooseWeatherIcon } from '@/utils/meteorology'
 import { capitalizeString } from '@/utils'
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
-import { StyleSheet, View, Text, ActivityIndicator } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
+import { StyleSheet, View, Text, ActivityIndicator, Image } from 'react-native'
 
 import Colors from '@/constants/Colors'
 import { useWeather } from '@/contexts/LocationContext'
+import { useTranslation } from 'react-i18next'
 
 export function Meteorology() {
+	const { t } = useTranslation()
 	const { data, isLoading } = useWeather()
 	const WeatherIcon: any = data && ChooseWeatherIcon(data?.today.icon_id)
 
@@ -15,7 +17,9 @@ export function Meteorology() {
 		<>
 			<View style={styles.container}>
 				<View style={{ flex: 1 }}>
-					<Text style={styles.textTitle}>Metereologia</Text>
+					<Text style={styles.textTitle}>
+						{t('screens.home.meteorology.title')}
+					</Text>
 					<View style={{ paddingVertical: 10, flex: 1 }}>
 						<View style={styles.cardMeteorlogia}>
 							{isLoading && <ActivityIndicator color="white" />}
@@ -78,8 +82,16 @@ export function Meteorology() {
 						Powered By
 					</Text>
 					<View style={styles.mainCardWhiteSmokeContainer}>
-						<TouchableOpacity style={styles.cardWhitesmoke} />
-						<TouchableOpacity style={styles.cardWhitesmoke} />
+						<Image
+							source={require('@/assets/Icons/JOGABETS-Logo.png')}
+							alt="joga betis"
+							style={styles.cardWhitesmoke}
+						/>
+						<Image
+							source={require('@/assets/Icons/TabletSolar-Logo.png')}
+							alt="joga betis"
+							style={styles.cardWhitesmoke}
+						/>
 					</View>
 				</View>
 			</View>
@@ -163,7 +175,8 @@ const styles = StyleSheet.create({
 		paddingVertical: 10,
 	},
 	cardWhitesmoke: {
-		width: 94,
+		flex: 1,
+		width: 99,
 		height: 70,
 		backgroundColor: Colors.light.smokeWhite,
 		borderRadius: 12,

@@ -1,6 +1,6 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import { en, pt } from './translations'
+import { resources } from './translations'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const STORE_LANGUAGE_KEY = 'settings.lang'
@@ -34,14 +34,6 @@ const languageDetectorPlugin = {
 			// save a user's language choice in Async storage
 			await AsyncStorage.setItem(STORE_LANGUAGE_KEY, language)
 		} catch (error) {}
-	},
-}
-const resources = {
-	en: {
-		translation: en,
-	},
-	pt: {
-		translation: pt,
 	},
 }
 

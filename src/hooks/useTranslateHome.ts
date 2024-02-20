@@ -20,10 +20,13 @@ import { useTranslation } from 'react-i18next'
 
 export const useTranslateHome = () => {
 	const { t } = useTranslation()
+	console.log(t('screens.home.entertainments.comics'))
+
 	const sectionsInfo: ArraySectios = [
 		{
-			href: '/(informations)/news/',
+			href: '',
 			cardTitles: [t('screens.home.info.newsTitle')],
+			color: Colors.light.blockColor,
 			img: {
 				imgType: 'svg',
 				x: -3,
@@ -36,7 +39,7 @@ export const useTranslateHome = () => {
 		},
 		{
 			href: '/(informations)/newspapers/',
-			cardTitles: ['Jornais'],
+			cardTitles: [t('screens.home.info.newspapersTitle')],
 			img: {
 				imgType: 'svg',
 				x: -10,
@@ -49,7 +52,7 @@ export const useTranslateHome = () => {
 		},
 		{
 			href: '/(informations)/magazines/',
-			cardTitles: ['Revistas'],
+			cardTitles: [t('screens.home.info.magazines')],
 			img: {
 				imgType: 'svg',
 				x: -10,
@@ -61,8 +64,9 @@ export const useTranslateHome = () => {
 			},
 		},
 		{
-			href: '/(informations)/education/',
-			cardTitles: ['Educação'],
+			href: '',
+			cardTitles: [t('screens.home.info.educationTitle')],
+			color: Colors.light.blockColor,
 			img: {
 				imgType: 'svg',
 				x: -22,
@@ -77,7 +81,7 @@ export const useTranslateHome = () => {
 	const sectionsEntrete: ArraySectios = [
 		{
 			href: '/(entertainments)/games/',
-			cardTitles: ['Jogos'],
+			cardTitles: [t('screens.home.entertainments.games')],
 			img: {
 				imgType: 'svg',
 				x: -10,
@@ -90,7 +94,7 @@ export const useTranslateHome = () => {
 		},
 		{
 			href: '/(entertainments)/novels/',
-			cardTitles: ['Novelas'],
+			cardTitles: [t('screens.home.entertainments.novels')],
 			img: {
 				imgType: 'svg',
 				x: -10,
@@ -103,7 +107,7 @@ export const useTranslateHome = () => {
 		},
 		{
 			href: '/(entertainments)/videos/',
-			cardTitles: ['Videos'],
+			cardTitles: [t('screens.home.entertainments.videosTitle')],
 			img: {
 				imgType: 'svg',
 				x: -14,
@@ -116,7 +120,10 @@ export const useTranslateHome = () => {
 		},
 		{
 			href: '/(entertainments)/comics/',
-			cardTitles: ['Banda', 'Desenhada'],
+			cardTitles: [
+				t('screens.home.entertainments.comics.first'),
+				t('screens.home.entertainments.comics.sec'),
+			],
 			img: {
 				imgType: 'svg',
 				x: -10,
@@ -144,8 +151,8 @@ export const useTranslateHome = () => {
 			},
 		},
 		{
-			color: Colors.light.sunflowerYellow,
-			href: '/(others)/solar-panel/',
+			color: Colors.light.blockColor,
+			href: '',
 			cardTitles: ['Painel', 'Solar'],
 			img: {
 				imgType: 'svg',
@@ -172,8 +179,8 @@ export const useTranslateHome = () => {
 			},
 		},
 		{
-			color: Colors.light.dustyRose,
-			href: '/(others)/licenses/',
+			color: Colors.light.blockColor,
+			href: '',
 			cardTitles: ['Licenças'],
 			img: {
 				imgType: 'svg',
@@ -186,8 +193,8 @@ export const useTranslateHome = () => {
 			},
 		},
 		{
-			color: Colors.light.periwinkleGray,
-			href: '/(others)/health/',
+			color: Colors.light.blockColor,
+			href: '',
 			cardTitles: ['Saúde'],
 			img: {
 				imgType: 'svg',
@@ -200,8 +207,8 @@ export const useTranslateHome = () => {
 			},
 		},
 		{
-			color: Colors.light.coralPink,
-			href: '/(others)/family/',
+			color: Colors.light.blockColor,
+			href: '',
 			cardTitles: ['Família'],
 			img: {
 				imgType: 'svg',

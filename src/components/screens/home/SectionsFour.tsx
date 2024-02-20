@@ -40,7 +40,7 @@ export function SectionsFour({
 					return (
 						<CardModular
 							key={i}
-							color={colorTitle}
+							color={item.color || colorTitle}
 							font_size={font_size}
 							height={height}
 							width={width}

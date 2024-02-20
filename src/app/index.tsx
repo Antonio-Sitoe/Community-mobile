@@ -1,14 +1,14 @@
-import { StyleSheet } from 'react-native'
 import { View } from '@/components/Themed'
-import { HeaderModular } from '@/components/ui/HeaderModular'
-import { SectionsFour } from '@/components/screens/home/SectionsFour'
+import { Others } from '@/components/screens/home/Others'
+import { StyleSheet } from 'react-native'
 import { Meteorology } from '@/components/screens/home/Meteorology'
+import { SectionsFour } from '@/components/screens/home/SectionsFour'
+import { HeaderModular } from '@/components/ui/HeaderModular'
+import { useTranslation } from 'react-i18next'
+import { useTranslateHome } from '@/hooks/useTranslateHome'
 
 import Colors from '@/constants/Colors'
 import React from 'react'
-import { Others } from '@/components/screens/home/Others'
-import { useTranslateHome } from '@/hooks/useTranslateHome'
-import { useTranslation } from 'react-i18next'
 
 export default function Home() {
 	const { t } = useTranslation()
@@ -29,7 +29,7 @@ export default function Home() {
 				</View>
 				<View style={styles.containerChild}>
 					<SectionsFour
-						title="Entretenimento"
+						title={t('screens.home.entertainments.title')}
 						colorTitle={Colors.light.lavenderBlush}
 						hasBackground={true}
 						sections={sectionsEntrete}

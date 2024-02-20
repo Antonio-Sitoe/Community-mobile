@@ -1,0 +1,50 @@
+{
+	"language": "Emakhwua",
+	"screens": {
+		"home": {
+			"info": {
+				"title": "Tchohimiya",
+				"newsTitle": "Ehapari",
+				"newspapersTitle": "Ewaraka tcho hapari",
+				"magazines": "Ewaraka tcho elasho",
+				"educationTitle": "Ofuntha"
+			},
+			"meteorology": {
+				"title": "Epyo"
+			},
+			"entertainments": {
+				"title": "Othukia",
+				"comics": {
+					"first": "Tcholepia",
+					"sec": "nu sumia"
+				},
+				"games": "Mituko",
+				"novels": "Ihatisse",
+				"videosTitle": "Emwalu mwalu"
+			},
+			"others": {
+				"title": "Tchikina",
+				"helper": "Ophurula"
+			}
+		},
+		"intro": {
+			"title": "Hello my name is Antonio Sitoe",
+			"text": {
+				"introText": "This is the intro text in english",
+				"login": "Login",
+				"signup": "Sign Up"
+			}
+		},
+		"login": {
+			"title": "Sign in",
+			"text": {
+				"login": "login",
+				"emailAddress": "Email address",
+				"password": "password",
+				"continue": "Continue",
+				"createAccount": "Create an Account",
+				"forgotPassword": "Forgotten password?"
+			}
+		}
+	}
+}

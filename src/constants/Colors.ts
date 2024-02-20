@@ -30,6 +30,7 @@ export default {
 		ebony: '#404040',
 		transparent: '#00000000',
 		transparentBlack: '#00000000',
+		blockColor: '#BBBBBB',
 	},
 	dark: {
 		text: '#fff',

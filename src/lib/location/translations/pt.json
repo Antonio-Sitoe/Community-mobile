@@ -4,7 +4,27 @@
 		"home": {
 			"info": {
 				"title": "Informação",
-				"newsTitle": "Notícias"
+				"newsTitle": "Notícias",
+				"newspapersTitle": "Jornais",
+				"magazines": "Revistas",
+				"educationTitle": "Educação"
+			},
+			"meteorology": {
+				"title": "Metereologia"
+			},
+			"entertainments": {
+				"title": "Entretenimento",
+				"comics": {
+					"first": "Banda",
+					"sec": "Desenhada"
+				},
+				"games": "Jogos",
+				"novels": "Novelas",
+				"videosTitle": "Videos"
+			},
+			"others": {
+				"title": "Outros",
+				"helper": "Arrasta"
 			}
 		},
 		"intro": {

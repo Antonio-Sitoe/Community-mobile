@@ -7,6 +7,7 @@ import HandSwatch from '@/assets/Icons/HandSwatch.svg'
 import Colors from '@/constants/Colors'
 import { CardModular } from '@/components/ui/CardModular'
 import { ArraySectios } from '@/@types/interfaces'
+import { useTranslation } from 'react-i18next'
 
 const font_size = fonts.size.md
 const width = 220
@@ -14,6 +15,7 @@ const height = 128.5
 const SCROLLVIEW_WIDTH = Math.floor(width * 4 - 150)
 
 export function Others({ sections }: { sections: ArraySectios }) {
+	const { t } = useTranslation()
 	return (
 		<View style={styles.container}>
 			<Text
@@ -24,9 +26,9 @@ export function Others({ sections }: { sections: ArraySectios }) {
 					},
 				]}
 			>
-				Outros |{' '}
+				{t('screens.home.others.title')} |{' '}
 				<Text style={styles.helperText}>
-					Arrasta <HandSwatch />
+					{t('screens.home.others.helper')} <HandSwatch />
 				</Text>
 			</Text>
 			<View style={styles.scrollViewContainer}>

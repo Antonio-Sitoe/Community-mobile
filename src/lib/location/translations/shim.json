@@ -1,0 +1,50 @@
+{
+	"language": "Shimakonde",
+	"screens": {
+		"home": {
+			"info": {
+				"title": "Mitenga",
+				"newsTitle": "Dyabali",
+				"newspapersTitle": "Magazeti",
+				"magazines": "Mashauma",
+				"educationTitle": "Mapundisho"
+			},
+			"meteorology": {
+				"title": "Dimepo"
+			},
+			"entertainments": {
+				"title": "Kwovela",
+				"comics": {
+					"first": "Vilembo",
+					"sec": "na massomo"
+				},
+				"games": "Mishadjo",
+				"novels": "Dinano dya mushilola",
+				"videosTitle": "Shilola"
+			},
+			"others": {
+				"title": "Vinji",
+				"helper": "Kuuta"
+			}
+		},
+		"intro": {
+			"title": "Hello my name is Antonio Sitoe",
+			"text": {
+				"introText": "This is the intro text in english",
+				"login": "Login",
+				"signup": "Sign Up"
+			}
+		},
+		"login": {
+			"title": "Sign in",
+			"text": {
+				"login": "login",
+				"emailAddress": "Email address",
+				"password": "password",
+				"continue": "Continue",
+				"createAccount": "Create an Account",
+				"forgotPassword": "Forgotten password?"
+			}
+		}
+	}
+}
