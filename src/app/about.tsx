@@ -10,22 +10,15 @@ export default function About() {
 	return (
 		<>
 			<InfoHeader isDefault={false} title="+ Info" />
-			<View style={{ flex: 1, alignItems: 'center' }}>
-				<Container
-					style={{
-						flex: 1,
-						width: 800,
-						backgroundColor: Colors.light.white,
-						paddingHorizontal: 52,
-						paddingTop: 70,
-					}}
-				>
+			<View style={styles.main}>
+				<Container style={styles.container}>
 					<ScrollView
 						showsVerticalScrollIndicator={false}
 						contentContainerStyle={{
 							paddingBottom: 60,
 						}}
 					>
+						{/* tablet solar */}
 						<View style={styles.view}>
 							<Image
 								source={require('@/assets/Icons/TabletSolar-Logo.png')}
@@ -43,94 +36,85 @@ export default function About() {
 								desenvolvimento tecnológico do dispositivo digital.
 							</Text>
 						</View>
+						{/* tablet solar */}
+						<View
+							style={{
+								marginTop: 30,
+								backgroundColor: Colors.light.sunsetOrange,
+								padding: 10,
+								width: 210,
+							}}
+						>
+							<Image
+								source={require('@/assets/Icons/carlos_morgado.png')}
+								alt=""
+								style={{
+									objectFit: 'contain',
+								}}
+							/>
+						</View>
 						<View style={styles.view}>
+							<Text style={styles.title}>Fundação Carlos Morgado</Text>
+							<Text style={styles.subtitle}>Quem somos </Text>
+							<Text style={styles.text}>
+								Somos uma organização moçambicana sem fins lucrativos que visa
+								potencializar e promover o desenvolvimento sustentável de
+								Moçambique.
+							</Text>
+						</View>
+						<View style={styles.view}>
+							<Text style={styles.subtitle}>O que fazemos</Text>
+							<Text style={styles.text}>
+								Trabalhamos com as partes interessadas para conceber e
+								implementar programas em educação, saúde e cultura para criar
+								impacto positivo.
+							</Text>
+						</View>
+						<View style={styles.view}>
+							<Text style={styles.subtitle}>Como fazemos</Text>
+							<Text style={styles.text}>
+								Envolvemos as comunidades, governo e sector privado como
+								parceiros para partilhar responsabilidades em direcção aos
+								objectivos comuns.
+							</Text>
+						</View>
+						<View style={styles.grid}>
 							<View
 								style={{
-									backgroundColor: Colors.light.sunsetOrange,
-									padding: 10,
-									width: 210,
+									marginBottom: 30,
+									flexBasis: 300,
 								}}
 							>
-								<Image
-									source={require('@/assets/Icons/carlos_morgado.png')}
-									alt=""
-									style={{
-										objectFit: 'contain',
-									}}
-								/>
-							</View>
-							<Text style={styles.title}>Fundação Carlos Morgado</Text>
-							<View style={styles.view}>
-								<Text style={styles.subtitle}>Quem somos </Text>
-								<Text style={styles.text}>
-									Somos uma organização moçambicana sem fins lucrativos que visa
-									potencializar e promover o desenvolvimento sustentável de
-									Moçambique.
-								</Text>
-							</View>
-							<View style={styles.view}>
-								<Text style={styles.subtitle}>O que fazemos</Text>
-								<Text style={styles.text}>
-									Trabalhamos com as partes interessadas para conceber e
-									implementar programas em educação, saúde e cultura para criar
-									impacto positivo.
-								</Text>
-							</View>
-							<View style={styles.view}>
-								<Text style={styles.subtitle}>Como fazemos</Text>
-								<Text style={styles.text}>
-									Envolvemos as comunidades, governo e sector privado como
-									parceiros para partilhar responsabilidades em direcção aos
-									objectivos comuns.
-								</Text>
+								<Text style={styles.subtitle}>Telefones</Text>
+								<Text style={styles.text}>25848848486</Text>
 							</View>
 							<View
 								style={{
 									marginBottom: 30,
-									flexDirection: 'row',
-									alignContent: 'flex-start',
-									justifyContent: 'space-between',
-									flexWrap: 'wrap',
-									flex: 1,
-									// gridTemplateColumns: '200px 200px',
+									flexBasis: 300,
 								}}
 							>
-								<View
-									style={{
-										marginBottom: 30,
-										flexBasis: 300,
-									}}
-								>
-									<Text style={styles.subtitle}>Telefones</Text>
-									<Text style={styles.text}>25848848486</Text>
-								</View>
-								<View
-									style={{
-										marginBottom: 30,
-										flexBasis: 300,
-									}}
-								>
-									<Text style={styles.subtitle}>Celular</Text>
-									<Text style={styles.text}>25848848486</Text>
-								</View>
-								<View style={styles.row}>
-									<Text style={styles.subtitle}>Faz</Text>
-									<Text style={styles.text}>25848848486</Text>
-								</View>
-								<View style={styles.row}>
-									<Text style={styles.subtitle}>Email</Text>
-									<Text style={styles.text}>25848848486</Text>
-								</View>
-								<View style={styles.row}>
-									<Text style={styles.subtitle}>Endereco</Text>
-									<Text style={styles.text}>25848848486</Text>
-								</View>
-								<View style={styles.row}>
-									<Text style={styles.subtitle}>Website</Text>
-									<Text style={styles.text}>25848848486</Text>
-								</View>
+								<Text style={styles.subtitle}>Celular</Text>
+								<Text style={styles.text}>25848848486</Text>
+							</View>
+							<View style={styles.row}>
+								<Text style={styles.subtitle}>Faz</Text>
+								<Text style={styles.text}>25848848486</Text>
+							</View>
+							<View style={styles.row}>
+								<Text style={styles.subtitle}>Email</Text>
+								<Text style={styles.text}>25848848486</Text>
+							</View>
+							<View style={styles.row}>
+								<Text style={styles.subtitle}>Endereco</Text>
+								<Text style={styles.text}>25848848486</Text>
+							</View>
+							<View style={styles.row}>
+								<Text style={styles.subtitle}>Website</Text>
+								<Text style={styles.text}>25848848486</Text>
 							</View>
 						</View>
+
 						{/* mwe */}
 						<View style={styles.view}>
 							<Image
@@ -220,10 +204,13 @@ export default function About() {
 }
 
 const styles = StyleSheet.create({
+	main: { flex: 1, alignItems: 'center' },
 	container: {
 		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
+		width: 800,
+		backgroundColor: Colors.light.white,
+		paddingHorizontal: 52,
+		paddingTop: 70,
 	},
 	title: {
 		fontSize: fonts.size.lg,
@@ -231,6 +218,14 @@ const styles = StyleSheet.create({
 		color: Colors.light.sunsetOrange,
 		marginBottom: 10,
 		marginTop: 25,
+	},
+	grid: {
+		marginBottom: 30,
+		flexDirection: 'row',
+		alignContent: 'flex-start',
+		justifyContent: 'space-between',
+		flexWrap: 'wrap',
+		flex: 1,
 	},
 	subtitle: {
 		marginBottom: 3,
