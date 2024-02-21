@@ -6,6 +6,7 @@ import { View, ScrollView, ActivityIndicator } from 'react-native'
 import { useQuery } from '@tanstack/react-query'
 import { READ_PDF_CATEGORIES } from '@/database/actions/pdfs/read'
 import Colors from '@/constants/Colors'
+import { useTranslation } from 'react-i18next'
 
 const width = 220
 const height = 128.5
@@ -38,6 +39,7 @@ async function getNewsPapper() {
 }
 
 export default function NewsPappers() {
+	const { t } = useTranslation()
 	const { data, isLoading } = useQuery({
 		queryKey: ['newspaper'],
 		queryFn: getNewsPapper,
@@ -46,7 +48,10 @@ export default function NewsPappers() {
 
 	return (
 		<>
-			<HeaderModular isDefault={false} title="Jornais" />
+			<HeaderModular
+				isDefault={false}
+				title={t('screens.home.info.newspapersTitle')}
+			/>
 			<ScrollView
 				contentContainerStyle={{
 					paddingHorizontal: 50,

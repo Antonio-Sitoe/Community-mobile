@@ -7,6 +7,7 @@ import { View, ScrollView, StyleSheet, ActivityIndicator } from 'react-native'
 import { useQuery } from '@tanstack/react-query'
 import { READ_PDF_CATEGORIES } from '@/database/actions/pdfs/read'
 import { split_and_concat_string } from '@/utils'
+import { useTranslation } from 'react-i18next'
 
 const font_size = fonts.size.md
 const width = 220
@@ -37,9 +38,13 @@ export default function Magazines() {
 		queryFn: getMagazines,
 		networkMode: 'always',
 	})
+	const { t } = useTranslation()
 	return (
 		<View>
-			<HeaderModular isDefault={false} title="Revistas" />
+			<HeaderModular
+				isDefault={false}
+				title={t('screens.home.info.magazines')}
+			/>
 			<ScrollView contentContainerStyle={styles.scrollView}>
 				{isLoading ? (
 					<ActivityIndicator color={Colors.light.sunsetOrange} />

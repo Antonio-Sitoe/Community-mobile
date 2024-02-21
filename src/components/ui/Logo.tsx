@@ -1,15 +1,14 @@
-import { StyleSheet } from 'react-native'
-import { fonts } from '@/constants/fonts'
-import { View, Text } from '../Themed'
-
-import Logo from '@/assets/Icons/Logo.svg'
-import Colors from '@/constants/Colors'
+import { StyleSheet, Image } from 'react-native'
+import { View } from '../Themed'
 
 const Logotipo = () => {
 	return (
 		<View style={styles.logo}>
-			<Logo fontSize={32} />
-			<Text style={styles.logoTitle}>Tablet Solar</Text>
+			<Image
+				source={require('@/assets/Icons/TabletSolar-Logo.png')}
+				alt="joga betis"
+				style={styles.image}
+			/>
 		</View>
 	)
 }
@@ -21,11 +20,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		gap: 5,
 	},
-	logoTitle: {
-		fontFamily: fonts.fontFamyle.Gilroy_extraBold,
-		fontSize: fonts.size.md,
-		color: Colors.light.sunsetOrange,
+	image: {
+		width: 180,
+		height: 59,
 	},
 })

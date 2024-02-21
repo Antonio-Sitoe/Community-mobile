@@ -87,11 +87,6 @@ export function Meteorology() {
 							alt="joga betis"
 							style={styles.cardWhitesmoke}
 						/>
-						<Image
-							source={require('@/assets/Icons/TabletSolar-Logo.png')}
-							alt="joga betis"
-							style={styles.cardWhitesmoke}
-						/>
 					</View>
 				</View>
 			</View>
@@ -170,16 +165,15 @@ const styles = StyleSheet.create({
 	},
 
 	mainCardWhiteSmokeContainer: {
+		width: 198,
 		flexDirection: 'row',
 		gap: 6,
 		paddingVertical: 10,
 	},
 	cardWhitesmoke: {
 		flex: 1,
-		width: 99,
-		height: 70,
+		height: 48,
 		backgroundColor: Colors.light.smokeWhite,
-		borderRadius: 12,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},

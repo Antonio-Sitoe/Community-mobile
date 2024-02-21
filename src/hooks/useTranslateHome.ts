@@ -17,10 +17,35 @@ import {
 import { ArraySectios } from '@/@types/interfaces'
 import Colors from '@/constants/Colors'
 import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
+
+export type LanguageType = 'em' | 'pt' | 'shim'
+
+export type LanguageItemType = {
+	label: string
+	value: LanguageType
+}
+
+export const defaultName = {
+	pt: 'Português',
+	em: 'Emakhwua',
+	shim: 'Shimakonde',
+}
+
+export const languageData = [
+	{ value: 'pt', label: 'Português' },
+	{ value: 'em', label: 'Emakhwua' },
+	{ value: 'shim', label: 'Shimakonde' },
+]
 
 export const useTranslateHome = () => {
 	const { t } = useTranslation()
-	console.log(t('screens.home.entertainments.comics'))
+	const { i18n } = useTranslation()
+	const lang = defaultName[i18n.language]
+
+	function handleChangeLanguage(language: LanguageItemType) {
+		i18n.changeLanguage(language.value)
+	}
 
 	const sectionsInfo: ArraySectios = [
 		{
@@ -122,7 +147,7 @@ export const useTranslateHome = () => {
 			href: '/(entertainments)/comics/',
 			cardTitles: [
 				t('screens.home.entertainments.comics.first'),
-				t('screens.home.entertainments.comics.sec'),
+				t('screens.home.entertainments.comics.second'),
 			],
 			img: {
 				imgType: 'svg',
@@ -221,5 +246,12 @@ export const useTranslateHome = () => {
 			},
 		},
 	]
-	return { sectionsOthers, sectionsEntrete, sectionsInfo }
+	return {
+		sectionsOthers,
+		sectionsEntrete,
+		sectionsInfo,
+		languageData,
+		handleChangeLanguage,
+		lang,
+	}
 }

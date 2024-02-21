@@ -18,19 +18,14 @@ export function Others({ sections }: { sections: ArraySectios }) {
 	const { t } = useTranslation()
 	return (
 		<View style={styles.container}>
-			<Text
-				style={[
-					styles.textTitle,
-					{
-						color: Colors.light.charcoal,
-					},
-				]}
-			>
-				{t('screens.home.others.title')} |{' '}
+			<View style={styles.containerTexts}>
+				<Text style={styles.textTitle}>{t('screens.home.others.title')}</Text>
+
 				<Text style={styles.helperText}>
 					{t('screens.home.others.helper')} <HandSwatch />
 				</Text>
-			</Text>
+			</View>
+
 			<View style={styles.scrollViewContainer}>
 				<ScrollView horizontal showsHorizontalScrollIndicator={false}>
 					<View bgColor="transparent" style={styles.scrollView}>
@@ -62,8 +57,13 @@ const styles = StyleSheet.create({
 	textTitle: {
 		fontFamily: fonts.fontFamyle.Gilroy_extraBold,
 		fontSize: fonts.size.lgSm,
-		color: Colors.light.sunsetOrange,
+		color: Colors.light.charcoal,
 		marginBottom: 8,
+	},
+	containerTexts: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
 	},
 	helperText: {
 		fontSize: 14,

@@ -8,6 +8,8 @@ import { useQuery } from '@tanstack/react-query'
 import { split_and_concat_string } from '@/utils'
 import { READ_BY_CATEGORY_NAME } from '@/database/actions/pdfs/read'
 import { View, ScrollView, ActivityIndicator } from 'react-native'
+import { t } from 'i18next'
+import { useTranslation } from 'react-i18next'
 
 async function getCosmics(slug: string) {
 	const pdf = await READ_BY_CATEGORY_NAME(slug)
@@ -38,12 +40,17 @@ export default function Comics() {
 		networkMode: 'always',
 	})
 
+	const { t } = useTranslation()
+
 	const width = 220
 	const height = 257
 
 	return (
 		<>
-			<HeaderModular isDefault={false} title="Banda Desenhada" />
+			<HeaderModular
+				isDefault={false}
+				title={`${t('screens.home.entertainments.comics.first')} ${t('screens.home.entertainments.comics.second')}`}
+			/>
 			<ScrollView
 				contentContainerStyle={{
 					paddingHorizontal: 50,

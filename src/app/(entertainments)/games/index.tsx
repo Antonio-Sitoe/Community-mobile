@@ -7,8 +7,10 @@ import { CardModular } from '@/components/ui/CardModular'
 import { fonts } from '@/constants/fonts'
 import { Route } from 'expo-router'
 import Colors from '@/constants/Colors'
+import { useTranslation } from 'react-i18next'
 
 export default function Games() {
+	const { t } = useTranslation()
 	const gameInfo: ArraySectios = [
 		{
 			href: `/(entertainments)/games/` as Route<string>,
@@ -69,7 +71,10 @@ export default function Games() {
 
 	return (
 		<>
-			<HeaderModular isDefault={false} title="Jogos" />
+			<HeaderModular
+				isDefault={false}
+				title={t('screens.home.entertainments.games')}
+			/>
 			<ScrollView
 				contentContainerStyle={{
 					paddingHorizontal: 50,

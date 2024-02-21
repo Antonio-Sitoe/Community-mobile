@@ -1,60 +1,30 @@
 import { fonts } from '@/constants/fonts'
-import { Volume } from '../ui/Volume'
-import { router } from 'expo-router'
-import { Logotipo } from '@/components/ui/Logo'
-import { View, Text } from '../Themed'
+import { View } from '../Themed'
+import { StyleSheet } from 'react-native'
 import { GoBackTitle } from './GoBackTitle'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { useTranslateHome } from '@/hooks/useTranslateHome'
 
 import Colors from '@/constants/Colors'
 import Dropdown from './Dropdown'
-import { useTranslateHome } from '@/hooks/useTranslateHome'
 
-type HeaderModularProps = {
-	isDefault?: boolean
-	hasVolume?: boolean
-	title?: string
-}
-
-const HeaderModular = ({
-	isDefault = true,
-	title,
-	hasVolume = false,
-}: HeaderModularProps) => {
+const InfoHeader = ({ isDefault = true, title }) => {
 	const { lang, languageData, handleChangeLanguage } = useTranslateHome()
 	return (
 		<View style={[styles.container, !isDefault && styles.containerWithBg]}>
-			{isDefault ? <Logotipo /> : <GoBackTitle title={title} />}
-
-			<View style={styles.actions} bgColor="transparent">
-				{hasVolume && <Volume isDefault={isDefault} />}
-
-				<View style={styles.modularView} bgColor="transparent">
-					<Dropdown
-						key={lang}
-						label={lang}
-						data={languageData}
-						onSelect={handleChangeLanguage}
-					/>
-				</View>
-
-				<TouchableOpacity
-					style={[styles.btn, isDefault ? styles.btnRigth : styles.btnLeft]}
-				>
-					<Text
-						style={styles.btnText}
-						onPress={() => router.push('/about')}
-						color={isDefault ? Colors.light.white : Colors.light.sunsetOrange}
-					>
-						+ info
-					</Text>
-				</TouchableOpacity>
+			<GoBackTitle title={title} />
+			<View style={styles.modularView} bgColor="transparent">
+				<Dropdown
+					right={50}
+					label={lang}
+					data={languageData}
+					onSelect={handleChangeLanguage}
+				/>
 			</View>
 		</View>
 	)
 }
 
-export { HeaderModular }
+export { InfoHeader }
 
 const styles = StyleSheet.create({
 	container: {

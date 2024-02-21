@@ -8,12 +8,14 @@ import { svg1224, svg1225, svg1226, svg1227 } from '@/assets/Icons/out'
 
 import Colors from '@/constants/Colors'
 import videos from '@/utils/faker/category.json'
+import { useTranslation } from 'react-i18next'
 
 const width = 220
 const height = 128.5
 const icons = [svg1224, svg1225, svg1226, svg1227]
 
 export default function Videos() {
+	const { t } = useTranslation()
 	const sectionsInfoRadio: ArraySectios = videos.data
 		.filter((item) => item.type === 'videos')
 		.map((category) => {
@@ -34,7 +36,10 @@ export default function Videos() {
 
 	return (
 		<>
-			<HeaderModular isDefault={false} title="Vídeos" />
+			<HeaderModular
+				isDefault={false}
+				title={t('screens.home.entertainments.videosTitle')}
+			/>
 			<ScrollView
 				contentContainerStyle={{
 					paddingHorizontal: 50,

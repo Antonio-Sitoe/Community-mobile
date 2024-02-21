@@ -9,11 +9,13 @@ import { HeaderModular } from '@/components/ui/HeaderModular'
 import { series_generate } from '@/utils/faker/generate_series'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { split_and_concat_string } from '@/utils'
+import { useTranslation } from 'react-i18next'
 
 export const filter = (data: any[], params: string) =>
 	data.filter((item) => item.category_type === params)
 
 const Novelas = () => {
+	const { t } = useTranslation()
 	const sectionsInfoRadio: ArraySectios = filter(
 		series_generate.data,
 		'Radionovelas',
@@ -70,7 +72,10 @@ const Novelas = () => {
 
 	return (
 		<>
-			<HeaderModular isDefault={false} title="Novelas" />
+			<HeaderModular
+				isDefault={false}
+				title={t('screens.home.entertainments.novels')}
+			/>
 			<View
 				style={{
 					paddingHorizontal: 45,
