@@ -1,23 +1,21 @@
-import { StyleSheet, Text, View, Image } from 'react-native'
-import { View as Container } from '@/components/Themed'
 import Colors from '@/constants/Colors'
-import { InfoHeader } from '@/components/ui/InfoHeader'
-import React from 'react'
-import { ScrollView } from 'react-native-gesture-handler'
+
+import { StyleSheet, Text, View, Image } from 'react-native'
 import { fonts } from '@/constants/fonts'
+import { InfoHeader } from '@/components/ui/InfoHeader'
+import { ScrollView } from 'react-native-gesture-handler'
+import { View as Container } from '@/components/Themed'
 
 export default function About() {
 	return (
 		<>
 			<InfoHeader isDefault={false} title="+ Info" />
-			<View style={styles.main}>
-				<Container style={styles.container}>
-					<ScrollView
-						showsVerticalScrollIndicator={false}
-						contentContainerStyle={{
-							paddingBottom: 60,
-						}}
-					>
+			<View style={styles.container}>
+				<ScrollView
+					showsVerticalScrollIndicator={false}
+					contentContainerStyle={styles.scrollView}
+				>
+					<Container style={styles.containerChild}>
 						{/* tablet solar */}
 						<View style={styles.view}>
 							<Image
@@ -196,21 +194,17 @@ export default function About() {
 								</View>
 							</View>
 						</View>
-					</ScrollView>
-				</Container>
+					</Container>
+				</ScrollView>
 			</View>
 		</>
 	)
 }
 
 const styles = StyleSheet.create({
-	main: { flex: 1, alignItems: 'center' },
 	container: {
 		flex: 1,
-		width: 800,
-		backgroundColor: Colors.light.white,
 		paddingHorizontal: 52,
-		paddingTop: 70,
 	},
 	title: {
 		fontSize: fonts.size.lg,
@@ -218,6 +212,13 @@ const styles = StyleSheet.create({
 		color: Colors.light.sunsetOrange,
 		marginBottom: 10,
 		marginTop: 25,
+	},
+	scrollView: {
+		alignItems: 'center',
+	},
+	containerChild: {
+		width: 850,
+		padding: 60,
 	},
 	grid: {
 		marginBottom: 30,

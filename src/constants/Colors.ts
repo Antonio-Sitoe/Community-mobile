@@ -23,7 +23,7 @@ export default {
 		mutedGreen: '#83B778',
 		sunflowerYellow: '#E4C117',
 		bronzeYellow: '#E4C117',
-
+		grayAlternative: '#878787',
 		dustyRose: '#A89384',
 		coralPink: '#FEA8A1',
 		darkSlateGray: '#353535',

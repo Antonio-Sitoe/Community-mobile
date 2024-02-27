@@ -1,5 +1,5 @@
 import { View, Text } from '@/components/Themed'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { fonts } from '@/constants/fonts'
 
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 	textTitle: {
 		fontFamily: fonts.fontFamyle.Gilroy_extraBold,
 		fontSize: fonts.size.lgSm,
-		color: Colors.light.charcoal,
+		color: Colors.light.grayAlternative,
 		marginBottom: 8,
 	},
 	containerTexts: {
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 	},
 	helperText: {
 		fontSize: 14,
-		color: Colors.light.charcoal,
+		color: Colors.light.grayAlternative,
 		flexDirection: 'row',
 		alignItems: 'center',
 		gap: 6,

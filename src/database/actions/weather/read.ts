@@ -20,7 +20,7 @@ const READ_WEATHER = async () => {
 	const weatherCollection =
 		database.collections.get<WeatherModel>('wheather_info')
 	const weather = await weatherCollection.query().fetch()
-	const today = new Date()
+	const today = dayjs()
 	const currentDate = dayjs(today).format('DD-MM-YYYY')
 	const nextDay = dayjs().add(1, 'day').format('DD-MM-YYYY')
 
@@ -29,6 +29,7 @@ const READ_WEATHER = async () => {
 			const weather_date = dayjs(weather.date, 'DD-MM-YYYY')
 				.add(1, 'day')
 				.toDate()
+			console.log('weather_date', weather_date, '  ', today)
 			return weather_date >= today
 		})
 		.reduce(
