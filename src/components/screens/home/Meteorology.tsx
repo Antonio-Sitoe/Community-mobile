@@ -75,7 +75,7 @@ export function Meteorology() {
 						style={[
 							styles.textTitle,
 							{
-								color: Colors.light.sunsetOrange,
+								color: Colors.light.grayAlternative,
 							},
 						]}
 					>
